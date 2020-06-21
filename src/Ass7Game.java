@@ -9,9 +9,9 @@ import java.util.List;
 
 
 /**
- * The type Ass 6 game.
+ * The type Ass 7 game.
  */
-public class Ass6Game {
+public class Ass7Game {
     /**
      * The entry point of application.
      *
