@@ -15,6 +15,7 @@ import eventhandlers.ScoreTrackingListener;
 import gameelements.Paddle;
 import gameelements.Ball;
 import gameelements.Block;
+import gameelements.SolidBlock;
 import miscellaneous.GameEnvironment;
 import miscellaneous.Sprite;
 import miscellaneous.SpriteCollection;
@@ -114,16 +115,16 @@ public class GameLevel implements Animation {
         this.sprites = new SpriteCollection();
         this.remainingBlocks = new Counter(0);
         this.remainingBalls = new Counter(0);
-        Block topMargin = new Block(
-                0, 0, this.horizontalBound, this.margin, Color.LIGHT_GRAY, 0);
-        Block bottomMargin = new Block(
+        Block topMargin = new SolidBlock(
+                0, 0, this.horizontalBound, this.margin, Color.LIGHT_GRAY, Color.BLACK, 0);
+        Block bottomMargin = new SolidBlock(
                 this.margin, this.verticalBound,
-                this.horizontalBound - 2 * this.margin, this.margin, Color.LIGHT_GRAY, 0);
-        Block leftMargin = new Block(
-                0, this.margin, this.margin, this.verticalBound - this.margin, Color.LIGHT_GRAY, 0);
-        Block rightMargin = new Block(
+                this.horizontalBound - 2 * this.margin, this.margin, Color.LIGHT_GRAY, Color.BLACK, 0);
+        Block leftMargin = new SolidBlock(
+                0, this.margin, this.margin, this.verticalBound - this.margin, Color.LIGHT_GRAY, Color.BLACK,0);
+        Block rightMargin = new SolidBlock(
                 this.horizontalBound - this.margin, this.margin, this.margin,
-                this.verticalBound - this.margin, Color.LIGHT_GRAY, 0);
+                this.verticalBound - this.margin, Color.LIGHT_GRAY, Color.BLACK, 0);
         topMargin.addToGame(this);
         bottomMargin.addToGame(this);
         leftMargin.addToGame(this);
@@ -137,7 +138,13 @@ public class GameLevel implements Animation {
             b.addHitListener(this.blockRemover);
             b.addHitListener(this.scoreTrackingListener);
             b.addToGame(this);
-            this.remainingBlocks.increase(1);
+            if (this.remainingBlocks.getValue() < this.level.numberOfBlocksToRemove()) {
+                // This counter counts blocks that still need to be cleared for the level
+                // to be cleared rather than total number of remaining blocks.
+                // And this number is limited by a special parameter which can be lower
+                // than the total number of blocks.
+                this.remainingBlocks.increase(1);
+            }
         }
         this.scoreTrackingListener.setInitialBlockCount(this.remainingBlocks.getValue());
         this.sleeper = new Sleeper();

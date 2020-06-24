@@ -1,9 +1,11 @@
-import levels.Level1;
-import levels.Level2;
-import levels.Level3;
-import levels.Level4;
 import levels.LevelInformation;
+import levels.LevelSpecificationReader;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,31 +25,26 @@ public class Ass7Game {
     // * @param args the input arguments
     // *
     public static void main(String[] args) {
-        GameFlow game = new GameFlow();
-        List<LevelInformation> levels = new ArrayList<>();
-        LevelInformation level;
-        for (int i = 0; i < args.length; i++) {
-            switch (args[i]) {
-                case "1":
-                    level = new Level1();
-                    levels.add(level);
-                    break;
-                case "2":
-                    level = new Level2();
-                    levels.add(level);
-                    break;
-                case "3":
-                    level = new Level3();
-                    levels.add(level);
-                    break;
-                case "4":
-                    level = new Level4();
-                    levels.add(level);
-                    break;
-                default:
-                    break;
+        int horizontalBound = 800;
+        int verticalBound = 600;
+
+        String levelDefFile = "level_definitions.txt";
+        if (args.length > 0) {
+            levelDefFile = args[0];
+        }
+        ClassLoader classLoader = ClassLoader.getSystemClassLoader();
+        URL resource = classLoader.getResource(levelDefFile);
+        if (resource != null) {
+            try {
+                FileReader fileReader = new FileReader(resource.getPath());
+                LevelSpecificationReader levelReader = new LevelSpecificationReader(horizontalBound, verticalBound);
+                List<LevelInformation> levels = levelReader.fromReader(fileReader);
+                if (levels.size() > 0) {
+                    GameFlow game = new GameFlow(horizontalBound, verticalBound);
+                    game.runLevels(levels);
+                }
+            } catch (IOException ioException) {
             }
         }
-        game.runLevels(levels);
     }
 }

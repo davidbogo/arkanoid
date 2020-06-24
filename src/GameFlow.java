@@ -24,9 +24,9 @@ public class GameFlow {
     /**
      * Instantiates a new Game flow.
      */
-    public GameFlow() {
-        this.horizontalBound = 800;
-        this.verticalBound = 600;
+    public GameFlow(int horBound, int vertBound) {
+        this.horizontalBound = horBound;
+        this.verticalBound = vertBound;
         this.margin = 20;
         this.gui = new GUI("Breaking Bad", this.horizontalBound, this.verticalBound);
         this.keyboardSensor = gui.getKeyboardSensor();
