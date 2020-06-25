@@ -151,7 +151,7 @@ public class GameLevel implements Animation {
         this.paddle = new Paddle(this.horizontalBound / 2 - level.paddleWidth() / 2,
                 this.verticalBound - this.paddleHeight - 10,
                 level.paddleWidth(), paddleHeight,
-                Color.YELLOW, this.gui, this.margin);
+                Color.YELLOW, this.level.paddleSpeed(), this.gui, this.margin);
         this.paddle.setBounds(this.horizontalBound, this.verticalBound);
         this.paddle.addToGame(this);
     }
