@@ -1,12 +1,9 @@
 import levels.LevelInformation;
 import levels.LevelSpecificationReader;
 
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -27,13 +24,25 @@ public class Ass7Game {
     public static void main(String[] args) {
         int horizontalBound = 800;
         int verticalBound = 600;
-
-        String levelDefFile = "level_definitions.txt";
+        ClassLoader classLoader = ClassLoader.getSystemClassLoader();
+        URL resource = null;
+        String levelDefFile;
         if (args.length > 0) {
             levelDefFile = args[0];
+            resource = classLoader.getResource(levelDefFile);
+            if (resource == null) {
+                // A bug in build.xml causes a bad parameter to be passed to Ass7Game.main()
+                // if the program is run as just "ant run", with no parameters specified by
+                // -Dargs="...". In this or any other case when the supplied parameter is wrong,
+                // we'll try again with the default file name
+                levelDefFile = "level_definitions.txt";
+            }
+        } else {
+            levelDefFile = "level_definitions.txt";
         }
-        ClassLoader classLoader = ClassLoader.getSystemClassLoader();
-        URL resource = classLoader.getResource(levelDefFile);
+        if (resource == null) {
+            resource = classLoader.getResource(levelDefFile);
+        }
         if (resource != null) {
             try {
                 FileReader fileReader = new FileReader(resource.getPath());
