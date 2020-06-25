@@ -1,36 +1,5 @@
+
 # Level 1
-# Wide paddle with many balls, double hit required
-
-START_LEVEL
-level_name: Wide Easy, double hit
-#ball_velocities:-60,500 -45,500 -30,500 -15,500 15,500 30,500 45,500 60,500
-ball_velocities:-4,-2 -3,-2 -2,-2 -1,-2 1,-2 2,-2 3,-2 4,-2
-background:color(white)
-#paddle_speed:100
-paddle_speed:1
-paddle_width:550
-block_definitions:definitions/doublehit_block_definitions.txt
-blocks_start_x:25
-blocks_start_y:80
-row_height:25
-num_blocks:9
-#num_blocks is set to a lower value than the total number of blocks
-START_BLOCKS
--
--
--
--
--
--
--
-rrooyygggbbppcc
-
-
-END_BLOCKS
-END_LEVEL
-
-
-# Level 2
 # The good old final four level with an upgraded background
 
 START_LEVEL
@@ -60,6 +29,36 @@ ccccccccccccccc
 END_BLOCKS
 END_LEVEL
 
+# Level 2
+# Wide paddle with many balls, double hit required
+
+START_LEVEL
+level_name: Wide Easy, double hit
+#ball_velocities:-60,500 -45,500 -30,500 -15,500 15,500 30,500 45,500 60,500
+ball_velocities:-4,-2 -3,-2 -2,-2 -1,-2 1,-2 2,-2 3,-2 4,-2
+background:color(white)
+#paddle_speed:100
+paddle_speed:1
+paddle_width:550
+block_definitions:definitions/doublehit_block_definitions.txt
+blocks_start_x:25
+blocks_start_y:80
+row_height:25
+num_blocks:9
+#num_blocks is set to a lower value than the total number of blocks
+START_BLOCKS
+-
+-
+-
+-
+-
+-
+-
+rrooyygggbbppcc
+
+
+END_BLOCKS
+END_LEVEL
 
 
 # Level 3
