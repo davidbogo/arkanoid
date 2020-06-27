@@ -24,6 +24,9 @@ public class Ball implements Sprite {
     private int horizontalBound;
     private int verticalBound;
     private GameEnvironment gameEnvironment;
+    private long lastStuckTime;
+    private long beforeLastStuckTime;
+
 
     /**
      * construct unbounded ball from point, radius and color.
@@ -40,6 +43,8 @@ public class Ball implements Sprite {
         this.velocity = new Velocity(0, 0);
         this.isBounded = false;
         this.gameEnvironment = gameEnv;
+        this.lastStuckTime = 0;
+        this.beforeLastStuckTime = 0;
     }
 
     /**
@@ -58,6 +63,8 @@ public class Ball implements Sprite {
         this.velocity = new Velocity(0, 0);
         this.isBounded = false;
         this.gameEnvironment = gameEnv;
+        this.lastStuckTime = 0;
+        this.beforeLastStuckTime = 0;
     }
 
     /**
@@ -80,6 +87,8 @@ public class Ball implements Sprite {
         this.verticalBound = verticalBound;
         this.horizontalBound = horizontalBound;
         this.gameEnvironment = gameEnvironment;
+        this.lastStuckTime = 0;
+        this.beforeLastStuckTime = 0;
     }
 
     /**
@@ -103,6 +112,8 @@ public class Ball implements Sprite {
         this.verticalBound = verticalBound;
         this.horizontalBound = horizontalBound;
         this.gameEnvironment = gameEnvironment;
+        this.lastStuckTime = 0;
+        this.beforeLastStuckTime = 0;
     }
 
     /**
@@ -252,7 +263,7 @@ public class Ball implements Sprite {
      */
     public void timePassed() {
         this.moveOneStep();
-        this.gameEnvironment.stuckHandle(this);
+        this.gameEnvironment.handleStuckBall(this);
     }
 
     /**
@@ -271,5 +282,40 @@ public class Ball implements Sprite {
      */
     public void removeFromGame(GameLevel game) {
         game.removeSprite(this);
+    }
+
+    /**
+     * This method registers the time the ball got stuck and decides whether we can try to unstuck it by sending it
+     * back from the current location to where it cam from or need to randomly move it to a new location
+     *
+     * @return true if the ball needs to be moved to a new randomized location
+     */
+    public boolean RegisterStuckCondition() {
+        boolean needToRandomize = false;
+        long curTime = System.currentTimeMillis();
+        if (this.beforeLastStuckTime != 0) {
+            if (curTime - this.beforeLastStuckTime < 1000) {
+                // This is the third time in less than a second that the ball got stuck.
+                // We'll request the caller to move it to a new randomized location
+                this.beforeLastStuckTime = 0;
+                this.lastStuckTime = 0;
+                needToRandomize = true;
+            } else {
+                this.beforeLastStuckTime = this.lastStuckTime;
+                this.lastStuckTime = curTime;
+            }
+        } else if (this.lastStuckTime != 0) {
+            if (curTime - this.lastStuckTime < 1000) {
+                // This is the second time in less than a second that the ball got stuck.
+                // We still treat this situation as recoverable
+                this.beforeLastStuckTime = this.lastStuckTime;
+            } else {
+                this.beforeLastStuckTime = 0;
+            }
+            this.lastStuckTime = curTime;
+        } else {
+            this.lastStuckTime = curTime;
+        }
+        return needToRandomize;
     }
 }
