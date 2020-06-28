@@ -205,16 +205,6 @@ public class Line {
                     } else {
                         return intrsPoints.get(0);
                     }
-                } else {
-                    for (Point point:intrsPoints) {
-                        double a = this.start.distance(intrsPoints.get(0));
-                        double b = this.start.distance(point);
-                        Point closest = intrsPoints.get(0);
-                        if (a > b) {
-                            closest = point;
-                        }
-                        return closest;
-                    }
                 }
             }
         }
