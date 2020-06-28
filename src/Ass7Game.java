@@ -1,5 +1,6 @@
 import levels.LevelInformation;
 import levels.LevelSpecificationReader;
+import miscellaneous.GameFlow;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -50,7 +51,7 @@ public class Ass7Game {
                 List<LevelInformation> levels = levelReader.fromReader(fileReader);
                 if (levels.size() > 0) {
                     GameFlow game = new GameFlow(horizontalBound, verticalBound);
-                    game.runLevels(levels);
+                    game.runMenu(levels);
                 }
             } catch (IOException ioException) {
             }

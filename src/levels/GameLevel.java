@@ -69,6 +69,7 @@ public class GameLevel implements Animation {
      */
     public GameLevel(LevelInformation curLevel,
                      GUI guiParam,
+                     AnimationRunner animRunner,
                      KeyboardSensor theKey,
                      Counter score,
                      int horBound,
@@ -87,7 +88,7 @@ public class GameLevel implements Animation {
         this.paddleHeight = 15;
         this.countdownDisplayed = false;
         this.environment = new GameEnvironment();
-        this.animationRunner = new AnimationRunner(this.gui, 60);
+        this.animationRunner = animRunner;
     }
 
     /**

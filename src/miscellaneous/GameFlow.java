@@ -1,9 +1,18 @@
+package miscellaneous;
+
 import biuoop.KeyboardSensor;
 import eventhandlers.Counter;
 import eventhandlers.LevelNameIndicator;
 import eventhandlers.ScoreIndicator;
 import levels.LevelInformation;
 import levels.GameLevel;
+import menu.ExitTask;
+import menu.Menu;
+import menu.MenuAnimation;
+import menu.ShowHiScoresTask;
+import menu.StartGameTask;
+import menu.Task;
+import animation.AnimationRunner;
 import biuoop.GUI;
 
 import java.util.List;
@@ -17,6 +26,7 @@ public class GameFlow {
     private int verticalBound;
     private Counter score;
     private GUI gui;
+    private AnimationRunner animationRunner;
     private int margin;
     private ScoreIndicator scoreIndicator;
     private LevelNameIndicator levelNameIndicator;
@@ -28,14 +38,29 @@ public class GameFlow {
         this.horizontalBound = horBound;
         this.verticalBound = vertBound;
         this.margin = 20;
-        this.gui = new GUI("Breaking Bad", this.horizontalBound, this.verticalBound);
+        this.gui = new GUI("Arkanoid", this.horizontalBound, this.verticalBound);
         this.keyboardSensor = gui.getKeyboardSensor();
         this.score = new Counter(0);
         this.scoreIndicator = null;
         this.levelNameIndicator = null;
+        this.animationRunner = new AnimationRunner(this.gui, 60);
     }
 
-    /**
+	public void runMenu(List<LevelInformation> levels) {
+        Menu<Task<Void>> menu = new MenuAnimation<Task<Void>>(
+                "Arkanoid", gui.getKeyboardSensor(), this.animationRunner);
+        menu.addSelection("s", "start game", new StartGameTask(this, levels));
+        menu.addSelection("h", "Hi Score", new ShowHiScoresTask(
+                animationRunner, menu));
+        menu.addSelection("q", "Quit", new ExitTask(gui));
+        while (true) {
+            animationRunner.run(menu);
+            Task<Void> task = menu.getStatus();
+            task.run();
+        }
+	}
+
+	/**
      * Run levels.
      *
      * @param levels the levels
@@ -48,6 +73,7 @@ public class GameFlow {
             GameLevel level = new GameLevel(
                     levelInfo,
                     this.gui,
+                    this.animationRunner,
                     this.keyboardSensor,
                     this.score,
                     this.horizontalBound,
