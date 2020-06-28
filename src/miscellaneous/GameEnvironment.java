@@ -90,6 +90,11 @@ public class GameEnvironment {
                 boolean needToRandomize = ball.RegisterStuckCondition();
                 if (needToRandomize) {
                     ball.setCenter(350 + random.nextInt(100), 560);
+                    if (ball.getVelocity().getDy() > 0) {
+                        // We must make sure the ball is going up and not down after the
+                        // randomization
+                        ball.setVelocity(ball.getVelocity().getDx(), -ball.getVelocity().getDy());
+                    }
                 } else {
                     // We will reverse the ball's direction and move it along the new trajectory
                     // outside the collidable object it's stuck in
