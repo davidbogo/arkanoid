@@ -6,13 +6,14 @@ import eventhandlers.LevelNameIndicator;
 import eventhandlers.ScoreIndicator;
 import levels.LevelInformation;
 import levels.GameLevel;
-import menu.ExitTask;
+import animation.AnimationRunner;
+import menu.Task;
 import menu.Menu;
 import menu.MenuAnimation;
+import animation.HighScoresAnimation;
+import menu.QuitTask;
 import menu.ShowHiScoresTask;
 import menu.StartGameTask;
-import menu.Task;
-import animation.AnimationRunner;
 import biuoop.GUI;
 
 import java.util.List;
@@ -27,6 +28,8 @@ public class GameFlow {
     private Counter score;
     private GUI gui;
     private AnimationRunner animationRunner;
+    private HighScoresAnimation highScoresAnimation;
+    private HighScores highScore;
     private int margin;
     private ScoreIndicator scoreIndicator;
     private LevelNameIndicator levelNameIndicator;
@@ -44,16 +47,24 @@ public class GameFlow {
         this.scoreIndicator = null;
         this.levelNameIndicator = null;
         this.animationRunner = new AnimationRunner(this.gui, 60);
+        this.highScore = new HighScores();
+        this.highScoresAnimation = new HighScoresAnimation(highScore);
+    }
+
+    public void resetScore() {
+        this.score.decrease(this.score.getValue());
     }
 
 	public void runMenu(List<LevelInformation> levels) {
-        Menu<Task<Void>> menu = new MenuAnimation<Task<Void>>(
-                "Arkanoid", gui.getKeyboardSensor(), this.animationRunner);
-        menu.addSelection("s", "start game", new StartGameTask(this, levels));
-        menu.addSelection("h", "Hi Score", new ShowHiScoresTask(
-                animationRunner, menu));
-        menu.addSelection("q", "Quit", new ExitTask(gui));
         while (true) {
+            // Quit task will terminate the program once selected
+            Menu<Task<Void>> menu = new MenuAnimation<Task<Void>>(
+                    "Arkanoid", gui.getKeyboardSensor(), this.animationRunner);
+            menu.addSelection("s", "Start game", new StartGameTask(this, levels));
+            menu.addSelection("h", "High Score", new ShowHiScoresTask(this.animationRunner,
+                    this.highScoresAnimation,
+                    this.keyboardSensor));
+            menu.addSelection("q", "Quit", new QuitTask(gui));
             animationRunner.run(menu);
             Task<Void> task = menu.getStatus();
             task.run();
@@ -92,6 +103,8 @@ public class GameFlow {
             }
             curLevel++;
         }
-        gui.close();
+        this.highScore.updateHighScore(this.score.getValue());
+        this.highScore.save();
+        this.resetScore();
     }
 }

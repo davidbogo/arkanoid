@@ -4,13 +4,13 @@ import biuoop.GUI;
 /**
  * this class represents a menu.ExitTask object.
  */
-public class ExitTask implements Task<Void> {
+public class QuitTask implements Task<Void> {
     private GUI gui;
     /**
      * construct an menu.ExitTask from a given GUI object.
      * @param gui the given GUI.
      */
-    public ExitTask(GUI gui) {
+    public QuitTask(GUI gui) {
         this.gui = gui;
     }
     /**

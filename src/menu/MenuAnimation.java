@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-import animation.Animation;
 import animation.AnimationRunner;
 import biuoop.DrawSurface;
 import biuoop.KeyboardSensor;
@@ -17,8 +16,7 @@ public class MenuAnimation<T> implements Menu<T> {
     private String menuTitle;
     private List<String> keys;
     private List<String> messages;
-    private List<T> type;
-    private List<Boolean> itExsits;
+    private List<T> task;
     private T status;
     private boolean shutdown;
     private KeyboardSensor keyboardSensor;
@@ -35,8 +33,7 @@ public class MenuAnimation<T> implements Menu<T> {
         this.menuTitle = menuTitle;
         this.keys = new ArrayList<String>();
         this.messages = new ArrayList<String>();
-        this.type = new ArrayList<T>();
-        this.itExsits = new ArrayList<Boolean>();
+        this.task = new ArrayList<T>();
         this.shutdown = false;
         this.keyboardSensor = keyboardSensor;
         this.animationRunner = animationRunner;
@@ -45,13 +42,13 @@ public class MenuAnimation<T> implements Menu<T> {
         return this.shutdown;
     }
     public void doOneFrame(DrawSurface d) {
-        d.setColor(Color.GREEN);
+        d.setColor(Color.BLUE);
         d.fillRectangle(0, 0, d.getWidth(), d.getHeight());
-        d.setColor(Color.decode("#1e7f00"));
+        d.setColor(Color.decode("#1e7f88"));
         d.fillRectangle(0, d.getHeight() / 2 - 160, d.getWidth(), 90);
-        d.setColor(Color.RED);
+        d.setColor(Color.ORANGE);
         d.fillRectangle(0, d.getHeight() / 2 - 160, d.getWidth(), 3);
-        d.drawText(180, d.getHeight() / 2 - 90, this.menuTitle, 70);
+        d.drawText(220, d.getHeight() / 2 - 90, this.menuTitle, 70);
         d.fillRectangle(0, d.getHeight() / 2 - 70, d.getWidth(), 3);
         for (int i = 0; i < this.keys.size(); i++) {
             d.drawText(260, 200 + 40 * (i + 2), "("
@@ -59,15 +56,8 @@ public class MenuAnimation<T> implements Menu<T> {
         }
         for (int i = 0; i < this.keys.size(); i++) {
             if (this.keyboardSensor.isPressed(this.keys.get(i))) {
-                if (this.itExsits.get(i)) {
-                    this.status = this.type.get(i);
-                    this.shutdown = true;
-                } else {
-                    this.animationRunner.run(this);
-                    this.status = null;
-                    this.shutdown = true;
-                    break;
-                }
+                this.status = this.task.get(i);
+                this.shutdown = true;
             }
         }
     }
@@ -75,8 +65,7 @@ public class MenuAnimation<T> implements Menu<T> {
     public void addSelection(String key, String message, T returnVal) {
         this.keys.add(key);
         this.messages.add(message);
-        this.type.add(returnVal);
-        this.itExsits.add(true);
+        this.task.add(returnVal);
     }
     public T getStatus() {
         return this.status;

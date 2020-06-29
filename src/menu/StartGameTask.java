@@ -25,12 +25,6 @@ public class StartGameTask implements Task<Void> {
      */
     public Void run() {
         gameFlow.runLevels(this.levels);
-     /**   try {
-            table.save(this.highScoresFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-      **/
         return null;
     }
 }
