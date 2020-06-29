@@ -15,18 +15,21 @@ private int highScores;
         this.highScores = 0;
         try {
             File file = new File("highscores");
-            FileReader fileReader = new FileReader(file);
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
-            String highScoreLine = bufferedReader.readLine();
-            if (highScoreLine != null) {
-                Pattern pattern = Pattern.compile(":");
-                String[] split;
-                if (highScoreLine.contains("The highest score so far is")) {
-                    split = pattern.split(highScoreLine);
-                    if (split.length == 2) {
-                        this.highScores = Integer.parseInt(split[1]);
+            if (file != null) {
+                FileReader fileReader = new FileReader(file);
+                BufferedReader bufferedReader = new BufferedReader(fileReader);
+                String highScoreLine = bufferedReader.readLine();
+                if (highScoreLine != null) {
+                    Pattern pattern = Pattern.compile(":");
+                    String[] split;
+                    if (highScoreLine.contains("The highest score so far is")) {
+                        split = pattern.split(highScoreLine);
+                        if (split.length == 2) {
+                            this.highScores = Integer.parseInt(split[1].trim());
+                        }
                     }
                 }
+                fileReader.close();
             }
         } catch (IOException ioException) {
             System.err.println(ioException);
@@ -51,6 +54,7 @@ private int highScores;
             String val = String.valueOf(this.highScores);
             String highScoreLine = "The highest score so far is: " + val;
             bufferedWriter.write(highScoreLine);
+            bufferedWriter.close();
         } catch (IOException ioException) {
             System.err.println(ioException);
         }
