@@ -115,4 +115,10 @@ public class LevelInformation {
     public int numberOfBlocksToRemove() {
         return this.numberOfBlocksToRemove;
     }
+
+    public void resetBlocks() {
+        for (Block b : this.blocks) {
+            b.reset();
+        }
+    }
 }

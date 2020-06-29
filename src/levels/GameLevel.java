@@ -134,6 +134,9 @@ public class GameLevel implements Animation {
         this.ballRemover = new BallRemover(this, this.remainingBalls);
         this.scoreTrackingListener = new ScoreTrackingListener(this.score);
         bottomMargin.addHitListener(this.ballRemover);
+        this.level.resetBlocks();
+        // The blocks are only created once at the beginning of the game
+        // Each time we're about to use them, we need to reset them to the original state (remove listeners etc.)
         List<Block> blocks = this.level.blocks();
         for (Block b: blocks) {
             b.addHitListener(this.blockRemover);
