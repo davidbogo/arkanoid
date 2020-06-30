@@ -36,6 +36,9 @@ public class GameFlow {
 
     /**
      * Instantiates a new Game flow.
+     *
+     * @param horBound  the hor bound
+     * @param vertBound the vert bound
      */
     public GameFlow(int horBound, int vertBound) {
         this.horizontalBound = horBound;
@@ -51,11 +54,19 @@ public class GameFlow {
         this.highScoresAnimation = new HighScoresAnimation(highScore);
     }
 
+    /**
+     * Reset score.
+     */
     public void resetScore() {
         this.score.decrease(this.score.getValue());
     }
 
-	public void runMenu(List<LevelInformation> levels) {
+    /**
+     * Run menu.
+     *
+     * @param levels the levels
+     */
+    public void runMenu(List<LevelInformation> levels) {
         while (true) {
             // Quit task will terminate the program once selected
             Menu<Task<Void>> menu = new MenuAnimation<Task<Void>>(
@@ -71,7 +82,7 @@ public class GameFlow {
         }
 	}
 
-	/**
+    /**
      * Run levels.
      *
      * @param levels the levels

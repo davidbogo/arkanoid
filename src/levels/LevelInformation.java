@@ -10,14 +10,46 @@ import java.util.List;
  * The class Level information.
  */
 public class LevelInformation {
+    /**
+     * The Name.
+     */
     String name;
+    /**
+     * The Blocks.
+     */
     List<Block> blocks;
+    /**
+     * The Number of blocks to remove.
+     */
     int numberOfBlocksToRemove;
+    /**
+     * The Ball velocities.
+     */
     List<Velocity> ballVelocities;
+    /**
+     * The Background.
+     */
     Sprite background;
+    /**
+     * The Paddle speed.
+     */
     int paddleSpeed;
+    /**
+     * The Paddle width.
+     */
     int paddleWidth;
 
+    /**
+     * Instantiates a new Level information.
+     *
+     * @param levelName    the level name
+     * @param levelBlocks  the level blocks
+     * @param num_blocks   the num blocks
+     * @param ballVel      the ball vel
+     * @param paddle_speed the paddle speed
+     * @param paddle_width the paddle width
+     * @param bkgnd        the bkgnd
+     */
     public LevelInformation(
             String levelName,
             List<Block> levelBlocks,
@@ -49,7 +81,7 @@ public class LevelInformation {
      *
      * @return the list
      */
-    // The initial velocity of each ball
+// The initial velocity of each ball
     // Note that initialBallVelocities().size() == numberOfBalls()
     public List<Velocity> initialBallVelocities() {
         return this.ballVelocities;
@@ -64,12 +96,12 @@ public class LevelInformation {
         return this.paddleSpeed;
     }
 
-     /**
+    /**
      * Paddle width int.
      *
      * @return the int
      */
-     public int paddleWidth() {
+    public int paddleWidth() {
         return this.paddleWidth;
     }
 
@@ -78,7 +110,7 @@ public class LevelInformation {
      *
      * @return the string
      */
-    // the level name will be displayed at the top of the screen.
+// the level name will be displayed at the top of the screen.
     public String levelName() {
         return this.name;
     }
@@ -88,7 +120,7 @@ public class LevelInformation {
      *
      * @return the background
      */
-    // Returns a sprite with the background of the level
+// Returns a sprite with the background of the level
     public Sprite getBackground() {
         return this.background;
     }
@@ -98,7 +130,7 @@ public class LevelInformation {
      *
      * @return the list
      */
-    // The Blocks that make up this level, each block contains
+// The Blocks that make up this level, each block contains
     // its size, color and location.
     public List<Block> blocks() {
         return this.blocks;
@@ -109,13 +141,16 @@ public class LevelInformation {
      *
      * @return the int
      */
-    // Number of blocks that should be removed
+// Number of blocks that should be removed
     // before the level is considered to be "cleared".
     // This number should be <= blocks.size();
     public int numberOfBlocksToRemove() {
         return this.numberOfBlocksToRemove;
     }
 
+    /**
+     * Reset blocks.
+     */
     public void resetBlocks() {
         for (Block b : this.blocks) {
             b.reset();

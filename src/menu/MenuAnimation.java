@@ -10,6 +10,7 @@ import biuoop.KeyboardSensor;
 
 /**
  * this class represents a menu animation object.
+ *
  * @param <T> the menu type.
  */
 public class MenuAnimation<T> implements Menu<T> {
@@ -21,11 +22,13 @@ public class MenuAnimation<T> implements Menu<T> {
     private boolean shutdown;
     private KeyboardSensor keyboardSensor;
     private AnimationRunner animationRunner;
+
     /**
      * construct a menu animation object from a menuTitle,
      * a keyboardSensor and an animationRunner.
-     * @param menuTitle the given menuTitle.
-     * @param keyboardSensor the given keyboardSensor.
+     *
+     * @param menuTitle       the given menuTitle.
+     * @param keyboardSensor  the given keyboardSensor.
      * @param animationRunner the given animationRunner.
      */
     public MenuAnimation(String menuTitle, KeyboardSensor keyboardSensor,
@@ -38,9 +41,18 @@ public class MenuAnimation<T> implements Menu<T> {
         this.keyboardSensor = keyboardSensor;
         this.animationRunner = animationRunner;
     }
+
+    /**
+     * @return true if should stop
+     */
     public boolean shouldStop() {
         return this.shutdown;
     }
+
+    /**
+     *
+     * @param d the surface
+     */
     public void doOneFrame(DrawSurface d) {
         d.setColor(Color.BLUE);
         d.fillRectangle(0, 0, d.getWidth(), d.getHeight());

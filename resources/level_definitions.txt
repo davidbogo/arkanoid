@@ -1,120 +1,23 @@
-
 # Level 1
-# The good old final four level with an upgraded background
-
-START_LEVEL
-level_name: Final Four (V2)
-#ball_velocities:45,550
-ball_velocities:3,-3
-background:image(background_images/clouds.png)
-#paddle_speed:650
-paddle_speed:5
-paddle_width:160
-block_definitions:definitions/standard_block_definitions.txt
-blocks_start_x:25
-blocks_start_y:80
-row_height:25
-num_blocks:105
-START_BLOCKS
--
--
-GGGGGGGGGGGGGGG
-rrrrrrrrrrrrrrr
-yyyyyyyyyyyyyyy
-ggggggggggggggg
-wwwwwwwwwwwwwww
-ppppppppppppppp
-ccccccccccccccc
-
-END_BLOCKS
-END_LEVEL
-
-# Level 2
-# Wide paddle with many balls, double hit required
-
-START_LEVEL
-level_name: Wide Easy, double hit
-#ball_velocities:-60,500 -45,500 -30,500 -15,500 15,500 30,500 45,500 60,500
-ball_velocities:-4,-2 -3,-2 -2,-2 -1,-2 1,-2 2,-2 3,-2 4,-2
-background:color(white)
-#paddle_speed:100
-paddle_speed:1
-paddle_width:550
-block_definitions:definitions/doublehit_block_definitions.txt
-blocks_start_x:25
-blocks_start_y:80
-row_height:25
-num_blocks:9
-#num_blocks is set to a lower value than the total number of blocks
-START_BLOCKS
--
--
--
--
--
--
--
-rrooyygggbbppcc
-
-
-END_BLOCKS
-END_LEVEL
-
-
-# Level 3
 # Image Background and images for blocks
 
 START_LEVEL
-level_name:Welcome to the Jungle
-#ball_velocities:45,550 -45,550 -30,550 30,550
-ball_velocities:3,-3 -3,-3 -2,-3 2,-3
-background:image(background_images/jungle.jpg)
+level_name:Welcome to Katagard
+ball_velocities:3,-3 -3,-3
+background:image(background_images/fjord.jpg)
 #paddle_speed:650
 paddle_speed:5
 paddle_width:160
-block_definitions:definitions/jungle_block_definitions.txt
+block_definitions:definitions/vikings_block_definitions.txt
 blocks_start_x:25
-blocks_start_y:80
-row_height:25
-num_blocks:26
+blocks_start_y:20
+row_height:72
+num_blocks:22
 START_BLOCKS
--
--
--
--
--lllllllllllll--
--zzzzzzzzzzzzz--
-END_BLOCKS
-END_LEVEL
-
-# Level 4
-# Complicated pattern
-
-START_LEVEL
-level_name: Retro Arrows
-#ball_velocities:45,550 46,550 47,550
-ball_velocities:3,-3 4,-3 5,-3
-background:color(RGB(142,0,0))
-#paddle_speed:650
-paddle_speed:5
-paddle_width:250
-block_definitions:definitions/arrows_block_definitions.txt
-blocks_start_x:25
-blocks_start_y:80
-row_height:25
-num_blocks:135
-START_BLOCKS
--
--
-ggggggggggggggg
-gyyyryygoobooog
-gyyrryygoobboog
-gyrrrrrgbbbbbog
-grrrrrrgbbbbbbg
-gyrrrrrgbbbbbog
-gyyrryygoobboog
-gyyyryygoobooog
-ggggggggggggggg
-
+rrr-----
+rrrr----
+rrrrrr--
+bbbb----
+bbbbb---
 END_BLOCKS
 END_LEVEL

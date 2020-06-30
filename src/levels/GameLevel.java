@@ -58,14 +58,15 @@ public class GameLevel implements Animation {
     /**
      * this method constructs a game object.
      *
-     * @param curLevel the cur level
-     * @param guiParam the gui param
-     * @param theKey   the the key
-     * @param score    the score
-     * @param horBound the horizontal bound
-     * @param verBound the vertical bound
-     * @param marg     the marg
-     * @param last     the last
+     * @param curLevel   the cur level
+     * @param guiParam   the gui param
+     * @param animRunner the anim runner
+     * @param theKey     the the key
+     * @param score      the score
+     * @param horBound   the horizontal bound
+     * @param verBound   the vertical bound
+     * @param marg       the marg
+     * @param last       the last
      */
     public GameLevel(LevelInformation curLevel,
                      GUI guiParam,
@@ -109,7 +110,8 @@ public class GameLevel implements Animation {
         this.sprites.addSprite(s);
     }
 
-    /**.
+    /**
+     * .
      * none
      */
     public void initialize() {

@@ -182,6 +182,9 @@ public abstract class Block implements Sprite, Collidable, HitNotifier {
         this.hitListeners.remove(hl);
     }
 
+    /**
+     * resets the block preparing it for an additional use
+     */
     public void reset() {
         hitListeners.clear();
     }

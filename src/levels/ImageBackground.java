@@ -10,9 +10,17 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
+/**
+ * The type Image background.
+ */
 public class ImageBackground implements Sprite {
     private Image image;
 
+    /**
+     * Instantiates a new Image background.
+     *
+     * @param imageFile the image file
+     */
     public ImageBackground(String imageFile) {
         image = null;
         ClassLoader classLoader = ClassLoader.getSystemClassLoader();

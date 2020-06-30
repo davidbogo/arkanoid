@@ -11,9 +11,13 @@ import miscellaneous.GameFlow;
 public class StartGameTask implements Task<Void> {
     private GameFlow gameFlow;
     private List<LevelInformation> levels;
+
     /**
      * construct a menu.StartGameTask from a GUI, an animationRunner,
      * a highScoresTable, a levelInformation list,
+     *
+     * @param game  the game
+     * @param level the level
      */
     public StartGameTask(GameFlow game, List<LevelInformation> level) {
         this.gameFlow = game;

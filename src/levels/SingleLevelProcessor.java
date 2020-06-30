@@ -12,13 +12,25 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * The type Single level processor.
+ */
 public class SingleLevelProcessor {
     private int horizontalBound;
     private int verticalBound;
     private List<String> lines;
     private List<String> blockLines;
+    /**
+     * The Blocks factory.
+     */
     BlocksFromSymbolsFactory blocksFactory;
 
+    /**
+     * Instantiates a new Single level processor.
+     *
+     * @param horBound  the hor bound
+     * @param vertBound the vert bound
+     */
     public SingleLevelProcessor(int horBound, int vertBound) {
         this.horizontalBound = horBound;
         this.verticalBound = vertBound;
@@ -27,10 +39,22 @@ public class SingleLevelProcessor {
         this.blocksFactory = null;
     }
 
+    /**
+     * Add line.
+     *
+     * @param line the line
+     */
     public void addLine(String line) {
         lines.add(line);
     }
 
+    /**
+     * Uses block factories to create all blocks of the level
+     * @param blocksStartX
+     * @param blocksStartY
+     * @param rowHeight
+     * @return
+     */
     private List<Block> createBlocks(int blocksStartX, int blocksStartY, int rowHeight) {
         List<Block> blocks = new ArrayList<Block>();
         int curY = blocksStartY;
@@ -51,6 +75,14 @@ public class SingleLevelProcessor {
         return blocks;
     }
 
+    /**
+     * Runs through the lines defining the level, initiates the reading of
+     * block definitions, creates the background and finally calls
+     * createBlocks() to build all blocks of the level
+     *
+     * @return the level information
+     * @throws IOException the io exception
+     */
     public LevelInformation buildLevelInfo() throws java.io.IOException {
         LevelInformation levelInfo = null;
         String levelName = null;

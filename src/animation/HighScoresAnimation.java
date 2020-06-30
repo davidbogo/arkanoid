@@ -2,14 +2,21 @@ package animation;
 
 import biuoop.DrawSurface;
 import miscellaneous.HighScores;
-import java.awt.*;
+import java.awt.Color;
 
 public class HighScoresAnimation implements Animation {
 private HighScores highScores;
 
-public HighScoresAnimation (HighScores score) {
-    this.highScores = score;
-}
+    /**
+     * @param score the highest score object
+     */
+    public HighScoresAnimation (HighScores score) {
+        this.highScores = score;
+    }
+
+    /**
+     * @param d the surface
+     */
     public void doOneFrame(DrawSurface d) {
         d.setColor(Color.BLUE);
         d.fillRectangle(0, 0, 800, 600);
@@ -18,6 +25,9 @@ public HighScoresAnimation (HighScores score) {
         d.drawText(280, 190, "High Score: " + val, 30);
     }
 
+    /**
+     * @return false, the stopping is controlled by the KeyPressStoppableAnimation decorator
+     */
     public boolean shouldStop() {
         return false;
     }

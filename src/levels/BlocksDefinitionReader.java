@@ -2,8 +2,16 @@ package levels;
 
 import java.io.BufferedReader;
 
+/**
+ * The type Blocks definition reader.
+ */
 public class BlocksDefinitionReader {
 
+    /**
+     * Create blocks factory from block definitions file
+     * @param reader the reader
+     * @return the blocks factory
+     */
     public static BlocksFromSymbolsFactory fromReader(java.io.Reader reader) throws java.io.IOException {
         BlocksFromSymbolsFactory factory = new BlocksFromSymbolsFactory();
         BufferedReader bufferedReader = new BufferedReader(reader);

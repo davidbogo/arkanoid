@@ -9,8 +9,15 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.regex.Pattern;
 
+/**
+ * The type High scores.
+ */
 public class HighScores {
 private int highScores;
+
+    /**
+     * Instantiates a new High scores.
+     */
     public HighScores() {
         this.highScores = 0;
         try {
@@ -36,16 +43,29 @@ private int highScores;
         }
     }
 
+    /**
+     * Gets high score.
+     *
+     * @return the high score
+     */
     public int getHighScore() {
         return this.highScores;
     }
 
+    /**
+     * Update high score.
+     *
+     * @param newScore the new score
+     */
     public void updateHighScore(int newScore) {
         if (this.highScores < newScore) {
             this.highScores = newScore;
         }
     }
 
+    /**
+     * Save.
+     */
     public void save() {
         try {
             File file = new File("highscores");

@@ -6,15 +6,42 @@ import java.awt.Color;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * The type Block params.
+ */
 public class BlockParams {
+    /**
+     * The Symbol.
+     */
     public String symbol;
+    /**
+     * The Width.
+     */
     public int width;
+    /**
+     * The Height.
+     */
     public int height;
+    /**
+     * The Hit points.
+     */
     public int hitPoints;
+    /**
+     * The Fill image.
+     */
     public String fillImage;
+    /**
+     * The Fill color.
+     */
     public Color fillColor;
+    /**
+     * The Stroke.
+     */
     public Color stroke;
 
+    /**
+     * Instantiates a new Block params.
+     */
     public BlockParams() {
         this.symbol = null;
         this.width = -1;
@@ -25,6 +52,11 @@ public class BlockParams {
         this.stroke = null;
     }
 
+    /**
+     * Parse comma separated params.
+     *
+     * @param params the params
+     */
     public void parseCommaSeparatedParams(String params) {
         Pattern spaceSeparatorPattern = Pattern.compile(" ");
         ColorsParser colorParser = new ColorsParser();
@@ -58,6 +90,12 @@ public class BlockParams {
         }
     }
 
+    /**
+     * Complete and validate boolean.
+     *
+     * @param defaultParams the default params
+     * @return the boolean
+     */
     public boolean completeAndValidate(BlockParams defaultParams) {
         if (this.symbol == null) {
             return false;

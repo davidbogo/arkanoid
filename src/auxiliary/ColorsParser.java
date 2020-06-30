@@ -6,8 +6,17 @@ import java.awt.Color;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * The type Colors parser.
+ */
 public class ColorsParser {
-    // parse color definition and return the specified color.
+    /**
+     * Color from string java . awt . color.
+     *
+     * @param s the s
+     * @return the java . awt . color
+     */
+// parse color definition and return the specified color.
     public java.awt.Color colorFromString(String s) {
         Color result = Color.decode("#000000"); // Black is the default
         Pattern regex = Pattern.compile("\\((.*?)\\)");
