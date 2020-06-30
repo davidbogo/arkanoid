@@ -1,0 +1,9 @@
+# default values for blocks
+default height:25 width:50 stroke:color(black)
+
+# block definitions
+bdef symbol:r width:78 height:44 fill:image(block_images/Ragnar.jpg)
+bdef symbol:b width:128 height:72 fill:image(block_images/Bjorn.jpg)
+
+# spacers definitions
+sdef symbol:- width:50
