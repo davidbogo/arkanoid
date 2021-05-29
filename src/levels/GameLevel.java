@@ -124,7 +124,7 @@ public class GameLevel implements Animation {
                 this.margin, this.verticalBound,
                 this.horizontalBound - 2 * this.margin, this.margin, Color.LIGHT_GRAY, Color.BLACK, 0);
         Block leftMargin = new SolidBlock(
-                0, this.margin, this.margin, this.verticalBound - this.margin, Color.LIGHT_GRAY, Color.BLACK,0);
+                0, this.margin, this.margin, this.verticalBound - this.margin, Color.LIGHT_GRAY, Color.BLACK, 0);
         Block rightMargin = new SolidBlock(
                 this.horizontalBound - this.margin, this.margin, this.margin,
                 this.verticalBound - this.margin, Color.LIGHT_GRAY, Color.BLACK, 0);

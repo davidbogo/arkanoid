@@ -1,7 +1,6 @@
 package levels;
 
 import biuoop.DrawSurface;
-import geometry.Rectangle;
 import miscellaneous.Sprite;
 
 import javax.imageio.ImageIO;

@@ -123,14 +123,15 @@ public class Paddle implements Sprite, Collidable {
      */
     public void moveRight() {
         if (this.keyboard.isPressed(KeyboardSensor.RIGHT_KEY)
-                && this.rectangle.getUpperLeft().getX() + this.rectangle.getWidth() + this.margin <
-                this.horizontalBound) {
+                && this.rectangle.getUpperLeft().getX() + this.rectangle.getWidth() + this.margin
+                < this.horizontalBound) {
             int newX;
-            if (this.rectangle.getUpperLeft().getX() + this.rectangle.getWidth() + this.margin + this.speed <
-                    this.horizontalBound) {
+            if (this.rectangle.getUpperLeft().getX() + this.rectangle.getWidth() + this.margin + this.speed
+                    < this.horizontalBound) {
                 newX = (int) Math.round(this.rectangle.getUpperLeft().getX()) + this.speed;
             } else {
-                newX = (int) Math.round(this.horizontalBound) - this.margin - (int) Math.round(this.rectangle.getWidth());
+                newX = (int) Math.round(
+                        this.horizontalBound) - this.margin - (int) Math.round(this.rectangle.getWidth());
             }
             this.rectangle = new Rectangle(
                     newX,

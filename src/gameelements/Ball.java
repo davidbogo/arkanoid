@@ -286,11 +286,11 @@ public class Ball implements Sprite {
 
     /**
      * This method registers the time the ball got stuck and decides whether we can try to unstuck it by sending it
-     * back from the current location to where it cam from or need to randomly move it to a new location
+     * back from the current location to where it cam from or need to randomly move it to a new location.
      *
      * @return true if the ball needs to be moved to a new randomized location
      */
-    public boolean RegisterStuckCondition() {
+    public boolean registerStuckCondition() {
         boolean needToRandomize = false;
         long curTime = System.currentTimeMillis();
         if (this.beforeLastStuckTime != 0) {

@@ -26,11 +26,11 @@ public class SolidBlockCreator implements BlockCreator {
      * @yPos the y pos
      */
     public Block create(int xPos, int yPos) {
-        Rectangle blockRectangle = new Rectangle(xPos, yPos, this.blockParams.width, this.blockParams.height);
+        Rectangle blockRectangle = new Rectangle(xPos, yPos, this.blockParams.getWidth(), this.blockParams.getHeight());
         return new SolidBlock(
                 blockRectangle,
-                this.blockParams.fillColor,
-                this.blockParams.stroke,
-                this.blockParams.hitPoints);
+                this.blockParams.getFillColor(),
+                this.blockParams.getStroke(),
+                this.blockParams.getHitPoints());
     }
 }

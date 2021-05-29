@@ -13,31 +13,31 @@ public class BlockParams {
     /**
      * The Symbol.
      */
-    public String symbol;
+    private String symbol;
     /**
      * The Width.
      */
-    public int width;
+    private int width;
     /**
      * The Height.
      */
-    public int height;
+    private int height;
     /**
      * The Hit points.
      */
-    public int hitPoints;
+    private int hitPoints;
     /**
      * The Fill image.
      */
-    public String fillImage;
+    private String fillImage;
     /**
      * The Fill color.
      */
-    public Color fillColor;
+    private Color fillColor;
     /**
      * The Stroke.
      */
-    public Color stroke;
+    private Color stroke;
 
     /**
      * Instantiates a new Block params.
@@ -133,4 +133,68 @@ public class BlockParams {
         }
         return true;
     }
+
+    /**
+     * Gets width.
+     *
+     * @return the width
+     */
+    public int getWidth() {
+        return this.width;
+    }
+
+    /**
+     * Gets symbol.
+     *
+     * @return the symbol
+     */
+    public String getSymbol() {
+        return this.symbol;
+    }
+
+    /**
+     * Gets height.
+     *
+     * @return the height
+     */
+    public int getHeight() {
+        return this.height;
+    }
+
+    /**
+     * Gets hit points.
+     *
+     * @return the hit points
+     */
+    public int getHitPoints() {
+        return this.hitPoints;
+    }
+
+    /**
+     * Gets fill image.
+     *
+     * @return the fill image
+     */
+    public String getFillImage() {
+        return this.fillImage;
+    }
+
+    /**
+     * Gets fill color.
+     *
+     * @return the fill color
+     */
+    public Color getFillColor() {
+        return this.fillColor;
+    }
+
+    /**
+     * Gets stroke.
+     *
+     * @return the stroke
+     */
+    public Color getStroke() {
+        return this.stroke;
+    }
+
 }

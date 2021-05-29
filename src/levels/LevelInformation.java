@@ -13,58 +13,58 @@ public class LevelInformation {
     /**
      * The Name.
      */
-    String name;
+    private String name;
     /**
      * The Blocks.
      */
-    List<Block> blocks;
+    private List<Block> blocks;
     /**
      * The Number of blocks to remove.
      */
-    int numberOfBlocksToRemove;
+    private  int numberOfBlocksToRemove;
     /**
      * The Ball velocities.
      */
-    List<Velocity> ballVelocities;
+    private List<Velocity> ballVelocities;
     /**
      * The Background.
      */
-    Sprite background;
+    private Sprite background;
     /**
      * The Paddle speed.
      */
-    int paddleSpeed;
+    private int paddleSpeed;
     /**
      * The Paddle width.
      */
-    int paddleWidth;
+    private int paddleWidth;
 
     /**
      * Instantiates a new Level information.
      *
      * @param levelName    the level name
      * @param levelBlocks  the level blocks
-     * @param num_blocks   the num blocks
+     * @param numBlk       the num blocks
      * @param ballVel      the ball vel
-     * @param paddle_speed the paddle speed
-     * @param paddle_width the paddle width
+     * @param paddleSp     the paddle speed
+     * @param paddleWd     the paddle width
      * @param bkgnd        the bkgnd
      */
     public LevelInformation(
             String levelName,
             List<Block> levelBlocks,
-            int num_blocks,
+            int numBlk,
             List<Velocity> ballVel,
-            int paddle_speed,
-            int paddle_width,
+            int paddleSp,
+            int paddleWd,
             Sprite bkgnd) {
         this.name = levelName;
         this.blocks = levelBlocks;
-        this.numberOfBlocksToRemove = num_blocks;
+        this.numberOfBlocksToRemove = numBlk;
         this.background = bkgnd;
         this.ballVelocities = ballVel;
-        this.paddleSpeed = paddle_speed;
-        this.paddleWidth = paddle_width;
+        this.paddleSpeed = paddleSp;
+        this.paddleWidth = paddleWd;
     }
 
     /**

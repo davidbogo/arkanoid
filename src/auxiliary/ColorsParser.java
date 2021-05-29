@@ -1,7 +1,5 @@
 package auxiliary;
 
-import levels.ImageBackground;
-
 import java.awt.Color;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

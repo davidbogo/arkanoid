@@ -11,13 +11,12 @@ import miscellaneous.HitNotifier;
 import miscellaneous.Sprite;
 import movement.Collidable;
 import movement.Velocity;
-import biuoop.DrawSurface;
 
 /**
  * this class represents a block.
  */
 public abstract class Block implements Sprite, Collidable, HitNotifier {
-    protected Rectangle rectangle;
+    private Rectangle rectangle;
     private int hits;
     private List<HitListener> hitListeners;
 
@@ -67,6 +66,9 @@ public abstract class Block implements Sprite, Collidable, HitNotifier {
 
     }
 
+    /**
+     * @return rectangle
+     */
     public Rectangle getRectangle() {
         return rectangle;
     }
@@ -183,7 +185,7 @@ public abstract class Block implements Sprite, Collidable, HitNotifier {
     }
 
     /**
-     * resets the block preparing it for an additional use
+     * resets the block preparing it for an additional use.
      */
     public void reset() {
         hitListeners.clear();

@@ -9,6 +9,9 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
+/**
+ * Image block class.
+ */
 public class ImageBlock extends Block {
     private Image image;
     private Color stroke;
@@ -22,6 +25,7 @@ public class ImageBlock extends Block {
      * @param width         the block's width.
      * @param height        the block's height.
      * @param strokeColor   the stroke color.
+     * @param imageFile     the image.
      * @param hits          the hits
      */
     public ImageBlock(double x, double y, double width, double height, String imageFile, Color strokeColor, int hits) {
@@ -42,14 +46,14 @@ public class ImageBlock extends Block {
      */
     public void drawOn(DrawSurface surface) {
         surface.drawImage(
-                (int) Math.round(this.rectangle.getUpperLeft().getX()),
-                (int) Math.round(this.rectangle.getUpperLeft().getY()),
+                (int) Math.round(this.getRectangle().getUpperLeft().getX()),
+                (int) Math.round(this.getRectangle().getUpperLeft().getY()),
                 image);
         surface.setColor(this.stroke);
         surface.drawRectangle(
-                (int) Math.round(this.rectangle.getUpperLeft().getX()),
-                (int) Math.round(this.rectangle.getUpperLeft().getY()),
-                (int) Math.round(this.rectangle.getWidth()),
-                (int) Math.round(this.rectangle.getHeight()));
+                (int) Math.round(this.getRectangle().getUpperLeft().getX()),
+                (int) Math.round(this.getRectangle().getUpperLeft().getY()),
+                (int) Math.round(this.getRectangle().getWidth()),
+                (int) Math.round(this.getRectangle().getHeight()));
     }
 }

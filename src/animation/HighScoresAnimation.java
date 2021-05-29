@@ -4,13 +4,16 @@ import biuoop.DrawSurface;
 import miscellaneous.HighScores;
 import java.awt.Color;
 
+/**
+ * creates high scores animation.
+ */
 public class HighScoresAnimation implements Animation {
 private HighScores highScores;
 
     /**
      * @param score the highest score object
      */
-    public HighScoresAnimation (HighScores score) {
+    public HighScoresAnimation(HighScores score) {
         this.highScores = score;
     }
 

@@ -6,6 +6,9 @@ import geometry.Rectangle;
 
 import java.awt.Color;
 
+/**
+ * Solid block class.
+ */
 public class SolidBlock extends Block {
     private Color color;
     private Color stroke;
@@ -67,17 +70,17 @@ public class SolidBlock extends Block {
     public void drawOn(DrawSurface surface) {
         surface.setColor(this.color);
         surface.fillRectangle(
-                (int) Math.round(this.rectangle.getUpperLeft().getX()),
-                (int) Math.round(this.rectangle.getUpperLeft().getY()),
-                (int) Math.round(this.rectangle.getWidth()),
-                (int) Math.round(this.rectangle.getHeight()));
+                (int) Math.round(this.getRectangle().getUpperLeft().getX()),
+                (int) Math.round(this.getRectangle().getUpperLeft().getY()),
+                (int) Math.round(this.getRectangle().getWidth()),
+                (int) Math.round(this.getRectangle().getHeight()));
         if (this.stroke != null) {
             surface.setColor(this.stroke);
             surface.drawRectangle(
-                    (int) Math.round(this.rectangle.getUpperLeft().getX()),
-                    (int) Math.round(this.rectangle.getUpperLeft().getY()),
-                    (int) Math.round(this.rectangle.getWidth()),
-                    (int) Math.round(this.rectangle.getHeight()));
+                    (int) Math.round(this.getRectangle().getUpperLeft().getX()),
+                    (int) Math.round(this.getRectangle().getUpperLeft().getY()),
+                    (int) Math.round(this.getRectangle().getWidth()),
+                    (int) Math.round(this.getRectangle().getHeight()));
         }
     }
 

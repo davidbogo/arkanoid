@@ -8,9 +8,10 @@ import java.io.BufferedReader;
 public class BlocksDefinitionReader {
 
     /**
-     * Create blocks factory from block definitions file
+     * Create blocks factory from block definitions file.
      * @param reader the reader
      * @return the blocks factory
+     * @throws java.io.IOException
      */
     public static BlocksFromSymbolsFactory fromReader(java.io.Reader reader) throws java.io.IOException {
         BlocksFromSymbolsFactory factory = new BlocksFromSymbolsFactory();
@@ -26,12 +27,12 @@ public class BlocksDefinitionReader {
                     blockParams.parseCommaSeparatedParams(line);
                     if (blockParams.completeAndValidate(defaultParams)) {
                         BlockCreator blockCreator;
-                        if (blockParams.fillImage != null) {
+                        if (blockParams.getFillImage() != null) {
                             blockCreator = new ImageBlockCreator(blockParams);
                         } else {
                             blockCreator = new SolidBlockCreator(blockParams);
                         }
-                        factory.registerBlockCreator(blockParams.symbol, blockCreator);
+                        factory.registerBlockCreator(blockParams.getSymbol(), blockCreator);
                     }
                 } else if (line.startsWith("sdef")) {
                     SpacerParams spacerParams = new SpacerParams();

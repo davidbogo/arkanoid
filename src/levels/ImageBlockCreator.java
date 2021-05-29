@@ -28,10 +28,10 @@ public class ImageBlockCreator implements BlockCreator {
         return new ImageBlock(
                 xPos,
                 yPos,
-                this.blockParams.width,
-                this.blockParams.height,
-                this.blockParams.fillImage,
-                this.blockParams.stroke,
-                this.blockParams.hitPoints);
+                this.blockParams.getWidth(),
+                this.blockParams.getHeight(),
+                this.blockParams.getFillImage(),
+                this.blockParams.getStroke(),
+                this.blockParams.getHitPoints());
     }
 }
