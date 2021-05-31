@@ -1,7 +1,9 @@
+package miscellaneous;
+
 import biuoop.DrawSurface;
 
 /**
- * The interface Sprite.
+ * The interface Miscellaneous.Sprite.
  */
 public interface Sprite {
     /**
@@ -12,7 +14,7 @@ public interface Sprite {
     void drawOn(DrawSurface d);
 
     /**
-     * time passed.
+     * Time passed.
      */
     void timePassed();
 }

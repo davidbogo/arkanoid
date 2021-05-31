@@ -1,3 +1,7 @@
+package movement;
+
+import geometry.Point;
+
 /**
  * The type Collision info.
  */

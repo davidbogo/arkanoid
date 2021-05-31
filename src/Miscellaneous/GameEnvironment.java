@@ -1,5 +1,14 @@
+package miscellaneous;
+
+import gameelements.Ball;
+import geometry.Line;
+import geometry.Point;
+import movement.Collidable;
+import movement.CollisionInfo;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * The type Game environment.
@@ -66,5 +75,13 @@ public class GameEnvironment {
      */
     public List<Collidable> getCollidables() {
         return collidables;
+    }
+
+    /**
+     * this method removes a given collidable object from the collection.
+     * @param c the given collidable object.
+     */
+    public void removeCollidable(Collidable c) {
+        this.collidables.remove(c);
     }
 }

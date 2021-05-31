@@ -1,5 +1,8 @@
+package geometry;
+
+
 /**
- * The type Line.
+ * The type Geometry.Line
  */
 public class Line {
     private Point start;
@@ -17,9 +20,9 @@ public class Line {
      * @param end1   the end 1
      */
 // constructors
-    public Line(Point start1, Point end1) {
-        start = start1;
-        end = end1;
+    public Line(Point start_param, Point end_param) {
+        start = start_param;
+        end = end_param;
         x1 = start.getX();
         x2 = end.getX();
         y1 = start.getY();
@@ -35,11 +38,11 @@ public class Line {
      * @param x2a the x 2 a
      * @param y2a the y 2 a
      */
-    public Line(double x1a, double y1a, double x2a, double y2a) {
-        x1 = x1a;
-        x2 = x2a;
-        y1 = y1a;
-        y2 = y2a;
+    public Line(double x1_param, double y1_param, double x2_param, double y2_param) {
+        x1 = x1_param;
+        x2 = x2_param;
+        y1 = y1_param;
+        y2 = y2_param;
         start = new Point(x1, y1);
         end = new  Point(x2, y2);
         middle = middle();
@@ -52,8 +55,7 @@ public class Line {
      */
 // Return the length of the line
     public double length() {
-       double length = start.distance(end);
-       return length;
+       return start.distance(end);
     }
 
     /**

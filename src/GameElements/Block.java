@@ -1,81 +1,81 @@
-import biuoop.DrawSurface;
+package gameelements;
 
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 
+import eventhandlers.HitListener;
+import geometry.Point;
+import geometry.Line;
+import geometry.Rectangle;
+import miscellaneous.Game;
+import miscellaneous.HitNotifier;
+import miscellaneous.Sprite;
+import movement.Collidable;
+import movement.Velocity;
+import gameelements.Ball;
+import biuoop.DrawSurface;
 
 /**
  * The type Block.
  */
-public class Block implements Collidable, Sprite {
-    private Point upLeft;
-    private Point upRight;
-    private Point lowLeft;
-    private Point lowRight;
+public class Block implements Collidable, Sprite, HitNotifier {
+    private Rectangle blockShape;
+    private Color color;
+    private int hits;
+    private List<HitListener> hitListeners;
     private Line upLine;
     private Line lowLine;
     private Line leftLine;
     private Line rightLine;
-    private Rectangle blockShape;
-    private Color color;
 
     /**
      * Instantiates a new Block.
      *
-     * @param rect the rect
+     * @param rect      the rect
+     * @param hitsParam number of hits to remove the block
      */
-    public Block(Rectangle rect) {
-        upLeft = rect.getUpperLeft();
-        upRight = rect.getUpperRight();
-        lowLeft = rect.getLowerLeft();
-        lowRight = rect.getLowerRight();
+    public Block(Rectangle rect, Color col, int hitsParam) {
+        Point upLeft = rect.getUpperLeft();
+        Point upRight = rect.getUpperRight();
+        Point lowLeft = rect.getLowerLeft();
+        Point lowRight = rect.getLowerRight();
         upLine = new Line(upLeft, upRight);
         lowLine = new Line(lowLeft, lowRight);
         leftLine = new Line(upLeft, lowLeft);
         rightLine = new Line(upRight, lowRight);
         blockShape = rect;
-        color = Color.BLUE;
+        color = col;
+        hits = hitsParam;
+        hitListeners = new ArrayList<HitListener>();
     }
 
     /**
      * Instantiates a new Block.
      *
-     * @param x      the x
-     * @param y      the y
-     * @param width  the width
-     * @param height the height
+     * @param x         the x
+     * @param y         the y
+     * @param width     the width
+     * @param height    the height
+     * @param col       the color
+     * @param hitsParam number of hits to remove the block
      */
     public Block(double x, double y, double width,
-                 double height) {
+                 double height, Color col, int hitsParam) {
         blockShape = new Rectangle(new Point(x, y), width, height);
-        upLeft = blockShape.getUpperLeft();
-        upRight = blockShape.getUpperRight();
-        lowLeft = blockShape.getLowerLeft();
-        lowRight = blockShape.getLowerRight();
+        Point upLeft = blockShape.getUpperLeft();
+        Point upRight = blockShape.getUpperRight();
+        Point lowLeft = blockShape.getLowerLeft();
+        Point lowRight = blockShape.getLowerRight();
         upLine = new Line(upLeft, upRight);
         lowLine = new Line(lowLeft, lowRight);
         leftLine = new Line(upLeft, lowLeft);
         rightLine = new Line(upRight, lowRight);
-        color = Color.BLUE;
+        color = col;
+        hits = hitsParam;
+        hitListeners = new ArrayList<HitListener>();
     }
 
-    /**
-     * Instantiates a new Block.
-     *
-     * @param rect       the rect
-     * @param blockColor the block color
-     */
-    public Block(Rectangle rect, Color blockColor) {
-        upLeft = rect.getUpperLeft();
-        upRight = rect.getUpperRight();
-        lowLeft = rect.getLowerLeft();
-        lowRight = rect.getLowerRight();
-        upLine = new Line(upLeft, upRight);
-        lowLine = new Line(lowLeft, lowRight);
-        leftLine = new Line(upLeft, lowLeft);
-        rightLine = new Line(upRight, lowRight);
-        blockShape = rect;
-        color = blockColor;
-    }
     /**
      *
      * @return block shape.
@@ -85,27 +85,43 @@ public class Block implements Collidable, Sprite {
     }
 
     /**
+     * this method returns the block's color.
+     *
+     * @return the block's color.
+     */
+    public Color getColor() {
+        return color;
+    }
+
+    /**
      *
      * @param collisionPoint for the collision point
      * @param currentVelocity for the speed
      * @return Velocity after hit.
      */
-    public Velocity hit(Point collisionPoint, Velocity currentVelocity) {
+    public Velocity hit(Ball hitter, Point collisionPoint, Velocity currentVelocity) {
+        Velocity newVelocity;
         Line intersectionWithBlockLine = new Line(collisionPoint, collisionPoint);
         if (intersectionWithBlockLine.isIntersecting(upLine) && intersectionWithBlockLine.isIntersecting(leftLine)
          || intersectionWithBlockLine.isIntersecting(upLine) && intersectionWithBlockLine.isIntersecting(rightLine)
          || intersectionWithBlockLine.isIntersecting(lowLine) && intersectionWithBlockLine.isIntersecting(leftLine)
          || intersectionWithBlockLine.isIntersecting(lowLine) && intersectionWithBlockLine.isIntersecting(rightLine)) {
-           return new Velocity(-currentVelocity.getHorizontalSpeed(), -currentVelocity.getVerticalSpeed());
+           newVelocity = new Velocity(-currentVelocity.getHorizontalSpeed(), -currentVelocity.getVerticalSpeed());
         } else if (intersectionWithBlockLine.isIntersecting(upLine)) {
-           return new Velocity(currentVelocity.getHorizontalSpeed(), -currentVelocity.getVerticalSpeed());
+           newVelocity = new Velocity(currentVelocity.getHorizontalSpeed(), -currentVelocity.getVerticalSpeed());
         } else if (intersectionWithBlockLine.isIntersecting(lowLine)) {
-           return new Velocity(currentVelocity.getHorizontalSpeed(), -currentVelocity.getVerticalSpeed());
+           newVelocity = new Velocity(currentVelocity.getHorizontalSpeed(), -currentVelocity.getVerticalSpeed());
         } else if (intersectionWithBlockLine.isIntersecting(leftLine)) {
-           return new Velocity(-currentVelocity.getHorizontalSpeed(), currentVelocity.getVerticalSpeed());
+           newVelocity = new Velocity(-currentVelocity.getHorizontalSpeed(), currentVelocity.getVerticalSpeed());
         } else {
-           return new Velocity(-currentVelocity.getHorizontalSpeed(), currentVelocity.getVerticalSpeed());
+           newVelocity = new Velocity(-currentVelocity.getHorizontalSpeed(), currentVelocity.getVerticalSpeed());
         }
+        if (hits > 0) {
+            hits--;
+        }
+        notifyHit(hitter);
+
+        return newVelocity;
     }
 
     /**
@@ -128,6 +144,15 @@ public class Block implements Collidable, Sprite {
     }
 
     /**
+     * Gets hits.
+     *
+     * @return the hits
+     */
+    public int getHits() {
+        return hits;
+    }
+
+    /**
      * timePassed.
      */
     public void timePassed() {
@@ -142,5 +167,43 @@ public class Block implements Collidable, Sprite {
     public void addToGame(Game game) {
         game.addCollidable(this);
         game.addSprite(this);
+    }
+
+    /**
+     * Remove from game.
+     *
+     * @param game the game
+     */
+    public void removeFromGame(Game game) {
+        game.removeCollidable(this);
+        game.removeSprite(this);
+    }
+
+    /**
+     * @param hitter the hitter.
+     */
+    private void notifyHit(Ball hitter) {
+        // Make a copy of the hitListeners before iterating over them.
+        List<HitListener> listeners = new ArrayList<HitListener>(hitListeners);
+        // Notify all listeners about a hit event:
+        for (HitListener hl : listeners) {
+            hl.hitEvent(this, hitter);
+        }
+    }
+
+    /**
+     * this method adds a given hit listener to the block's hit listeners list.
+     * @param hl the given hit listener.
+     */
+    public void addHitListener(HitListener hl) {
+        hitListeners.add(hl);
+    }
+    /**
+     * this method removes a given hit listener
+     * from the block's hit listeners list.
+     * @param hl the given hit listener.
+     */
+    public void removeHitListener(HitListener hl) {
+        hitListeners.remove(hl);
     }
 }

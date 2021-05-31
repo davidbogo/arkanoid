@@ -1,22 +1,22 @@
+package geometry;
+
 /**
  * The type Point.
  */
 public class Point {
     private double x;
     private double y;
-    private double distance;
 
     /**
      * Instantiates a new Point.
      *
-     * @param x1 the x 1
-     * @param y1 the y 1
+     * @param xParam the x
+     * @param yParam the y
      */
 // constructor
-    public Point(double x1, double y1) {
-        x = x1;
-        y = y1;
-        distance = 0;
+    public Point(double xParam, double yParam) {
+        x = xParam;
+        y = yParam;
     }
 
     /**
@@ -27,10 +27,9 @@ public class Point {
      */
 // distance -- return the distance of this point to the other point
     public double distance(Point other) {
-       double distanceS =  (other.getX() - getX()) * (other.getX() - getX())
-               + (other.getY() - getY()) * (other.getY() - getY());
-       distance = Math.sqrt(distanceS);
-        return distance;
+       double distanceS = (other.getX() - getX()) * (other.getX() - getX()) +
+                          (other.getY() - getY()) * (other.getY() - getY());
+       return Math.sqrt(distanceS);
     }
 
     /**
@@ -63,7 +62,6 @@ public class Point {
      * @return the y
      */
     public double getY() {
-
         return y;
     }
 }

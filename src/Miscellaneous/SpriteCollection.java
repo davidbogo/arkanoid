@@ -1,10 +1,12 @@
+package miscellaneous;
+
 import biuoop.DrawSurface;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The type Sprite collection.
+ * The type Miscellaneous.Sprite collection.
  */
 public class SpriteCollection {
     private List<Sprite> spriteList;
@@ -46,5 +48,13 @@ public class SpriteCollection {
         for (int i = 0; i < spriteList.size(); i++) {
             spriteList.get(i).drawOn(d);
         }
+    }
+
+    /**
+     * this method removes a sprite object from collection.
+     * @param s the given sprite object.
+     */
+    public void removeSprite(Sprite s) {
+        spriteList.remove(s);
     }
 }

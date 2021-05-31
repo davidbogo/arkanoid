@@ -1,3 +1,7 @@
+package geometry;
+
+import geometry.Point;
+import geometry.Line;
 import java.util.ArrayList;
 
 /**
@@ -14,26 +18,43 @@ public class Rectangle {
     /**
      * Instantiates a new Rectangle.
      *
-     * @param upperLeft1 the upper left 1
-     * @param width1     the width 1
-     * @param height1    the height 1
+     * @param upLeft     the upper left
+     * @param wdth       the width
+     * @param hght       the height
      */
 // Create a new rectangle with location and width/height.
-    public Rectangle(Point upperLeft1, double width1, double height1) {
-        width = width1;
-        height = height1;
-        upperLeft = upperLeft1;
+    public Rectangle(Point upLeft, double wdth, double hght) {
+        width = wdth;
+        height = hght;
+        upperLeft = upLeft;
         lowerRight = new Point(upperLeft.getX() + width, upperLeft.getY() + height);
         lowerLeft = new Point(upperLeft.getX(), lowerRight.getY());
         upperRight = new Point(lowerRight.getX(), upperLeft.getY());
     }
 
     /**
-     * Intersection points java . util . list.
+     * Instantiates a new Rectangle.
      *
-     * @param line the line
-     * @return the java . util . list
+     * @param x         the left x
+     * @param y         the top y
+     * @param wdth      the width
+     * @param hght      the height
      */
+    public Rectangle(double x, double y, double wdth, double hght) {
+        width = wdth;
+        height = hght;
+        upperLeft = new Point(x, y);
+        lowerRight = new Point(upperLeft.getX() + width, upperLeft.getY() + height);
+        lowerLeft = new Point(upperLeft.getX(), lowerRight.getY());
+        upperRight = new Point(lowerRight.getX(), upperLeft.getY());
+    }
+
+        /**
+         * Intersection points java . util . list.
+         *
+         * @param line the line
+         * @return the java . util . list
+         */
 // Return a (possibly empty) List of intersection points
     // with the specified line.
     public java.util.List<Point> intersectionPoints(Line line) {
@@ -87,7 +108,7 @@ public class Rectangle {
      */
 // Returns the upper-left point of the rectangle.
     public Point getUpperLeft() {
-        return upperLeft;
+        return new Point(upperLeft.getX(), upperLeft.getY());
     }
 
     /**
@@ -96,7 +117,7 @@ public class Rectangle {
      * @return the lower right
      */
     public Point getLowerRight() {
-        return lowerRight;
+        return new Point(lowerRight.getX(), lowerRight.getY());
     }
 
     /**
@@ -105,7 +126,7 @@ public class Rectangle {
      * @return the upper right
      */
     public Point getUpperRight() {
-        return upperRight;
+        return new Point(upperRight.getX(), upperRight.getY());
     }
 
     /**
@@ -114,7 +135,7 @@ public class Rectangle {
      * @return the lower left
      */
     public Point getLowerLeft() {
-        return lowerLeft;
+        return new Point(lowerLeft.getX(), lowerLeft.getY());
     }
 
     /**
