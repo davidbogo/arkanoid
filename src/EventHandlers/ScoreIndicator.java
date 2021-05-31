@@ -35,7 +35,7 @@ public class ScoreIndicator implements Sprite {
         surface.drawText((int) (rectangle.getUpperLeft().getX()
                         + rectangle.getWidth() / 2 - 20),
                           (int) (rectangle.getUpperLeft().getY()
-                        + rectangle.getHeight() / 2 + 5),
+                        + rectangle.getHeight() / 2 + 8),
                        "Score: "
                         + Integer.toString(score.getValue()), 13);
     }
