@@ -2,6 +2,7 @@ package miscellaneous;
 import gameelements.Ball;
 import geometry.Line;
 import geometry.Point;
+import geometry.Rectangle;
 import movement.Collidable;
 import movement.CollisionInfo;
 
@@ -80,8 +81,28 @@ public class GameEnvironment {
             return;
         }
         for (int i = 0; i < collidableList.size(); i++) {
-            if (collidableList.get(i).getCollisionRectangle().isContainPoint(ball.getCenter())) {
-                ball.setCenter(350 + random.nextInt(100), 560);
+            Rectangle collisionRec = collidableList.get(i).getCollisionRectangle();
+            if (collisionRec.isContainPoint(ball.getCenter())) {
+                boolean needToRandomize = ball.registerStuckCondition();
+                if (needToRandomize) {
+                    ball.setCenter(350 + random.nextInt(100), 560);
+                    if (ball.getVelocity().getDy() > 0) {
+                        // We must make sure the ball is going up and not down after the
+                        // randomization
+                        ball.setVelocity(ball.getVelocity().getDx(), -ball.getVelocity().getDy());
+                    }
+                } else {
+                    // We will reverse the ball's direction and move it along the new trajectory
+                    // outside the collidable object it's stuck in
+                    ball.setVelocity(-ball.getVelocity().getDx(), -ball.getVelocity().getDy());
+                    Point newCenter = new Point(ball.getCenter().getX(), ball.getCenter().getY());
+                    do {
+                        newCenter = new Point(
+                                newCenter.getX() + ball.getVelocity().getDx(),
+                                newCenter.getY() + ball.getVelocity().getDy());
+                    } while (collisionRec.isContainPoint(newCenter));
+                    ball.setCenter(newCenter.getX(), newCenter.getY());
+                }
             }
         }
     }

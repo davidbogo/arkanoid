@@ -21,6 +21,8 @@ public class Ball implements Sprite {
     private Color color;
     private Velocity velocity;
     private GameEnvironment gameEnvironment;
+    private long lastStuckTime;
+    private long beforeLastStuckTime;
 
     /**
      * construct bounded ball from two coordinates, radius and color.
@@ -37,6 +39,8 @@ public class Ball implements Sprite {
         color = col;
         velocity = new Velocity(0, 0);
         gameEnvironment = gameEnv;
+        lastStuckTime = 0;
+        beforeLastStuckTime = 0;
     }
 
     /**
@@ -202,5 +206,40 @@ public class Ball implements Sprite {
      */
     public void removeFromGame(Game game) {
         game.removeSprite(this);
+    }
+
+    /**
+     * This method registers the time the ball got stuck and decides whether we can try to unstuck it by sending it
+     * back from the current location to where it cam from or need to randomly move it to a new location.
+     *
+     * @return true if the ball needs to be moved to a new randomized location
+     */
+    public boolean registerStuckCondition() {
+        boolean needToRandomize = false;
+        long curTime = System.currentTimeMillis();
+        if (beforeLastStuckTime != 0) {
+            if (curTime - beforeLastStuckTime < 1000) {
+                // This is the third time in less than a second that the ball got stuck.
+                // We'll request the caller to move it to a new randomized location
+                beforeLastStuckTime = 0;
+                lastStuckTime = 0;
+                needToRandomize = true;
+            } else {
+                beforeLastStuckTime = lastStuckTime;
+                lastStuckTime = curTime;
+            }
+        } else if (lastStuckTime != 0) {
+            if (curTime - lastStuckTime < 1000) {
+                // This is the second time in less than a second that the ball got stuck.
+                // We still treat this situation as recoverable
+                beforeLastStuckTime = lastStuckTime;
+            } else {
+                beforeLastStuckTime = 0;
+            }
+            lastStuckTime = curTime;
+        } else {
+            lastStuckTime = curTime;
+        }
+        return needToRandomize;
     }
 }
