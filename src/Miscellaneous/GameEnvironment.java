@@ -11,77 +11,89 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * The type Game environment.
+ * The type Miscellaneous.Game environment.
  */
 public class GameEnvironment {
-    private java.util.List<Collidable> collidables;
+    private List<Collidable> collidableList;
 
     /**
-     * Instantiates a new Game environment.
+     * construct a game environment from a list of collidables.
      */
     public GameEnvironment() {
-        collidables = new ArrayList<Collidable>();
+        this.collidableList = new ArrayList<Collidable>();
     }
 
     /**
-     * Add collidable.
+     * this method adds a given collidable object to the collection.
      *
-     * @param c the c
+     * @param c the given collidable object.
      */
-// add the given collidable to the environment.
     public void addCollidable(Collidable c) {
-        collidables.add(c);
+        this.collidableList.add(c);
     }
 
     /**
-     * Gets closest collision.
+     * this method gets a trajectory line and
+     * returns the closest collision information
+     * (collision point & collision object).
+     * if there is no collision, returns null.
      *
-     * @param trajectory the trajectory
-     * @return the closest collision
+     * @param trajectory the given line.
+     * @return collision information, null if there isn't any.
      */
     public CollisionInfo getClosestCollision(Line trajectory) {
-        java.util.List<Point> collisions = new ArrayList<Point>();
-        java.util.List<Collidable> collideObjects = new ArrayList<Collidable>();
-        java.util.List<Point> intersections;
-        for (int i = 0; i < collidables.size(); i++) {
-            intersections = collidables.get(i).getCollisionRectangle().intersectionPoints(trajectory);
-            if (intersections != null) {
-                if (intersections.size() != 0) {
-                    for (int j = 0; j < intersections.size(); j++) {
-                        collisions.add(intersections.get(j));
-                        collideObjects.add(collidables.get(i));
-                    }
+        if (this.collidableList.isEmpty()) {
+            return null;
+        }
+        int i = 0;
+        while (trajectory.closestIntersectionToStartOfLine(
+                this.collidableList.get(i).getCollisionRectangle()) == null
+                && i < this.collidableList.size() - 1) {
+            i++;
+        }
+        Point closest = trajectory.closestIntersectionToStartOfLine(
+                this.collidableList.get(i).getCollisionRectangle());
+        int collisionIndex = i;
+        for (int j = i; j < this.collidableList.size(); ++j) {
+            if (trajectory.closestIntersectionToStartOfLine(
+                    this.collidableList.get(j).getCollisionRectangle()) != null) {
+                if (closest.distance(trajectory.start())
+                        > trajectory.closestIntersectionToStartOfLine(
+                        this.collidableList.get(j).getCollisionRectangle()).
+                        distance(trajectory.start())) {
+                    closest = trajectory.closestIntersectionToStartOfLine(
+                            this.collidableList.get(j).getCollisionRectangle());
+                    collisionIndex = j;
                 }
             }
         }
-        if (collisions.isEmpty()) {
-            return null;
-        }
-        Point closestCollision = collisions.get(0);
-        Collidable closestCollideObject = collideObjects.get(0);
-        for (int i = 1; i < collisions.size(); i++) {
-            if (trajectory.start().distance(collisions.get(i)) < trajectory.start().distance(closestCollision)) {
-                closestCollision = collisions.get(i);
-                closestCollideObject = collideObjects.get(i);
-            }
-        }
-        return new CollisionInfo(closestCollision, closestCollideObject);
+        return new CollisionInfo(closest,
+                this.collidableList.get(collisionIndex));
     }
 
     /**
-     * Gets collidables.
+     * this method gets a ball and checks if it got stuck in
+     * one of the collidable objects. if so, resets it's location
+     * to the bottom of the screen.
      *
-     * @return the collidables
+     * @param ball the given ball.
      */
-    public List<Collidable> getCollidables() {
-        return collidables;
+    public void stuckHandel(Ball ball) {
+        Random random = new Random();
+        if (this.collidableList.isEmpty()) {
+            return;
+        }
+        for (int i = 0; i < this.collidableList.size(); i++) {
+            if (this.collidableList.get(i).getCollisionRectangle().isContainPoint(ball.getCenter())) {
+                ball.setCenter(350 + random.nextInt(100), 560);
+            }
+        }
     }
-
     /**
      * this method removes a given collidable object from the collection.
      * @param c the given collidable object.
      */
     public void removeCollidable(Collidable c) {
-        this.collidables.remove(c);
+        this.collidableList.remove(c);
     }
 }

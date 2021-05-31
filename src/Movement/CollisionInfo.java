@@ -10,30 +10,33 @@ public class CollisionInfo {
     private Collidable collisionObject;
 
     /**
-     * Instantiates a new Collision info.
+     * construct a collisionInfo object from
+     * collision point and collision object.
      *
-     * @param colPoint  the col point
-     * @param colObject the col object
+     * @param collisionPoint  the collision point.
+     * @param collisionObject the collision object.
      */
-    public CollisionInfo(Point colPoint, Collidable colObject) {
-        collisionPoint = colPoint;
-        collisionObject = colObject;
+    public CollisionInfo(Point collisionPoint, Collidable collisionObject) {
+        this.collisionPoint = collisionPoint;
+        this.collisionObject = collisionObject;
+    }
+    // the point at which the collision occurs.
+
+    /**
+     * this method returns the collision point from this collisionInfo.
+     *
+     * @return the collision point from this collisionInfo.
+     */
+    public Point collisionPoint() {
+        return this.collisionPoint;
     }
 
     /**
-     * Collision point point.
+     * this method returns the collision object from this collisionInfo.
      *
-     * @return the point
-     */
-    public Point collisionPoint() {
-        return collisionPoint;
-    }
-    /**
-     * Collision object collidable.
-     *
-     * @return the collidable
+     * @return the collision object from this collisionInfo.
      */
     public Collidable collisionObject() {
-        return collisionObject;
+        return this.collisionObject;
     }
 }

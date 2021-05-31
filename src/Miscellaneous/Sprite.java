@@ -2,10 +2,12 @@ package miscellaneous;
 
 import biuoop.DrawSurface;
 
+
 /**
  * The interface Miscellaneous.Sprite.
  */
 public interface Sprite {
+
     /**
      * Draw on.
      *

@@ -1,68 +1,28 @@
 package movement;
 
 import geometry.Point;
-import geometry.Line;
-import movement.CollisionInfo;
-import movement.Collidable;
 
 /**
- * The type Movement.Velocity
+ * this class represents a Movement.Velocity by specifying
+ * the change in position on the `x` and the `y` axes.
  */
-// Velocity specifies the change in position on the `x` and the `y` axes.
 public class Velocity {
-    private double horizontalSpeed;
-    private double verticalSpeed;
-
+    private double dx;
+    private double dy;
     /**
-     * Instantiates a new Velocity.
-     *
-     * @param dx the dx speed
-     * @param dy the dy speed
+     * construct Movement.Velocity object from Cartesian representation.
+     * @param dx the change in position on the x axis.
+     * @param dy the change in position on the y axis.
      */
-// constructor
     public Velocity(double dx, double dy) {
-        horizontalSpeed = dx;
-        verticalSpeed = dy;
+        this.dx = dx;
+        this.dy = dy;
     }
-
     /**
-     * Gets horizontal speed.
-     *
-     * @return the horizontal speed
-     */
-    public double getHorizontalSpeed() {
-        return horizontalSpeed;
-    }
-
-    /**
-     * Gets vertical speed.
-     *
-     * @return the vertical speed
-     */
-    public double getVerticalSpeed() {
-        return verticalSpeed;
-    }
-
-    /**
-     * Apply to point point.
-     *
-     * @param p the point
-     * @return the new point location
-     */
-// Take a point with position (x,y) and return a new point
-    // with position (x+dx, y+dy)
-    public Point applyToPoint(Point p) {
-        double newX = p.getX() + horizontalSpeed;
-        double newY = p.getY() + verticalSpeed;
-        return new Point(newX, newY);
-    }
-
-    /**
-     * From angle and speed velocity.
-     *
-     * @param angle the angle
-     * @param speed the speed
-     * @return the velocity in x and y speed
+     * "constructor" - construct Movement.Velocity object from Polar representation.
+     * @param angle the angle of the vector.
+     * @param speed the length of the vector.
+     * @return Movement.Velocity object.
      */
     public static Velocity fromAngleAndSpeed(double angle, double speed) {
         double angleRad = Math.toRadians(angle - 90.0);
@@ -70,13 +30,37 @@ public class Velocity {
         double dy = Math.sin(angleRad) * speed;
         return new Velocity(dx, dy);
     }
-
     /**
-     * Gets speed.
-     *
-     * @return the speed
+     * this method returns the velocity's change in position on the x axis.
+     * @return the velocity's change in position on the x axis.
+     */
+    public double getDx() {
+        return this.dx;
+    }
+    /**
+     * this method returns the velocity's change in position on the y axis.
+     * @return the velocity's change in position on the y axis.
+     */
+    public double getDy() {
+        return this.dy;
+    }
+    /**
+     * this method returns the "speed" (length) from the
+     * polar representation of this velocity.
+     * @return the "speed" (length) from the
+     * polar representation of this velocity.
      */
     public double getSpeed() {
-        return Math.sqrt(horizontalSpeed * horizontalSpeed + verticalSpeed * verticalSpeed);
+        return Math.sqrt(this.dx * this.dx + this.dy * this.dy);
+    }
+    /**
+     * this method moves a point in two dimensions.
+     * @param p a point with position (x,y).
+     * @return a new point with position (x+dx, y+dy).
+     */
+    public Point applyToPoint(Point p) {
+        double newX = p.getX() + this.dx;
+        double newY = p.getY() + this.dy;
+        return new Point(newX, newY);
     }
 }

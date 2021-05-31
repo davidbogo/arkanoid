@@ -1,85 +1,121 @@
 package geometry;
 
-import geometry.Point;
-import geometry.Line;
+import java.awt.Color;
 import java.util.ArrayList;
+import java.util.List;
+
+import biuoop.DrawSurface;
 
 /**
- * The type Rectangle.
+ * The type Geometry.Rectangle.
  */
 public class Rectangle {
+
+    private Point lowerRight;
+    private Point upperLeft;
     private double width;
     private double height;
-    private Point upperLeft;
-    private Point lowerRight;
-    private Point upperRight;
-    private Point lowerLeft;
+    private Line top;
+    private Line bottom;
+    private Line left;
+    private Line right;
+
+    // Create a new rectangle with location and width/height.
 
     /**
-     * Instantiates a new Rectangle.
+     * construct a rectangle from an upper left point, width and height.
      *
-     * @param upLeft     the upper left
-     * @param wdth       the width
-     * @param hght       the height
+     * @param upperLeft the rectangle upper left point.
+     * @param width     the rectangle's width.
+     * @param height    the rectangle's height.
      */
-// Create a new rectangle with location and width/height.
-    public Rectangle(Point upLeft, double wdth, double hght) {
-        width = wdth;
-        height = hght;
-        upperLeft = upLeft;
-        lowerRight = new Point(upperLeft.getX() + width, upperLeft.getY() + height);
-        lowerLeft = new Point(upperLeft.getX(), lowerRight.getY());
-        upperRight = new Point(lowerRight.getX(), upperLeft.getY());
+    public Rectangle(Point upperLeft, double width, double height) {
+        this.width = width;
+        this.height = height;
+        this.upperLeft = new Point(upperLeft.getX(), upperLeft.getY());
+        this.lowerRight = new Point(upperLeft.getX() + width,
+                upperLeft.getY() + height);
+        this.top = new Line(this.upperLeft.getX(), this.upperLeft.getY(),
+                this.lowerRight.getX(), this.upperLeft.getY());
+        this.bottom = new Line(this.upperLeft.getX(), this.lowerRight.getY(),
+                this.lowerRight.getX(), this.lowerRight.getY());
+        this.left = new Line(this.upperLeft.getX(), this.upperLeft.getY(),
+                this.upperLeft.getX(), this.lowerRight.getY());
+        this.right = new Line(this.lowerRight.getX(), this.upperLeft.getY(),
+                this.lowerRight.getX(), this.lowerRight.getY());
     }
 
     /**
-     * Instantiates a new Rectangle.
+     * Instantiates a new Geometry.Rectangle.
      *
-     * @param x         the left x
-     * @param y         the top y
-     * @param wdth      the width
-     * @param hght      the height
+     * @param x      the x
+     * @param y      the y
+     * @param width  the width
+     * @param height the height
      */
-    public Rectangle(double x, double y, double wdth, double hght) {
-        width = wdth;
-        height = hght;
-        upperLeft = new Point(x, y);
-        lowerRight = new Point(upperLeft.getX() + width, upperLeft.getY() + height);
-        lowerLeft = new Point(upperLeft.getX(), lowerRight.getY());
-        upperRight = new Point(lowerRight.getX(), upperLeft.getY());
+    public Rectangle(double x, double y, double width, double height) {
+        this.width = width;
+        this.height = height;
+        this.upperLeft = new Point(x, y);
+        this.lowerRight = new Point(upperLeft.getX() + width,
+                upperLeft.getY() + height);
+        this.top = new Line(this.upperLeft.getX(), this.upperLeft.getY(),
+                this.lowerRight.getX(), this.upperLeft.getY());
+        this.bottom = new Line(this.upperLeft.getX(), this.lowerRight.getY(),
+                this.lowerRight.getX(), this.lowerRight.getY());
+        this.left = new Line(this.upperLeft.getX(), this.upperLeft.getY(),
+                this.upperLeft.getX(), this.lowerRight.getY());
+        this.right = new Line(this.lowerRight.getX(), this.upperLeft.getY(),
+                this.lowerRight.getX(), this.lowerRight.getY());
     }
 
-        /**
-         * Intersection points java . util . list.
-         *
-         * @param line the line
-         * @return the java . util . list
-         */
+    /**
+     * Instantiates a new Geometry.Rectangle.
+     *
+     * @param upperLeft  the upper left
+     * @param lowerRight the lower right
+     */
+    public Rectangle(Point upperLeft, Point lowerRight) {
+        this.width = lowerRight.getX() - upperLeft.getX();
+        this.height = lowerRight.getY() - upperLeft.getY();
+        this.upperLeft = new Point(upperLeft.getX(), upperLeft.getY());
+        this.lowerRight = new Point(lowerRight.getX(), lowerRight.getY());
+        this.top = new Line(this.upperLeft.getX(), this.upperLeft.getY(),
+                this.lowerRight.getX(), this.upperLeft.getY());
+        this.bottom = new Line(this.upperLeft.getX(), this.lowerRight.getY(),
+                this.lowerRight.getX(), this.lowerRight.getY());
+        this.left = new Line(this.upperLeft.getX(), this.upperLeft.getY(),
+                this.upperLeft.getX(), this.lowerRight.getY());
+        this.right = new Line(this.lowerRight.getX(), this.upperLeft.getY(),
+                this.lowerRight.getX(), this.lowerRight.getY());
+    }
+
+    /**
+     * Intersection points java . util . list.
+     *
+     * @param line the line
+     * @return the java . util . list
+     */
 // Return a (possibly empty) List of intersection points
     // with the specified line.
     public java.util.List<Point> intersectionPoints(Line line) {
-        Line upLine = new Line(getUpperLeft(), getUpperRight());
-        Line downLine = new Line(getLowerLeft(), getLowerRight());
-        Line leftLine = new Line(getUpperLeft(), getLowerLeft());
-        Line rightLine = new Line(getUpperRight(), getLowerRight());
-        java.util.List<Point> intersections = new ArrayList<Point>();
-        if (line.isIntersecting(upLine)) {
-            intersections.add(line.intersectionWith(upLine));
+        List<Point> intrsPoints = new ArrayList<Point>();
+
+        for (int i = 0; i < 4; i++) {
+            if (this.lineList().get(i).isIntersecting(line)) {
+                Line l = this.lineList().get(i);
+                if (i == 0 || i == 2) {
+                    if (l.isBetweenX(l.intersectionWith(line))) {
+                        intrsPoints.add(l.intersectionWith(line));
+                    }
+                } else {
+                    if (l.isBetweenY(l.intersectionWith(line))) {
+                        intrsPoints.add(l.intersectionWith(line));
+                    }
+                }
+            }
         }
-        if (line.isIntersecting(downLine)) {
-            intersections.add(line.intersectionWith(downLine));
-        }
-        if (line.isIntersecting(leftLine)) {
-            intersections.add(line.intersectionWith(leftLine));
-        }
-        if (line.isIntersecting(rightLine)) {
-            intersections.add(line.intersectionWith(rightLine));
-        }
-        if (intersections.isEmpty()) {
-            return null;
-        } else {
-            return intersections;
-        }
+        return intrsPoints;
     }
 
     /**
@@ -89,7 +125,7 @@ public class Rectangle {
      */
 // Return the width and height of the rectangle
     public double getWidth() {
-        return width;
+        return this.width;
     }
 
     /**
@@ -98,17 +134,7 @@ public class Rectangle {
      * @return the height
      */
     public double getHeight() {
-        return height;
-    }
-
-    /**
-     * Gets upper left.
-     *
-     * @return the upper left
-     */
-// Returns the upper-left point of the rectangle.
-    public Point getUpperLeft() {
-        return new Point(upperLeft.getX(), upperLeft.getY());
+        return this.height;
     }
 
     /**
@@ -117,8 +143,20 @@ public class Rectangle {
      * @return the lower right
      */
     public Point getLowerRight() {
-        return new Point(lowerRight.getX(), lowerRight.getY());
+        return this.lowerRight;
     }
+
+
+    /**
+     * Gets upper left.
+     *
+     * @return the upper left
+     */
+// Returns the upper-left point of the rectangle.
+    public Point getUpperLeft() {
+        return this.upperLeft;
+    }
+
 
     /**
      * Gets upper right.
@@ -126,8 +164,10 @@ public class Rectangle {
      * @return the upper right
      */
     public Point getUpperRight() {
-        return new Point(upperRight.getX(), upperRight.getY());
+        return new Point(this.getLowerRight().getX(),
+                this.getUpperLeft().getY());
     }
+
 
     /**
      * Gets lower left.
@@ -135,42 +175,92 @@ public class Rectangle {
      * @return the lower left
      */
     public Point getLowerLeft() {
-        return new Point(lowerLeft.getX(), lowerLeft.getY());
+        return new Point(this.getUpperLeft().getX(),
+                this.getLowerRight().getY());
     }
 
     /**
-     * Gets up line.
+     * this method returns the rectangle's top line.
      *
-     * @return the up line
+     * @return the rectangle's top line.
      */
-    public Line getUpLine() {
-        return new Line(upperLeft, upperRight);
+    public Line getTop() {
+        return this.top;
     }
 
     /**
-     * Gets down line.
+     * this method returns the rectangle's bottom line.
      *
-     * @return the down line
+     * @return the rectangle's bottom line.
      */
-    public Line getDownLine() {
-        return new Line(lowerLeft, lowerRight);
+    public Line getBottom() {
+        return this.bottom;
     }
 
     /**
-     * Gets left line.
+     * this method returns the rectangle's left line.
      *
-     * @return the left line
+     * @return the rectangle's left line.
      */
-    public Line getLeftLine() {
-        return new Line(upperLeft, lowerLeft);
+    public Line getLeft() {
+        return this.left;
     }
 
     /**
-     * Gets right line.
+     * this method returns the rectangle's right line.
      *
-     * @return the right line
+     * @return the rectangle's right line.
      */
-    public Line getRightLine() {
-        return new Line(upperRight, lowerRight);
+    public Line getRight() {
+        return this.right;
+    }
+
+
+    /**
+     * Draw rectangle.
+     *
+     * @param d the d
+     * @param c the c
+     */
+    public void drawRectangle(DrawSurface d, Color c) {
+        d.setColor(Color.RED);
+        int x = (int) this.getUpperLeft().getX();
+        int y = (int) this.getUpperLeft().getY();
+        int wid = (int) this.getWidth();
+        int hei = (int) this.getHeight();
+
+        d.fillRectangle(x, y, wid, hei);
+    }
+
+    /**
+     * This method makes the lines in the list and stores them.
+     *
+     * @return a list of line of the rectangle
+     */
+    public List<Line> lineList() {
+        Line a = new Line(this.getUpperLeft(), this.getUpperRight());
+        Line b = new Line(this.getUpperRight(), this.getLowerRight());
+        Line c = new Line(this.getLowerLeft(), this.getLowerRight());
+        Line d = new Line(this.getUpperLeft(), this.getLowerLeft());
+        List<Line> rectangleLines = new ArrayList<Line>();
+        rectangleLines.add(a);
+        rectangleLines.add(b);
+        rectangleLines.add(c);
+        rectangleLines.add(d);
+
+        return rectangleLines;
+    }
+
+    /**
+     * this method checks if a given point is this rectangle area.
+     *
+     * @param point the given point.
+     * @return true if the point is in the rectangle's area, false otherwise.
+     */
+    public boolean isContainPoint(Point point) {
+        return point.getX() >= this.getUpperLeft().getX()
+                && point.getX() <= this.getUpperRight().getX()
+                && point.getY() >= this.getUpperLeft().getY()
+                && point.getY() <= this.getLowerLeft().getY();
     }
 }

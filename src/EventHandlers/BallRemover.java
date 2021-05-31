@@ -14,12 +14,12 @@ public class BallRemover implements HitListener {
     /**
      * Instantiates a new GameElements.Ball remover.
      *
-     * @param gameParam      the game
-     * @param remBalls       the remaining balls
+     * @param game           the game
+     * @param remainingBalls the remaining balls
      */
-    public BallRemover(Game gameParam, Counter remBalls) {
-        game = gameParam;
-        remainingBalls = remBalls;
+    public BallRemover(Game game, Counter remainingBalls) {
+        this.game = game;
+        this.remainingBalls = remainingBalls;
     }
 
     // Balls that hit the special blocks associated with EventHandlers.BallRemover need to be removed
@@ -31,7 +31,7 @@ public class BallRemover implements HitListener {
      * @param hitter the ball hittind the death block
     */
     public void hitEvent(Block beingHit, Ball hitter) {
-        hitter.removeFromGame(game);
-        remainingBalls.decrease(1);
+        hitter.removeFromGame(this.game);
+        this.remainingBalls.decrease(1);
     }
 }

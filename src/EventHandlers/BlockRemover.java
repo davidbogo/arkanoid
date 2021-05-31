@@ -3,8 +3,6 @@ package eventhandlers;
 import gameelements.Ball;
 import gameelements.Block;
 import miscellaneous.Game;
-import eventhandlers.HitListener;
-import eventhandlers.Counter;
 
 /**
  * The type GameElements.Block remover.
@@ -18,12 +16,12 @@ public class BlockRemover implements HitListener {
     /**
      * Instantiates a new GameElements.Block remover.
      *
-     * @param gameParam      the game
-     * @param remBlocks      the remaining blocks
+     * @param game            the game
+     * @param remainingBlocks the remaining blocks
      */
-    public BlockRemover(Game gameParam, Counter remBlocks) {
-        game = gameParam;
-        remainingBlocks = remBlocks;
+    public BlockRemover(Game game, Counter remainingBlocks) {
+        this.game = game;
+        this.remainingBlocks = remainingBlocks;
     }
 
     // Blocks that are hit should be removed
@@ -36,8 +34,8 @@ public class BlockRemover implements HitListener {
     public void hitEvent(Block beingHit, Ball hitter) {
         if (beingHit.getHits() == 0) {
             beingHit.removeHitListener(this);
-            beingHit.removeFromGame(game);
-            remainingBlocks.decrease(1);
+            beingHit.removeFromGame(this.game);
+            this.remainingBlocks.decrease(1);
         }
     }
 
@@ -47,6 +45,6 @@ public class BlockRemover implements HitListener {
      * @return the remaining blocks
      */
     public Counter getRemainingBlocks() {
-        return remainingBlocks;
+        return this.remainingBlocks;
     }
 }
