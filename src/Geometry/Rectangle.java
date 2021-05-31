@@ -25,158 +25,141 @@ public class Rectangle {
     /**
      * construct a rectangle from an upper left point, width and height.
      *
-     * @param upperLeft the rectangle upper left point.
-     * @param width     the rectangle's width.
-     * @param height    the rectangle's height.
+     * @param upperLeftParam    the rectangle upper left point.
+     * @param widthParam        the rectangle's width.
+     * @param heightParam       the rectangle's height.
      */
-    public Rectangle(Point upperLeft, double width, double height) {
-        this.width = width;
-        this.height = height;
-        this.upperLeft = new Point(upperLeft.getX(), upperLeft.getY());
-        this.lowerRight = new Point(upperLeft.getX() + width,
-                upperLeft.getY() + height);
-        this.top = new Line(this.upperLeft.getX(), this.upperLeft.getY(),
-                this.lowerRight.getX(), this.upperLeft.getY());
-        this.bottom = new Line(this.upperLeft.getX(), this.lowerRight.getY(),
-                this.lowerRight.getX(), this.lowerRight.getY());
-        this.left = new Line(this.upperLeft.getX(), this.upperLeft.getY(),
-                this.upperLeft.getX(), this.lowerRight.getY());
-        this.right = new Line(this.lowerRight.getX(), this.upperLeft.getY(),
-                this.lowerRight.getX(), this.lowerRight.getY());
+    public Rectangle(Point upperLeftParam, double widthParam, double heightParam) {
+        width = widthParam;
+        height = heightParam;
+        upperLeft = new Point(upperLeftParam.getX(), upperLeftParam.getY());
+        lowerRight = new Point(upperLeft.getX() + width, upperLeft.getY() + height);
+        top = new Line(upperLeft.getX(), upperLeft.getY(),
+                lowerRight.getX(), upperLeft.getY());
+        bottom = new Line(upperLeft.getX(), lowerRight.getY(),
+                lowerRight.getX(), lowerRight.getY());
+        left = new Line(upperLeft.getX(), upperLeft.getY(),
+                upperLeft.getX(), lowerRight.getY());
+        right = new Line(lowerRight.getX(), upperLeft.getY(),
+                lowerRight.getX(), lowerRight.getY());
     }
 
     /**
      * Instantiates a new Geometry.Rectangle.
      *
-     * @param x      the x
-     * @param y      the y
-     * @param width  the width
-     * @param height the height
+     * @param x             the x
+     * @param y             the y
+     * @param widthParam    the width
+     * @param heightParam   the height
      */
-    public Rectangle(double x, double y, double width, double height) {
-        this.width = width;
-        this.height = height;
-        this.upperLeft = new Point(x, y);
-        this.lowerRight = new Point(upperLeft.getX() + width,
-                upperLeft.getY() + height);
-        this.top = new Line(this.upperLeft.getX(), this.upperLeft.getY(),
-                this.lowerRight.getX(), this.upperLeft.getY());
-        this.bottom = new Line(this.upperLeft.getX(), this.lowerRight.getY(),
-                this.lowerRight.getX(), this.lowerRight.getY());
-        this.left = new Line(this.upperLeft.getX(), this.upperLeft.getY(),
-                this.upperLeft.getX(), this.lowerRight.getY());
-        this.right = new Line(this.lowerRight.getX(), this.upperLeft.getY(),
-                this.lowerRight.getX(), this.lowerRight.getY());
+    public Rectangle(double x, double y, double widthParam, double heightParam) {
+        width = widthParam;
+        height = heightParam;
+        upperLeft = new Point(x, y);
+        lowerRight = new Point(upperLeft.getX() + width,upperLeft.getY() + height);
+        top = new Line(upperLeft.getX(), upperLeft.getY(), lowerRight.getX(), upperLeft.getY());
+        bottom = new Line(upperLeft.getX(), lowerRight.getY(), lowerRight.getX(), lowerRight.getY());
+        left = new Line(upperLeft.getX(), upperLeft.getY(), upperLeft.getX(), lowerRight.getY());
+        right = new Line(lowerRight.getX(), upperLeft.getY(), lowerRight.getX(), lowerRight.getY());
     }
 
     /**
      * Instantiates a new Geometry.Rectangle.
      *
-     * @param upperLeft  the upper left
-     * @param lowerRight the lower right
+     * @param upperLeftParam  the upper left
+     * @param lowerRightParam the lower right
      */
-    public Rectangle(Point upperLeft, Point lowerRight) {
-        this.width = lowerRight.getX() - upperLeft.getX();
-        this.height = lowerRight.getY() - upperLeft.getY();
-        this.upperLeft = new Point(upperLeft.getX(), upperLeft.getY());
-        this.lowerRight = new Point(lowerRight.getX(), lowerRight.getY());
-        this.top = new Line(this.upperLeft.getX(), this.upperLeft.getY(),
-                this.lowerRight.getX(), this.upperLeft.getY());
-        this.bottom = new Line(this.upperLeft.getX(), this.lowerRight.getY(),
-                this.lowerRight.getX(), this.lowerRight.getY());
-        this.left = new Line(this.upperLeft.getX(), this.upperLeft.getY(),
-                this.upperLeft.getX(), this.lowerRight.getY());
-        this.right = new Line(this.lowerRight.getX(), this.upperLeft.getY(),
-                this.lowerRight.getX(), this.lowerRight.getY());
+    public Rectangle(Point upperLeftParam, Point lowerRightParam) {
+        width = lowerRight.getX() - upperLeft.getX();
+        height = lowerRight.getY() - upperLeft.getY();
+        upperLeft = new Point(upperLeftParam.getX(), upperLeftParam.getY());
+        lowerRight = new Point(lowerRightParam.getX(), lowerRightParam.getY());
+        top = new Line(upperLeft.getX(), upperLeft.getY(), lowerRight.getX(), upperLeft.getY());
+        bottom = new Line(upperLeft.getX(), lowerRight.getY(), lowerRight.getX(), lowerRight.getY());
+        left = new Line(upperLeft.getX(), upperLeft.getY(), upperLeft.getX(), lowerRight.getY());
+        right = new Line(lowerRight.getX(), upperLeft.getY(), lowerRight.getX(), lowerRight.getY());
     }
 
     /**
      * Intersection points java . util . list.
      *
-     * @param line the line
-     * @return the java . util . list
+     * @param line  the line
+     * @return the list (possibly empty) of intersection points with the specified line.
      */
-// Return a (possibly empty) List of intersection points
-    // with the specified line.
     public java.util.List<Point> intersectionPoints(Line line) {
-        List<Point> intrsPoints = new ArrayList<Point>();
-
-        for (int i = 0; i < 4; i++) {
-            if (this.lineList().get(i).isIntersecting(line)) {
-                Line l = this.lineList().get(i);
-                if (i == 0 || i == 2) {
+        List<Point> intersectionPoints = new ArrayList<Point>();
+        List<Line> rectSides = lineList();
+        for (Line l : rectSides) {
+            if (l.isIntersecting(line)) {
+                Point curIntersection = l.intersectionWith(line);
+                if (l.start().getY() == l.end().getY()) {
+                    // top or bottom side of the  rectangle
                     if (l.isBetweenX(l.intersectionWith(line))) {
-                        intrsPoints.add(l.intersectionWith(line));
+                        intersectionPoints.add(curIntersection);
                     }
                 } else {
+                    // left or right side of the rectangle
                     if (l.isBetweenY(l.intersectionWith(line))) {
-                        intrsPoints.add(l.intersectionWith(line));
+                        intersectionPoints.add(curIntersection);
                     }
                 }
             }
         }
-        return intrsPoints;
+        return intersectionPoints;
     }
 
     /**
      * Gets width.
      *
-     * @return the width
+     * @return the width of the rectangle
      */
-// Return the width and height of the rectangle
     public double getWidth() {
-        return this.width;
+        return width;
     }
 
     /**
      * Gets height.
      *
-     * @return the height
+     * @return the height of the rectangle
      */
     public double getHeight() {
-        return this.height;
+        return height;
+    }
+
+    /**
+     * Gets upper left.
+     *
+     * @return the upper left right corner of the rectangle
+     */
+    public Point getUpperLeft() {
+        return upperLeft;
     }
 
     /**
      * Gets lower right.
      *
-     * @return the lower right
+     * @return the lower right corner of the rectangle
      */
     public Point getLowerRight() {
-        return this.lowerRight;
+        return lowerRight;
     }
-
-
-    /**
-     * Gets upper left.
-     *
-     * @return the upper left
-     */
-// Returns the upper-left point of the rectangle.
-    public Point getUpperLeft() {
-        return this.upperLeft;
-    }
-
 
     /**
      * Gets upper right.
      *
-     * @return the upper right
+     * @return the upper right corner of the rectangle
      */
     public Point getUpperRight() {
-        return new Point(this.getLowerRight().getX(),
-                this.getUpperLeft().getY());
+        return new Point(getLowerRight().getX(), getUpperLeft().getY());
     }
-
 
     /**
      * Gets lower left.
      *
-     * @return the lower left
+     * @return the lower left corner of the rectangle
      */
     public Point getLowerLeft() {
-        return new Point(this.getUpperLeft().getX(),
-                this.getLowerRight().getY());
+        return new Point(getUpperLeft().getX(), getLowerRight().getY());
     }
 
     /**
@@ -185,7 +168,7 @@ public class Rectangle {
      * @return the rectangle's top line.
      */
     public Line getTop() {
-        return this.top;
+        return top;
     }
 
     /**
@@ -194,7 +177,7 @@ public class Rectangle {
      * @return the rectangle's bottom line.
      */
     public Line getBottom() {
-        return this.bottom;
+        return bottom;
     }
 
     /**
@@ -203,7 +186,7 @@ public class Rectangle {
      * @return the rectangle's left line.
      */
     public Line getLeft() {
-        return this.left;
+        return left;
     }
 
     /**
@@ -212,22 +195,21 @@ public class Rectangle {
      * @return the rectangle's right line.
      */
     public Line getRight() {
-        return this.right;
+        return right;
     }
-
 
     /**
      * Draw rectangle.
      *
-     * @param d the d
-     * @param c the c
+     * @param d         surface tor deaw on
+     * @param c         the colr
      */
     public void drawRectangle(DrawSurface d, Color c) {
         d.setColor(Color.RED);
-        int x = (int) this.getUpperLeft().getX();
-        int y = (int) this.getUpperLeft().getY();
-        int wid = (int) this.getWidth();
-        int hei = (int) this.getHeight();
+        int x = (int) getUpperLeft().getX();
+        int y = (int) getUpperLeft().getY();
+        int wid = (int) getWidth();
+        int hei = (int) getHeight();
 
         d.fillRectangle(x, y, wid, hei);
     }
@@ -235,19 +217,14 @@ public class Rectangle {
     /**
      * This method makes the lines in the list and stores them.
      *
-     * @return a list of line of the rectangle
+     * @return list containing all sides of the rectangle
      */
     public List<Line> lineList() {
-        Line a = new Line(this.getUpperLeft(), this.getUpperRight());
-        Line b = new Line(this.getUpperRight(), this.getLowerRight());
-        Line c = new Line(this.getLowerLeft(), this.getLowerRight());
-        Line d = new Line(this.getUpperLeft(), this.getLowerLeft());
         List<Line> rectangleLines = new ArrayList<Line>();
-        rectangleLines.add(a);
-        rectangleLines.add(b);
-        rectangleLines.add(c);
-        rectangleLines.add(d);
-
+        rectangleLines.add(new Line(getUpperLeft(), getUpperRight()));
+        rectangleLines.add(new Line(getUpperRight(), getLowerRight()));
+        rectangleLines.add(new Line(getLowerLeft(), getLowerRight()));
+        rectangleLines.add(new Line(getUpperLeft(), getLowerLeft()));
         return rectangleLines;
     }
 
@@ -258,9 +235,7 @@ public class Rectangle {
      * @return true if the point is in the rectangle's area, false otherwise.
      */
     public boolean isContainPoint(Point point) {
-        return point.getX() >= this.getUpperLeft().getX()
-                && point.getX() <= this.getUpperRight().getX()
-                && point.getY() >= this.getUpperLeft().getY()
-                && point.getY() <= this.getLowerLeft().getY();
+        return (point.getX() >= getUpperLeft().getX()) && (point.getX() <= getUpperRight().getX()) &&
+               (point.getY() >= getUpperLeft().getY() && point.getY() <= getLowerLeft().getY());
     }
 }

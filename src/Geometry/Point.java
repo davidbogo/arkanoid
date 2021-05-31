@@ -10,37 +10,35 @@ public class Point {
     /**
      * Instantiates a new Geometry.Point.
      *
-     * @param x the x
-     * @param y the y
+     * @param xParam    the x
+     * @param yParam    the y
      */
 // constructor
-    public Point(double x, double y) {
-        this.x = x;
-        this.y = y;
+    public Point(double xParam, double yParam) {
+        x = xParam;
+        y = yParam;
     }
 
     /**
      * Distance double.
      *
-     * @param other the other
-     * @return the double
+     * @param other     the other point
+     * @return the distance to the other point
      */
-// distance -- return the distance of this point to the other point
     public double distance(Point other) {
-        double deltaX = this.x - other.x;
-        double deltaY = this.y - other.y;
+        double deltaX = x - other.x;
+        double deltaY = y - other.y;
         return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
     }
 
     /**
      * Equals boolean.
      *
-     * @param other the other
-     * @return the boolean
+     * @param other     the other point
+     * @return true is the points are equal, false otherwise
      */
-// equals -- return true is the points are equal, false otherwise
     public boolean equals(Point other) {
-        if ((other.x == this.x) && (other.y == this.x)) {
+        if ((other.x == x) && (other.y == x)) {
             return true;
         }
         return false;
@@ -49,19 +47,18 @@ public class Point {
     /**
      * Gets x.
      *
-     * @return the x
+     * @return the x coordinate of the point
      */
-// Return the x and y values of this point
     public double getX() {
-        return this.x;
+        return x;
     }
 
     /**
      * Gets y.
      *
-     * @return the y
+     * @return the y coordinate of the point
      */
     public double getY() {
-        return this.y;
+        return y;
     }
 }
