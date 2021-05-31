@@ -15,7 +15,7 @@ public class SpriteCollection {
      * Instantiates a new Miscellaneous.Sprite collection.
      */
     public SpriteCollection() {
-        this.spriteList = new ArrayList<Sprite>();
+        spriteList = new ArrayList<Sprite>();
     }
 
     /**
@@ -24,7 +24,7 @@ public class SpriteCollection {
      * @param s the s
      */
     public void addSprite(Sprite s) {
-        this.spriteList.add(s);
+        spriteList.add(s);
     }
 
     /**
@@ -32,7 +32,7 @@ public class SpriteCollection {
      */
     public void notifyAllTimePassed() {
         for (int i = 0; i < spriteList.size(); ++i) {
-            this.spriteList.get(i).timePassed();
+            spriteList.get(i).timePassed();
         }
     }
 
@@ -43,7 +43,7 @@ public class SpriteCollection {
      */
     public void drawAllOn(DrawSurface d) {
         for (int i = 0; i < spriteList.size(); ++i) {
-            this.spriteList.get(i).drawOn(d);
+            spriteList.get(i).drawOn(d);
         }
     }
 
@@ -52,6 +52,6 @@ public class SpriteCollection {
      * @param s the given sprite object.
      */
     public void removeSprite(Sprite s) {
-        this.spriteList.remove(s);
+        spriteList.remove(s);
     }
 }

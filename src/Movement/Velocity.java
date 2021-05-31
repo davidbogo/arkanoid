@@ -11,17 +11,18 @@ public class Velocity {
     private double dy;
     /**
      * construct Movement.Velocity object from Cartesian representation.
-     * @param dx the change in position on the x axis.
-     * @param dy the change in position on the y axis.
+     * @param dxParam   the change in position on the x axis.
+     * @param dyParam   the change in position on the y axis.
      */
-    public Velocity(double dx, double dy) {
-        this.dx = dx;
-        this.dy = dy;
+    public Velocity(double dxParam, double dyParam) {
+        dx = dxParam;
+        dy = dyParam;
     }
+
     /**
      * "constructor" - construct Movement.Velocity object from Polar representation.
-     * @param angle the angle of the vector.
-     * @param speed the length of the vector.
+     * @param angle     the angle of the vector.
+     * @param speed     the length of the vector.
      * @return Movement.Velocity object.
      */
     public static Velocity fromAngleAndSpeed(double angle, double speed) {
@@ -30,20 +31,23 @@ public class Velocity {
         double dy = Math.sin(angleRad) * speed;
         return new Velocity(dx, dy);
     }
+
     /**
      * this method returns the velocity's change in position on the x axis.
      * @return the velocity's change in position on the x axis.
      */
     public double getDx() {
-        return this.dx;
+        return dx;
     }
+
     /**
      * this method returns the velocity's change in position on the y axis.
      * @return the velocity's change in position on the y axis.
      */
     public double getDy() {
-        return this.dy;
+        return dy;
     }
+
     /**
      * this method returns the "speed" (length) from the
      * polar representation of this velocity.
@@ -51,16 +55,17 @@ public class Velocity {
      * polar representation of this velocity.
      */
     public double getSpeed() {
-        return Math.sqrt(this.dx * this.dx + this.dy * this.dy);
+        return Math.sqrt(dx * dx + dy * dy);
     }
+
     /**
      * this method moves a point in two dimensions.
-     * @param p a point with position (x,y).
-     * @return a new point with position (x+dx, y+dy).
+     * @param p     a point with position (x,y).
+     * @return      the new point with position (x+dx, y+dy).
      */
     public Point applyToPoint(Point p) {
-        double newX = p.getX() + this.dx;
-        double newY = p.getY() + this.dy;
+        double newX = p.getX() + dx;
+        double newY = p.getY() + dy;
         return new Point(newX, newY);
     }
 }

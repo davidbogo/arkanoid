@@ -10,11 +10,6 @@ public class Ass5Game {
      *
      * @param args the input arguments
      */
-//
-    // * The entry point of application.
-    // *
-    // * @param args the input arguments
-    // *
     public static void main(String[] args) {
         Game game = new Game(new Counter(0), 800, 600);
         game.initialize(800, 600, 20, 100, 10);

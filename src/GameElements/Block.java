@@ -126,7 +126,7 @@ public class Block implements Collidable, Sprite, HitNotifier {
             }
         }
 
-        this.notifyHit(hitter);
+        notifyHit(hitter);
 
         if (topOrBottomHit && leftOrRightHit) {
             return new Velocity(-currentVelocity.getDx(), -currentVelocity.getDy());
@@ -194,7 +194,7 @@ public class Block implements Collidable, Sprite, HitNotifier {
      */
     private void notifyHit(Ball hitter) {
         // Make a copy of the hitListeners before iterating over them.
-        List<HitListener> listeners = new ArrayList<HitListener>(this.hitListeners);
+        List<HitListener> listeners = new ArrayList<HitListener>(hitListeners);
         // Notify all listeners about a hit event:
         for (HitListener hl : listeners) {
             hl.hitEvent(this, hitter);

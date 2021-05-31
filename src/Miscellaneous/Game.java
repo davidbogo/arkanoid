@@ -44,20 +44,20 @@ public class Game {
     /**
      * this method constructs a game object.
      *
-     * @param score             the score
+     * @param scoreParam        the score
      * @param horBound          the horizontal bound
      * @param verBound          the vertical bound
      */
-    public Game(Counter score,
+    public Game(Counter scoreParam,
                 int horBound,
                 int verBound) {
-        this.environment = new GameEnvironment();
-        this.sprites = new SpriteCollection();
-        this.horizontalBound = horBound;
-        this.verticalBound = verBound;
-        this.margin = 0;
-        this.score = score;
-        this.backgroundColor = Color.BLUE;
+        environment = new GameEnvironment();
+        sprites = new SpriteCollection();
+        horizontalBound = horBound;
+        verticalBound = verBound;
+        margin = 0;
+        score = scoreParam;
+        backgroundColor = Color.BLUE;
     }
 
     /**
@@ -66,7 +66,7 @@ public class Game {
      * @param c the given collidable object.
      */
     public void addCollidable(Collidable c) {
-        this.environment.addCollidable(c);
+        environment.addCollidable(c);
     }
 
     /**
@@ -75,7 +75,7 @@ public class Game {
      * @param s the given sprite object.
      */
     public void addSprite(Sprite s) {
-        this.sprites.addSprite(s);
+        sprites.addSprite(s);
     }
 
     /**
@@ -86,8 +86,7 @@ public class Game {
      */
     public void setBackground(DrawSurface d, Color color) {
         d.setColor(color);
-        d.fillRectangle(0, 0, this.gui.getDrawSurface().getWidth(),
-                this.gui.getDrawSurface().getHeight());
+        d.fillRectangle(0, 0, gui.getDrawSurface().getWidth(), gui.getDrawSurface().getHeight());
     }
 
     /**
@@ -101,10 +100,10 @@ public class Game {
      */
     public void initialize(int horBound, int verBound, int marg,
                            int paddleWidth, int paddleHeight) {
-        this.blocks = new ArrayList<Block>();
-        this.remainingBlocks = new Counter(0);
-        this.remainingBalls = new Counter(0);
-        this.margin = marg;
+        blocks = new ArrayList<Block>();
+        remainingBlocks = new Counter(0);
+        remainingBalls = new Counter(0);
+        margin = marg;
         Block topMargin = new Block(
                 0, 0, horBound, marg, Color.LIGHT_GRAY, 0);
         Block bottomMargin = new Block(
@@ -118,46 +117,46 @@ public class Game {
         Block newBlock;
         for (int i = 0; i < 12; ++i) {
             newBlock = new Block(730 - i * 50, 100, 50, 20, Color.GRAY, 1);
-            this.blocks.add(newBlock);
-            this.remainingBlocks.increase(1);
+            blocks.add(newBlock);
+            remainingBlocks.increase(1);
         }
         for (int i = 0; i < 11; ++i) {
             newBlock = new Block(730 - i * 50, 120, 50, 20, Color.RED, 1);
-            this.blocks.add(newBlock);
-            this.remainingBlocks.increase(1);
+            blocks.add(newBlock);
+            remainingBlocks.increase(1);
         }
         for (int i = 0; i < 10; ++i) {
             newBlock = new Block(730 - i * 50, 140, 50, 20, Color.YELLOW, 1);
-            this.blocks.add(newBlock);
-            this.remainingBlocks.increase(1);
+            blocks.add(newBlock);
+            remainingBlocks.increase(1);
         }
         for (int i = 0; i < 9; ++i) {
             newBlock = new Block(730 - i * 50, 160, 50, 20, Color.BLUE, 1);
-            this.blocks.add(newBlock);
-            this.remainingBlocks.increase(1);
+            blocks.add(newBlock);
+            remainingBlocks.increase(1);
         }
         for (int i = 0; i < 8; ++i) {
             newBlock = new Block(730 - i * 50, 180, 50, 20, Color.PINK, 1);
-            this.blocks.add(newBlock);
-            this.remainingBlocks.increase(1);
+            blocks.add(newBlock);
+            remainingBlocks.increase(1);
         }
         for (int i = 0; i < 7; ++i) {
             newBlock = new Block(730 - i * 50, 200, 50, 20, Color.GREEN, 1);
-            this.blocks.add(newBlock);
-            this.remainingBlocks.increase(1);
+            blocks.add(newBlock);
+            remainingBlocks.increase(1);
         }
         Ball ball1 = new Ball(horBound / 2, verBound
                 - marg - paddleHeight - 1,
-                5, Color.WHITE, horBound, verBound, this.environment);
-        this.remainingBalls.increase(1);
+                5, Color.WHITE, environment);
+        remainingBalls.increase(1);
         Ball ball2 = new Ball(horBound / 2, verBound
                 - marg - paddleHeight - 1,
-                5, Color.RED, horBound, verBound,  this.environment);
-        this.remainingBalls.increase(1);
+                5, Color.RED, environment);
+        remainingBalls.increase(1);
         Ball ball3 = new Ball(horBound / 2, verBound
                 - marg - paddleHeight - 1,
-                5, Color.GREEN, horBound, verBound,  this.environment);
-        this.remainingBalls.increase(1);
+                5, Color.GREEN, environment);
+        remainingBalls.increase(1);
         ball1.setVelocity(1, -1);
         ball2.setVelocity(-1, -1);
         ball3.setVelocity(0, -1);
@@ -168,24 +167,24 @@ public class Game {
         ball1.addToGame(this);
         ball2.addToGame(this);
         ball3.addToGame(this);
-        this.blockRemover = new BlockRemover(this, this.remainingBlocks);
-        this.ballRemover = new BallRemover(this, this.remainingBalls);
-        this.scoreTrackingListener = new ScoreTrackingListener(this.score, this.remainingBlocks.getValue());
-        scoreIndicator = new ScoreIndicator(this.score);
+        blockRemover = new BlockRemover(this, remainingBlocks);
+        ballRemover = new BallRemover(this, remainingBalls);
+        scoreTrackingListener = new ScoreTrackingListener(score, remainingBlocks.getValue());
+        scoreIndicator = new ScoreIndicator(score);
         scoreIndicator.addToGame(this);
-        bottomMargin.addHitListener(this.ballRemover);
-        for (Block b: this.blocks) {
-            b.addHitListener(this.blockRemover);
-            b.addHitListener(this.scoreTrackingListener);
+        bottomMargin.addHitListener(ballRemover);
+        for (Block b: blocks) {
+            b.addHitListener(blockRemover);
+            b.addHitListener(scoreTrackingListener);
             b.addToGame(this);
         }
 
-        this.gui = new GUI("Breaking Bad", horBound, verBound);
-        this.sleeper = new Sleeper();
+        gui = new GUI("Breaking Bad", horBound, verBound);
+        sleeper = new Sleeper();
         Paddle paddle = new Paddle(horBound / 2 - paddleWidth / 2,
                 verBound - marg - paddleHeight,
                 paddleWidth, paddleHeight,
-                Color.YELLOW, this.gui, marg);
+                Color.YELLOW, gui, marg);
         paddle.addToGame(this);
     }
 
@@ -196,11 +195,11 @@ public class Game {
         DrawSurface d;
         while (true) {
             long startTime = System.currentTimeMillis();
-            d = this.gui.getDrawSurface();
-            this.setBackground(d, Color.BLUE);
-            this.sprites.drawAllOn(d);
-            this.gui.show(d);
-            this.sprites.notifyAllTimePassed();
+            d = gui.getDrawSurface();
+            setBackground(d, Color.BLUE);
+            sprites.drawAllOn(d);
+            gui.show(d);
+            sprites.notifyAllTimePassed();
             long usedTime = System.currentTimeMillis() - startTime;
             long milliSecondLeftToSleep = 5 - usedTime;
             if (milliSecondLeftToSleep > 0) {
@@ -210,17 +209,14 @@ public class Game {
                 break;
             }
         }
-        d = this.gui.getDrawSurface();
-        this.setBackground(d, Color.BLUE);
-        this.sprites.drawAllOn(d);
+        d = gui.getDrawSurface();
+        setBackground(d, Color.BLUE);
+        sprites.drawAllOn(d);
         d.setColor(Color.GRAY);
-        d.fillRectangle(this.margin,
-                255,
-                this.horizontalBound - 2 * this.margin,
-                100);
+        d.fillRectangle(margin,255,horizontalBound - 2 * margin,100);
         d.setColor(Color.BLACK);
-        d.drawText(215, 310, "Game Over. Press ENTER", 30);
-        this.gui.show(d);
+        d.drawText(215, 315, "Game Over. Press ENTER", 30);
+        gui.show(d);
         KeyboardSensor keyboard = gui.getKeyboardSensor();
         while (!keyboard.isPressed(KeyboardSensor.ENTER_KEY)) {
             int notGoingAnywhere = 1;
@@ -235,7 +231,7 @@ public class Game {
      * @param c the c
      */
     public void removeCollidable(Collidable c) {
-        this.environment.removeCollidable(c);
+        environment.removeCollidable(c);
     }
 
     /**
@@ -243,8 +239,7 @@ public class Game {
      *
      * @param s the s
      */
-    public void  removeSprite(Sprite s) {
-        this.sprites.removeSprite(s);
+    public void removeSprite(Sprite s) {
+        sprites.removeSprite(s);
     }
-
 }
