@@ -112,12 +112,12 @@ public class Block implements Collidable, Sprite, HitNotifier {
     public Velocity hit(Ball hitter, Point collisionPoint, Velocity currentVelocity) {
         boolean topOrBottomHit = false;
         boolean leftOrRightHit = false;
-        if (rectangle.getTop().isContainingPoint(collisionPoint) ||
-            rectangle.getBottom().isContainingPoint(collisionPoint)) {
+        if (rectangle.getTop().containsPoint(collisionPoint) ||
+            rectangle.getBottom().containsPoint(collisionPoint)) {
             topOrBottomHit = true;
         }
-        if (rectangle.getLeft().isContainingPoint(collisionPoint) ||
-            rectangle.getRight().isContainingPoint(collisionPoint)) {
+        if (rectangle.getLeft().containsPoint(collisionPoint) ||
+            rectangle.getRight().containsPoint(collisionPoint)) {
             leftOrRightHit = true;
         }
         if (topOrBottomHit || leftOrRightHit) {

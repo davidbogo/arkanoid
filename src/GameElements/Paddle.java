@@ -171,19 +171,19 @@ public class Paddle implements Sprite, Collidable {
                 rectangle.getUpperLeft().getY(),
                 rectangle.getUpperLeft().getX() + 5 * segmentLength,
                 rectangle.getUpperLeft().getY());
-        if (leftSegment.isContainingPoint(collisionPoint)) {
+        if (leftSegment.containsPoint(collisionPoint)) {
             return Velocity.fromAngleAndSpeed(300, currentVelocity.getSpeed());
         }
-        if (middleLeftSegment.isContainingPoint(collisionPoint)) {
+        if (middleLeftSegment.containsPoint(collisionPoint)) {
             return Velocity.fromAngleAndSpeed(330, currentVelocity.getSpeed());
         }
-        if (middleSegment.isContainingPoint(collisionPoint)) {
+        if (middleSegment.containsPoint(collisionPoint)) {
             return new Velocity(currentVelocity.getDx(), -currentVelocity.getDy());
         }
-        if (middleRightSegment.isContainingPoint(collisionPoint)) {
+        if (middleRightSegment.containsPoint(collisionPoint)) {
             return Velocity.fromAngleAndSpeed(30, currentVelocity.getSpeed());
         }
-        if (rightSegment.isContainingPoint(collisionPoint)) {
+        if (rightSegment.containsPoint(collisionPoint)) {
             return Velocity.fromAngleAndSpeed(60, currentVelocity.getSpeed());
         }
 
@@ -200,13 +200,13 @@ public class Paddle implements Sprite, Collidable {
      */
     public Velocity hit(Ball hitter, Point collisionPoint, Velocity currentVelocity) {
         Velocity result = currentVelocity;
-        if (rectangle.getTop().isContainingPoint(collisionPoint)) {
+        if (rectangle.getTop().containsPoint(collisionPoint)) {
             result = hitBySegment(collisionPoint, currentVelocity);
-        } else if (rectangle.getLeft().isContainingPoint(collisionPoint)) {
+        } else if (rectangle.getLeft().containsPoint(collisionPoint)) {
             result = Velocity.fromAngleAndSpeed(290, currentVelocity.getSpeed());
-        } else if (rectangle.getRight().isContainingPoint(collisionPoint)) {
+        } else if (rectangle.getRight().containsPoint(collisionPoint)) {
             result = Velocity.fromAngleAndSpeed(80, currentVelocity.getSpeed());
-        } else if (rectangle.getBottom().isContainingPoint(collisionPoint)) {
+        } else if (rectangle.getBottom().containsPoint(collisionPoint)) {
             result = Velocity.fromAngleAndSpeed(0, currentVelocity.getSpeed());
         }
         return result;

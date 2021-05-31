@@ -77,7 +77,7 @@ public class Line {
      * @param point the point to check about.
      * @return true if the is in the line, false otherwise.
      */
-    public boolean isContainingPoint(Point point) {
+    public boolean containsPoint(Point point) {
         double lineMaxX = Math.max(start.getX(), end.getX());
         double lineMinX = Math.min(start.getX(), end.getX());
         double lineMaxY = Math.max(start.getY(), end.getY());
@@ -109,7 +109,7 @@ public class Line {
             double intersectionY = (aThis * cOther - aOther * cThis) / det;
             Point intersection =
                     new Point(intersectionX, intersectionY);
-            if (isContainingPoint(intersection) && other.isContainingPoint(intersection)) {
+            if (containsPoint(intersection) && other.containsPoint(intersection)) {
                 return intersection;
             }
             return null;

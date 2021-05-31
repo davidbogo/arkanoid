@@ -234,7 +234,7 @@ public class Rectangle {
      * @param point the given point.
      * @return true if the point is in the rectangle's area, false otherwise.
      */
-    public boolean isContainPoint(Point point) {
+    public boolean containsPoint(Point point) {
         return (point.getX() >= getUpperLeft().getX()) && (point.getX() <= getUpperRight().getX()) &&
                (point.getY() >= getUpperLeft().getY() && point.getY() <= getLowerLeft().getY());
     }

@@ -82,7 +82,7 @@ public class GameEnvironment {
         }
         for (int i = 0; i < collidableList.size(); i++) {
             Rectangle collisionRec = collidableList.get(i).getCollisionRectangle();
-            if (collisionRec.isContainPoint(ball.getCenter())) {
+            if (collisionRec.containsPoint(ball.getCenter())) {
                 boolean needToRandomize = ball.registerStuckCondition();
                 if (needToRandomize) {
                     ball.setCenter(350 + random.nextInt(100), 560);
@@ -100,7 +100,7 @@ public class GameEnvironment {
                         newCenter = new Point(
                                 newCenter.getX() + ball.getVelocity().getDx(),
                                 newCenter.getY() + ball.getVelocity().getDy());
-                    } while (collisionRec.isContainPoint(newCenter));
+                    } while (collisionRec.containsPoint(newCenter));
                     ball.setCenter(newCenter.getX(), newCenter.getY());
                 }
             }
