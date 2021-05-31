@@ -131,7 +131,7 @@ public class Game {
             remainingBlocks.increase(1);
         }
         for (int i = 0; i < 9; ++i) {
-            newBlock = new Block(730 - i * 50, 160, 50, 20, Color.BLUE, 1);
+            newBlock = new Block(730 - i * 50, 160, 50, 20, Color.ORANGE, 1);
             blocks.add(newBlock);
             remainingBlocks.increase(1);
         }
