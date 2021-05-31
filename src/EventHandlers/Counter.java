@@ -12,7 +12,7 @@ public class Counter {
      * @param initialvalue the initialvalue
      */
     public Counter(int initialvalue) {
-        this.value = initialvalue;
+        value = initialvalue;
     }
 
     /**
@@ -22,7 +22,7 @@ public class Counter {
      */
 // add number to current count.
     public void increase(int number) {
-        this.value += number;
+        value += number;
     }
 
     /**
@@ -32,7 +32,7 @@ public class Counter {
      */
 // subtract number from current count.
     public void decrease(int number) {
-        this.value -= number;
+        value -= number;
     }
     // get current count.
 
@@ -42,6 +42,6 @@ public class Counter {
      * @return the value
      */
     public int getValue() {
-        return this.value;
+        return value;
     }
 }

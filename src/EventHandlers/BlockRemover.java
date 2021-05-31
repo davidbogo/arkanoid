@@ -16,12 +16,12 @@ public class BlockRemover implements HitListener {
     /**
      * Instantiates a new GameElements.Block remover.
      *
-     * @param game            the game
-     * @param remainingBlocks the remaining blocks
+     * @param gameParam         the game
+     * @param remBlocks         the remaining blocks
      */
-    public BlockRemover(Game game, Counter remainingBlocks) {
-        this.game = game;
-        this.remainingBlocks = remainingBlocks;
+    public BlockRemover(Game gameParam, Counter remBlocks) {
+        game = gameParam;
+        remainingBlocks = remBlocks;
     }
 
     // Blocks that are hit should be removed
@@ -34,8 +34,8 @@ public class BlockRemover implements HitListener {
     public void hitEvent(Block beingHit, Ball hitter) {
         if (beingHit.getHits() == 0) {
             beingHit.removeHitListener(this);
-            beingHit.removeFromGame(this.game);
-            this.remainingBlocks.decrease(1);
+            beingHit.removeFromGame(game);
+            remainingBlocks.decrease(1);
         }
     }
 
@@ -45,6 +45,6 @@ public class BlockRemover implements HitListener {
      * @return the remaining blocks
      */
     public Counter getRemainingBlocks() {
-        return this.remainingBlocks;
+        return remainingBlocks;
     }
 }

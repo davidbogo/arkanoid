@@ -9,17 +9,17 @@ import miscellaneous.Game;
  */
 public class BallRemover implements HitListener {
     private Game game;
-    private Counter remainingBalls;
+    private eventhandlers.Counter remainingBalls;
 
     /**
      * Instantiates a new GameElements.Ball remover.
      *
-     * @param game           the game
-     * @param remainingBalls the remaining balls
+     * @param gameParam     the game
+     * @param remBalls      the remaining balls
      */
-    public BallRemover(Game game, Counter remainingBalls) {
-        this.game = game;
-        this.remainingBalls = remainingBalls;
+    public BallRemover(Game gameParam, eventhandlers.Counter remBalls) {
+        game = gameParam;
+        remainingBalls = remBalls;
     }
 
     // Balls that hit the special blocks associated with EventHandlers.BallRemover need to be removed
@@ -31,7 +31,7 @@ public class BallRemover implements HitListener {
      * @param hitter the ball hittind the death block
     */
     public void hitEvent(Block beingHit, Ball hitter) {
-        hitter.removeFromGame(this.game);
-        this.remainingBalls.decrease(1);
+        hitter.removeFromGame(game);
+        remainingBalls.decrease(1);
     }
 }
