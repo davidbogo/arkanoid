@@ -27,17 +27,17 @@ public class Paddle implements Sprite, Collidable {
     /**
      * Instantiates a new GameElements.Paddle.
      *
-     * @param rec    the rec
-     * @param color  the color
-     * @param gui    the gui
-     * @param margin the margin
+     * @param rec       the rec
+     * @param col       the color
+     * @param guiParam  the gui
+     * @param marg      the margin
      */
-    public Paddle(Rectangle rec, Color color, GUI gui, int margin) {
-        this.rectangle = rec;
-        this.color = color;
-        this.gui = gui;
-        this.margin = margin;
-        this.keyboard = gui.getKeyboardSensor();
+    public Paddle(Rectangle rec, Color col, GUI guiParam, int marg) {
+        rectangle = rec;
+        color = col;
+        gui = guiParam;
+        margin = marg;
+        keyboard = gui.getKeyboardSensor();
     }
 
     /**
@@ -46,50 +46,50 @@ public class Paddle implements Sprite, Collidable {
      * @param upperLeft the upper left
      * @param width     the width
      * @param height    the height
-     * @param color     the color
-     * @param gui       the gui
-     * @param margin    the margin
+     * @param col       the color
+     * @param guiParam  the gui
+     * @param marg      the margin
      */
     public Paddle(Point upperLeft, double width, double height,
-                  Color color, GUI gui, int margin) {
-        this.rectangle = new Rectangle(upperLeft, width, height);
-        this.color = color;
-        this.gui = gui;
-        this.margin = margin;
-        this.keyboard = gui.getKeyboardSensor();
+                  Color col, GUI guiParam, int marg) {
+        rectangle = new Rectangle(upperLeft, width, height);
+        color = col;
+        gui = guiParam;
+        margin = marg;
+        keyboard = gui.getKeyboardSensor();
     }
 
     /**
      * Instantiates a new GameElements.Paddle.
      *
-     * @param x      the x
-     * @param y      the y
-     * @param width  the width
-     * @param height the height
-     * @param color  the color
-     * @param gui    the gui
-     * @param margin the margin
+     * @param x         the x
+     * @param y         the y
+     * @param width     the width
+     * @param height    the height
+     * @param col       the color
+     * @param guiParam  the gui
+     * @param marg      the margin
      */
     public Paddle(double x, double y, double width,
-                  double height, Color color, GUI gui, int margin) {
-        this.rectangle = new Rectangle(x, y, width, height);
-        this.color = color;
-        this.gui = gui;
-        this.margin = margin;
-        this.keyboard = gui.getKeyboardSensor();
+                  double height, Color col, GUI guiParam, int marg) {
+        rectangle = new Rectangle(x, y, width, height);
+        color = col;
+        gui = guiParam;
+        margin = marg;
+        keyboard = gui.getKeyboardSensor();
     }
 
     /**
      * this method moves the paddle to the left.
      */
     public void moveLeft() {
-        if (keyboard.isPressed(KeyboardSensor.LEFT_KEY)
-                && this.rectangle.getUpperLeft().getX() > this.margin + 1) {
-            this.rectangle = new Rectangle(
-                    this.rectangle.getUpperLeft().getX() - 1,
-                    this.rectangle.getUpperLeft().getY(),
-                    this.rectangle.getWidth(),
-                    this.rectangle.getHeight());
+        if (keyboard.isPressed(KeyboardSensor.LEFT_KEY) &&
+            rectangle.getUpperLeft().getX() > margin + 1) {
+            rectangle = new Rectangle(
+                    rectangle.getUpperLeft().getX() - 1,
+                    rectangle.getUpperLeft().getY(),
+                    rectangle.getWidth(),
+                    rectangle.getHeight());
         }
     }
 
@@ -97,23 +97,25 @@ public class Paddle implements Sprite, Collidable {
      * Move right.
      */
     public void moveRight() {
-        if (keyboard.isPressed(KeyboardSensor.RIGHT_KEY)
-                && this.rectangle.getUpperLeft().getX() + this.rectangle.getWidth()
-                < this.gui.getDrawSurface().getWidth() - this.margin) {
-            this.rectangle = new Rectangle(
-                    this.rectangle.getUpperLeft().getX() + 1,
-                    this.rectangle.getUpperLeft().getY(),
-                    this.rectangle.getWidth(),
-                    this.rectangle.getHeight());
+        if (keyboard.isPressed(KeyboardSensor.RIGHT_KEY) &&
+                    rectangle.getUpperLeft().getX() + rectangle.getWidth() <
+                    gui.getDrawSurface().getWidth() - margin) {
+           rectangle = new Rectangle(
+                    rectangle.getUpperLeft().getX() + 1,
+                    rectangle.getUpperLeft().getY(),
+                    rectangle.getWidth(),
+                    rectangle.getHeight());
         }
     }
+
     /**
      * this method notifies the paddle that a time unit has passed.
      */
     public void timePassed() {
-        this.moveLeft();
-        this.moveRight();
+        moveLeft();
+        moveRight();
     }
+
     /**
      * this method draws the paddle on given DrawSurface.
      * @param d the DrawSurface to draw on.
@@ -121,17 +123,17 @@ public class Paddle implements Sprite, Collidable {
     public void drawOn(DrawSurface d) {
         d.setColor(this.color);
         d.fillRectangle(
-                (int) Math.round(this.rectangle.getUpperLeft().getX()),
-                (int) Math.round(this.rectangle.getUpperLeft().getY()),
-                (int) Math.round(this.rectangle.getWidth()),
-                (int) Math.round(this.rectangle.getHeight()));
+                (int) Math.round(rectangle.getUpperLeft().getX()),
+                (int) Math.round(rectangle.getUpperLeft().getY()),
+                (int) Math.round(rectangle.getWidth()),
+                (int) Math.round(rectangle.getHeight()));
     }
     /**
      * this method returns the rectangle that defines the paddle.
      * @return the rectangle that defines the paddle.
      */
     public Rectangle getCollisionRectangle() {
-        return this.rectangle;
+        return rectangle;
     }
 
     /**
@@ -144,31 +146,31 @@ public class Paddle implements Sprite, Collidable {
      */
     public Velocity hitBySegment(Point collisionPoint,
                                  Velocity currentVelocity) {
-        double segmentLength = this.rectangle.getWidth() / 5;
-        Line leftSegment = new Line(this.rectangle.getUpperLeft().getX(),
-                this.rectangle.getUpperLeft().getY(),
-                this.rectangle.getUpperLeft().getX() + segmentLength,
-                this.rectangle.getUpperLeft().getY());
+        double segmentLength = rectangle.getWidth() / 5;
+        Line leftSegment = new Line(rectangle.getUpperLeft().getX(),
+                rectangle.getUpperLeft().getY(),
+                rectangle.getUpperLeft().getX() + segmentLength,
+                rectangle.getUpperLeft().getY());
         Line middleLeftSegment = new Line(
-                this.rectangle.getUpperLeft().getX() + segmentLength,
-                this.rectangle.getUpperLeft().getY(),
-                this.rectangle.getUpperLeft().getX() + 2 * segmentLength,
-                this.rectangle.getUpperLeft().getY());
+                rectangle.getUpperLeft().getX() + segmentLength,
+                rectangle.getUpperLeft().getY(),
+                rectangle.getUpperLeft().getX() + 2 * segmentLength,
+                rectangle.getUpperLeft().getY());
         Line middleSegment = new Line(
-                this.rectangle.getUpperLeft().getX() + 2 * segmentLength,
-                this.rectangle.getUpperLeft().getY(),
-                this.rectangle.getUpperLeft().getX() + 3 * segmentLength,
-                this.rectangle.getUpperLeft().getY());
+                rectangle.getUpperLeft().getX() + 2 * segmentLength,
+                rectangle.getUpperLeft().getY(),
+                rectangle.getUpperLeft().getX() + 3 * segmentLength,
+                rectangle.getUpperLeft().getY());
         Line middleRightSegment = new Line(
-                this.rectangle.getUpperLeft().getX() + 3 * segmentLength,
-                this.rectangle.getUpperLeft().getY(),
-                this.rectangle.getUpperLeft().getX() + 4 * segmentLength,
-                this.rectangle.getUpperLeft().getY());
+                rectangle.getUpperLeft().getX() + 3 * segmentLength,
+                rectangle.getUpperLeft().getY(),
+                rectangle.getUpperLeft().getX() + 4 * segmentLength,
+                rectangle.getUpperLeft().getY());
         Line rightSegment = new Line(
-                this.rectangle.getUpperLeft().getX() + 4 * segmentLength,
-                this.rectangle.getUpperLeft().getY(),
-                this.rectangle.getUpperLeft().getX() + 5 * segmentLength,
-                this.rectangle.getUpperLeft().getY());
+                rectangle.getUpperLeft().getX() + 4 * segmentLength,
+                rectangle.getUpperLeft().getY(),
+                rectangle.getUpperLeft().getX() + 5 * segmentLength,
+                rectangle.getUpperLeft().getY());
         if (leftSegment.isContainingPoint(collisionPoint)) {
             return Velocity.fromAngleAndSpeed(300, currentVelocity.getSpeed());
         }
@@ -176,8 +178,7 @@ public class Paddle implements Sprite, Collidable {
             return Velocity.fromAngleAndSpeed(330, currentVelocity.getSpeed());
         }
         if (middleSegment.isContainingPoint(collisionPoint)) {
-            return new Velocity(currentVelocity.getDx(),
-                    -currentVelocity.getDy());
+            return new Velocity(currentVelocity.getDx(), -currentVelocity.getDy());
         }
         if (middleRightSegment.isContainingPoint(collisionPoint)) {
             return Velocity.fromAngleAndSpeed(30, currentVelocity.getSpeed());
@@ -185,8 +186,10 @@ public class Paddle implements Sprite, Collidable {
         if (rightSegment.isContainingPoint(collisionPoint)) {
             return Velocity.fromAngleAndSpeed(60, currentVelocity.getSpeed());
         }
+
         return currentVelocity;
     }
+
     /**
      * this method gets collision point and velocity
      * and returns a new velocity according to the hit properties.
@@ -197,13 +200,13 @@ public class Paddle implements Sprite, Collidable {
      */
     public Velocity hit(Ball hitter, Point collisionPoint, Velocity currentVelocity) {
         Velocity result = currentVelocity;
-        if (this.rectangle.getTop().isContainingPoint(collisionPoint)) {
+        if (rectangle.getTop().isContainingPoint(collisionPoint)) {
             result = hitBySegment(collisionPoint, currentVelocity);
-        } else if (this.rectangle.getLeft().isContainingPoint(collisionPoint)) {
+        } else if (rectangle.getLeft().isContainingPoint(collisionPoint)) {
             result = Velocity.fromAngleAndSpeed(290, currentVelocity.getSpeed());
-        } else if (this.rectangle.getRight().isContainingPoint(collisionPoint)) {
+        } else if (rectangle.getRight().isContainingPoint(collisionPoint)) {
             result = Velocity.fromAngleAndSpeed(80, currentVelocity.getSpeed());
-        } else if (this.rectangle.getBottom().isContainingPoint(collisionPoint)) {
+        } else if (rectangle.getBottom().isContainingPoint(collisionPoint)) {
             result = Velocity.fromAngleAndSpeed(0, currentVelocity.getSpeed());
         }
         return result;
