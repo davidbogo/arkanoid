@@ -6,13 +6,13 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * The type Miscellaneous.Sprite collection.
+ * The type miscellaneous.Sprite collection.
  */
 public class SpriteCollection {
     private List<Sprite> spriteList;
 
     /**
-     * Instantiates a new Miscellaneous.Sprite collection.
+     * Instantiates a new miscellaneous.Sprite collection.
      */
     public SpriteCollection() {
         spriteList = new ArrayList<Sprite>();

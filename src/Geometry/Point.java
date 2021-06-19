@@ -1,7 +1,7 @@
 package geometry;
 
 /**
- * The type Geometry.Point.
+ * The type geometry.Point.
  */
 public class Point {
     private double x;

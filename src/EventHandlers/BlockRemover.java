@@ -2,33 +2,30 @@ package eventhandlers;
 
 import gameelements.Ball;
 import gameelements.Block;
-import miscellaneous.Game;
+import levels.GameLevel;
 
 /**
- * The type GameElements.Block remover.
+ * eventHandlers.BlockRemover is in charge of removing blocks from the game, as well as keeping count
+ * of the blocks that remain.
  */
-// a EventHandlers.BlockRemover is in charge of removing blocks from the game, as well as keeping count
-// of the number of blocks that remain.
 public class BlockRemover implements HitListener {
-    private Game game;
+    private GameLevel game;
     private Counter remainingBlocks;
 
     /**
      * Instantiates a new GameElements.Block remover.
      *
-     * @param gameParam         the game
+     * @param gameParam         the game level
      * @param remBlocks         the remaining blocks
      */
-    public BlockRemover(Game gameParam, Counter remBlocks) {
+    public BlockRemover(GameLevel gameParam, Counter remBlocks) {
         game = gameParam;
         remainingBlocks = remBlocks;
     }
 
-    // Blocks that are hit should be removed
-    // from the game. Remember to remove this listener from the block
-    // that is being removed from the game.
     /**
-     * @param beingHit the being hit
+     * Blocks that are hit need to be removed from the game.
+     * @param beingHit the block being hit
      * @param hitter   the hitter
      */
     public void hitEvent(Block beingHit, Ball hitter) {
@@ -40,9 +37,9 @@ public class BlockRemover implements HitListener {
     }
 
     /**
-     * Gets remaining blocks.
+     * Gets the number of remaining blocks.
      *
-     * @return the remaining blocks
+     * @return 	number of remaining blocks
      */
     public Counter getRemainingBlocks() {
         return remainingBlocks;

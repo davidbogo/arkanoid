@@ -3,7 +3,7 @@ package geometry;
 import java.util.List;
 
 /**
- * The type Geometry.Line.
+ * The type geometry.Line.
  */
 public class Line {
     private Point start;
@@ -165,11 +165,9 @@ public class Line {
      * Closest intersection to start of line point.
      *
      * @param rect the rect
-     * @return the point
+     * @return If this line does not intersect with the rectangle, return null.
+     *   Otherwise, return the closest intersection point to the start of the line
      */
-    // If this line does not intersect with the rectangle, return null.
-    // Otherwise, return the closest intersection point to the
-    // start of the line.
     public Point closestIntersectionToStartOfLine(Rectangle rect) {
         List<Point> intersectionPoints = rect.intersectionPoints(this);
         if (!intersectionPoints.isEmpty()) {

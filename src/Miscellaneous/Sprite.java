@@ -10,7 +10,7 @@ public interface Sprite {
     /**
      * Draw on.
      *
-     * @param d     surface t draw on
+     * @param d     surface to draw on
      */
     void drawOn(DrawSurface d);
 

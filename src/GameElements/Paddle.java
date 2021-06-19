@@ -5,7 +5,7 @@ import java.awt.Color;
 import geometry.Line;
 import geometry.Point;
 import geometry.Rectangle;
-import miscellaneous.Game;
+import levels.GameLevel;
 import miscellaneous.Sprite;
 import movement.Collidable;
 import movement.Velocity;
@@ -14,11 +14,13 @@ import biuoop.DrawSurface;
 import biuoop.GUI;
 
 /**
- * The type GameElements.Paddle.
+ * The type gameElements.Paddle.
  */
 public class Paddle implements Sprite, Collidable {
     private Rectangle rectangle;
     private Color color;
+    private int horizontalBound;
+    private int verticalBound;
     private KeyboardSensor keyboard;
     private GUI gui;
     private int margin;
@@ -37,6 +39,8 @@ public class Paddle implements Sprite, Collidable {
         color = col;
         gui = guiParam;
         margin = marg;
+        horizontalBound = 0;
+        verticalBound = 0;
         keyboard = gui.getKeyboardSensor();
     }
 
@@ -56,6 +60,8 @@ public class Paddle implements Sprite, Collidable {
         color = col;
         gui = guiParam;
         margin = marg;
+        horizontalBound = 0;
+        verticalBound = 0;
         keyboard = gui.getKeyboardSensor();
     }
 
@@ -76,7 +82,20 @@ public class Paddle implements Sprite, Collidable {
         color = col;
         gui = guiParam;
         margin = marg;
+        horizontalBound = 0;
+        verticalBound = 0;
         keyboard = gui.getKeyboardSensor();
+    }
+
+    /**
+     * Sets bounds.
+     *
+     * @param hBound the horizontal bound
+     * @param vBound the vertical bound
+     */
+    public void setBounds(int hBound, int vBound) {
+        horizontalBound = hBound;
+        verticalBound = vBound;
     }
 
     /**
@@ -217,7 +236,7 @@ public class Paddle implements Sprite, Collidable {
      *
      * @param game the game.
      */
-    public void addToGame(Game game) {
+    public void addToGame(GameLevel game) {
         game.addCollidable(this);
         game.addSprite(this);
     }
@@ -227,8 +246,18 @@ public class Paddle implements Sprite, Collidable {
      *
      * @param game the game.
      */
-    public void removeFromGame(Game game) {
+    public void removeFromGame(GameLevel game) {
         game.removeCollidable(this);
         game.removeSprite(this);
+    }
+
+    /**
+     * Put the balls in the middle.
+     */
+    public void putBallsInTheMiddle() {
+        double x = horizontalBound / 2 - rectangle.getWidth() / 2;
+        double y = verticalBound - rectangle.getHeight() - 10;
+        Point middle = new Point(x, y);
+        rectangle = new Rectangle(middle, rectangle.getWidth(), rectangle.getHeight());
     }
 }

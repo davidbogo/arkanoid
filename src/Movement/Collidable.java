@@ -5,7 +5,7 @@ import geometry.Point;
 import geometry.Rectangle;
 
 /**
- * The interface Movement.Collidable.
+ * The interface movement.Collidable.
  */
 public interface Collidable {
     /**

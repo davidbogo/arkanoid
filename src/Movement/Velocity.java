@@ -3,7 +3,7 @@ package movement;
 import geometry.Point;
 
 /**
- * this class represents a Movement.Velocity by specifying
+ * this class represents a movement.Velocity by specifying
  * the change in position on the `x` and the `y` axes.
  */
 public class Velocity {

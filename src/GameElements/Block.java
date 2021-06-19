@@ -7,7 +7,7 @@ import java.util.List;
 import eventhandlers.HitListener;
 import geometry.Point;
 import geometry.Rectangle;
-import miscellaneous.Game;
+import levels.GameLevel;
 import miscellaneous.HitNotifier;
 import miscellaneous.Sprite;
 import movement.Collidable;
@@ -173,7 +173,7 @@ public class Block implements Collidable, Sprite, HitNotifier {
      *
      * @param game the game.
      */
-    public void addToGame(Game game) {
+    public void addToGame(GameLevel game) {
         game.addCollidable(this);
         game.addSprite(this);
     }
@@ -183,7 +183,7 @@ public class Block implements Collidable, Sprite, HitNotifier {
      *
      * @param game the game
      */
-    public void removeFromGame(Game game) {
+    public void removeFromGame(GameLevel game) {
         game.removeCollidable(this);
         game.removeSprite(this);
 

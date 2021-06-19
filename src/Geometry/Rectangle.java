@@ -7,7 +7,7 @@ import java.util.List;
 import biuoop.DrawSurface;
 
 /**
- * The type Geometry.Rectangle.
+ * The type geometry.Rectangle.
  */
 public class Rectangle {
 
@@ -45,7 +45,7 @@ public class Rectangle {
     }
 
     /**
-     * Instantiates a new Geometry.Rectangle.
+     * Instantiates a new geometry.Rectangle.
      *
      * @param x             the x
      * @param y             the y
@@ -64,7 +64,7 @@ public class Rectangle {
     }
 
     /**
-     * Instantiates a new Geometry.Rectangle.
+     * Instantiates a new geometry.Rectangle.
      *
      * @param upperLeftParam  the upper left
      * @param lowerRightParam the lower right
@@ -81,7 +81,7 @@ public class Rectangle {
     }
 
     /**
-     * Intersection points java . util . list.
+     * Intersection points java.util.list.
      *
      * @param line  the line
      * @return the list (possibly empty) of intersection points with the specified line.
@@ -229,10 +229,10 @@ public class Rectangle {
     }
 
     /**
-     * this method checks if a given point is this rectangle area.
+     * This method checks if a given point lies within this rectangle.
      *
      * @param point the given point.
-     * @return true if the point is in the rectangle's area, false otherwise.
+     * @return true if the point lies within the rectangle's area, false otherwise.
      */
     public boolean containsPoint(Point point) {
         return (point.getX() >= getUpperLeft().getX()) && (point.getX() <= getUpperRight().getX()) &&

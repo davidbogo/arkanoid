@@ -2,7 +2,7 @@ package gameelements;
 
 import geometry.Line;
 import geometry.Point;
-import miscellaneous.Game;
+import levels.GameLevel;
 import miscellaneous.GameEnvironment;
 import miscellaneous.Sprite;
 import movement.CollisionInfo;
@@ -20,6 +20,9 @@ public class Ball implements Sprite {
     private int radius;
     private Color color;
     private Velocity velocity;
+    private boolean isBounded;
+    private int horizontalBound;
+    private int verticalBound;
     private GameEnvironment gameEnvironment;
     private long lastStuckTime;
     private long beforeLastStuckTime;
@@ -27,17 +30,23 @@ public class Ball implements Sprite {
     /**
      * construct bounded ball from two coordinates, radius and color.
      *
-     * @param x                 the x coordinate of the initial location of the ball's center.
-     * @param y                 the y coordinate of the initial location of the ball's center.
-     * @param r                 the ball's radius.
-     * @param col               the ball's color.
-     * @param gameEnv           the game environment
+     * @param x         the x coordinate of the initial location of the ball's center.
+     * @param y         the y coordinate of the initial location of the ball's center.
+     * @param r         the ball's radius.
+     * @param col       the ball's color.
+     * @param hBound    horizontal Bound of the ball.
+     * @param vBound    vertical Bound of the ball.
+     * @param gameEnv   the game environment
      */
-    public Ball(int x, int y, int r, Color col, GameEnvironment gameEnv) {
+    public Ball(int x, int y, int r, Color col,
+                int hBound, int vBound, GameEnvironment gameEnv) {
         center = new Point((double) x, (double) y);
         radius = r;
         color = col;
         velocity = new Velocity(0, 0);
+        isBounded = true;
+        verticalBound = vBound;
+        horizontalBound = hBound;
         gameEnvironment = gameEnv;
         lastStuckTime = 0;
         beforeLastStuckTime = 0;
@@ -100,6 +109,8 @@ public class Ball implements Sprite {
     public void drawOn(DrawSurface surface) {
         surface.setColor(color);
         surface.fillCircle(getX(), getY(), radius);
+        surface.setColor(Color.BLACK);
+        surface.drawCircle(getX(), getY(), radius);
     }
 
     /**
@@ -110,11 +121,7 @@ public class Ball implements Sprite {
     public void setVelocity(Velocity v) {
         velocity = v;
     }
-    /**
-     * this method sets the ball's velocity.
-     * @param dx the change in position on the x axis.
-     * @param dy the change in position on the y axis.
-     */
+
     /**
      * this method sets a new center for the ball.
      *
@@ -197,14 +204,15 @@ public class Ball implements Sprite {
      *
      * @param game the game that is currently played.
      */
-    public void addToGame(Game game) {
+    public void addToGame(GameLevel game) {
         game.addSprite(this);
     }
+
     /**
      * this method removes the ball from the game's sprite list.
      * @param game the game that is currently played.
      */
-    public void removeFromGame(Game game) {
+    public void removeFromGame(GameLevel game) {
         game.removeSprite(this);
     }
 

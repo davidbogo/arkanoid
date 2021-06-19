@@ -10,20 +10,23 @@ import biuoop.DrawSurface;
 /**
  * This class represents a score indicator object.
  */
-public class ScoreIndicator implements Sprite {
-    private Counter score;
+public class LevelNameIndicator implements Sprite {
+    private String name;
     private final Rectangle rectangle;
+
     /**
      * Construct a score indicator from a score counter object.
-     * @param scoreParam    the given score counter.
+     *
+     * @param levelName the level name
      */
-    public ScoreIndicator(Counter scoreParam) {
-        score = scoreParam;
-        rectangle = new Rectangle(200, 0, 400, 15);
+    public LevelNameIndicator(String levelName) {
+        name = levelName;
+        rectangle = new Rectangle(400, 2, 400, 15);
     }
+
     /**
      * this method draws the score indicator on given DrawSurface.
-     * @param surface the DrawSurface to draw on.
+     * @param surface the Surface to draw on.
      */
     public void drawOn(DrawSurface surface) {
         surface.setColor(Color.LIGHT_GRAY);
@@ -32,12 +35,9 @@ public class ScoreIndicator implements Sprite {
                 (int) rectangle.getWidth(),
                 (int) rectangle.getHeight());
         surface.setColor(Color.BLACK);
-        surface.drawText((int) (rectangle.getUpperLeft().getX()
-                        + rectangle.getWidth() / 2 - 20),
-                          (int) (rectangle.getUpperLeft().getY()
-                        + rectangle.getHeight() / 2 + 8),
-                       "Score: "
-                        + Integer.toString(score.getValue()), 13);
+        surface.drawText((int) (rectangle.getUpperLeft().getX() + rectangle.getWidth() / 2 - 20),
+                         (int) (rectangle.getUpperLeft().getY() + rectangle.getHeight() / 2 + 5),
+                         "Level Name: " + name, 13);
     }
 
     /**
@@ -45,9 +45,11 @@ public class ScoreIndicator implements Sprite {
      */
     public void timePassed() {
     }
+
     /**
-     * this method adds the score indicator to a game.
-     * @param game the game.
+     * this method adds the score indicator to the game.
+     *
+     * @param game  the game.
      */
     public void addToGame(GameLevel game) {
         game.addSprite(this);
