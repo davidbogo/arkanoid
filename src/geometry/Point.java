@@ -1,22 +1,22 @@
+package geometry;
+
 /**
- * The type Point.
+ * The type Geometry.Point.
  */
 public class Point {
     private double x;
     private double y;
-    private double distance;
 
     /**
-     * Instantiates a new Point.
+     * Instantiates a new Geometry.Point.
      *
-     * @param x1 the x 1
-     * @param y1 the y 1
+     * @param x the x
+     * @param y the y
      */
 // constructor
-    public Point(double x1, double y1) {
-        x = x1;
-        y = y1;
-        distance = 0;
+    public Point(double x, double y) {
+        this.x = x;
+        this.y = y;
     }
 
     /**
@@ -27,10 +27,9 @@ public class Point {
      */
 // distance -- return the distance of this point to the other point
     public double distance(Point other) {
-       double distanceS =  (other.getX() - getX()) * (other.getX() - getX())
-               + (other.getY() - getY()) * (other.getY() - getY());
-       distance = Math.sqrt(distanceS);
-        return distance;
+        double deltaX = this.x - other.x;
+        double deltaY = this.y - other.y;
+        return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
     }
 
     /**
@@ -41,7 +40,7 @@ public class Point {
      */
 // equals -- return true is the points are equal, false otherwise
     public boolean equals(Point other) {
-        if ((other.getX() == getX()) && (other.getY() == getY())) {
+        if ((other.x == this.x) && (other.y == this.x)) {
             return true;
         }
         return false;
@@ -54,7 +53,7 @@ public class Point {
      */
 // Return the x and y values of this point
     public double getX() {
-        return x;
+        return this.x;
     }
 
     /**
@@ -63,6 +62,6 @@ public class Point {
      * @return the y
      */
     public double getY() {
-        return y;
+        return this.y;
     }
 }
