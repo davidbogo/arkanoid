@@ -7,18 +7,16 @@ import eventhandlers.HitListener;
  */
 public interface HitNotifier {
     /**
-     * Add hit listener.
+     * Adds hl as a listener to hit events.
      *
-     * @param hl the hl
+     * @param hl        the hit listener
      */
-// Add hl as a listener to hit events.
     void addHitListener(HitListener hl);
 
     /**
-     * Remove hit listener.
+     * Removes hl from the list of listeners to hit events.
      *
-     * @param hl the hl
+     * @param hl        the hit listener
      */
-// Remove hl from the list of listeners to hit events.
     void removeHitListener(HitListener hl);
 }

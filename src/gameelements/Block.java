@@ -7,7 +7,7 @@ import java.util.List;
 import eventhandlers.HitListener;
 import geometry.Point;
 import geometry.Rectangle;
-import miscellaneous.Game;
+import levels.GameLevel;
 import miscellaneous.HitNotifier;
 import miscellaneous.Sprite;
 import movement.Collidable;
@@ -27,15 +27,15 @@ public class Block implements Collidable, Sprite, HitNotifier {
     /**
      * construct a block from a rectangle, color and initial number of hits.
      *
-     * @param rec   the rectangle that defines the block.
-     * @param color the rectangle color.
-     * @param hits  the hits number.
+     * @param rec           the rectangle that defines the block.
+     * @param col           the rectangle color.
+     * @param hitsParam     number of hits to remove the block.
      */
-    public Block(Rectangle rec, Color color, int hits) {
-        this.rectangle = rec;
-        this.color = color;
-        this.hits = hits;
-        this.hitListeners = new ArrayList<HitListener>();
+    public Block(Rectangle rec, Color col, int hitsParam) {
+        rectangle = rec;
+        color = col;
+        hits = hitsParam;
+        hitListeners = new ArrayList<HitListener>();
     }
 
     /**
@@ -45,15 +45,15 @@ public class Block implements Collidable, Sprite, HitNotifier {
      * @param upperLeft the block's upper left point.
      * @param width     the block's width.
      * @param height    the block's height.
-     * @param color     the block's color.
-     * @param hits      the hits
+     * @param col       the block's color.
+     * @param hitsParam number of hits to remove the block.
      */
     public Block(Point upperLeft, double width,
-                 double height, Color color, int hits) {
-        this.rectangle = new Rectangle(upperLeft, width, height);
-        this.color = color;
-        this.hits = hits;
-        this.hitListeners = new ArrayList<HitListener>();
+                 double height, Color col, int hitsParam) {
+        rectangle = new Rectangle(upperLeft, width, height);
+        color = col;
+        hits = hitsParam;
+        hitListeners = new ArrayList<HitListener>();
 
     }
 
@@ -61,27 +61,28 @@ public class Block implements Collidable, Sprite, HitNotifier {
      * construct a block from two coordinates,
      * width, height, color and initial number of hits.
      *
-     * @param x      the x coordinate of the initial location of the block's upper left corner.
-     * @param y      the y coordinate of the initial location of the block's upper left corner.
-     * @param width  the block's width.
-     * @param height the block's height.
-     * @param color  the block's color.
-     * @param hits   the hits
+     * @param x         the x coordinate of the initial location of the block's upper left corner.
+     * @param y         the y coordinate of the initial location of the block's upper left corner.
+     * @param width     the block's width.
+     * @param height    the block's height.
+     * @param col       the block's color.
+     * @param hitsParam number of hits to remove the block.
      */
     public Block(double x, double y, double width,
-                 double height, Color color, int hits) {
-        this.rectangle = new Rectangle(x, y, width, height);
-        this.color = color;
-        this.hits = hits;
-        this.hitListeners = new ArrayList<HitListener>();
+                 double height, Color col, int hitsParam) {
+        rectangle = new Rectangle(x, y, width, height);
+        color = col;
+        hits = hitsParam;
+        hitListeners = new ArrayList<HitListener>();
 
     }
+
     /**
      * this method returns the rectangle that defines the block.
      * @return the rectangle that defines the block.
      */
     public Rectangle getCollisionRectangle() {
-        return this.rectangle;
+        return rectangle;
     }
 
     /**
@@ -90,7 +91,7 @@ public class Block implements Collidable, Sprite, HitNotifier {
      * @return the block's color.
      */
     public Color getColor() {
-        return this.color;
+        return color;
     }
 
     /**
@@ -99,7 +100,7 @@ public class Block implements Collidable, Sprite, HitNotifier {
      * @return the hits
      */
     public int getHits() {
-        return this.hits;
+        return hits;
     }
 
     /**
@@ -109,54 +110,54 @@ public class Block implements Collidable, Sprite, HitNotifier {
      * @return boolean.
      */
     public Velocity hit(Ball hitter, Point collisionPoint, Velocity currentVelocity) {
-        boolean flipX = false;
-        boolean flipY = false;
-        if (this.rectangle.getTop().isContainingPoint(collisionPoint)
-                || this.rectangle.getBottom().isContainingPoint(collisionPoint)) {
-            flipY = true;
+        boolean topOrBottomHit = false;
+        boolean leftOrRightHit = false;
+        if (rectangle.getTop().containsPoint(collisionPoint)
+                || rectangle.getBottom().containsPoint(collisionPoint)) {
+            topOrBottomHit = true;
         }
-        if (this.rectangle.getLeft().isContainingPoint(collisionPoint)
-                || this.rectangle.getRight().isContainingPoint(collisionPoint)) {
-            flipX = true;
+        if (rectangle.getLeft().containsPoint(collisionPoint)
+                || rectangle.getRight().containsPoint(collisionPoint)) {
+            leftOrRightHit = true;
         }
-        if ((flipX || flipY) && this.hits > 0) {
-            this.hits--;
+        if (topOrBottomHit || leftOrRightHit) {
+            if (hits > 0) {
+                hits--;
+            }
         }
-        this.notifyHit(hitter);
 
-        if (flipX && flipY) {
-            return new Velocity(-currentVelocity.getDx(),
-                    -currentVelocity.getDy());
-        } else {
-            if (flipX) {
-                return new Velocity(-currentVelocity.getDx(),
-                        currentVelocity.getDy());
-            }
-            if (flipY) {
-                return new Velocity(currentVelocity.getDx(),
-                        -currentVelocity.getDy());
-            }
+        notifyHit(hitter);
+
+        if (topOrBottomHit && leftOrRightHit) {
+            return new Velocity(-currentVelocity.getDx(), -currentVelocity.getDy());
         }
+        if (topOrBottomHit) {
+            return new Velocity(currentVelocity.getDx(), -currentVelocity.getDy());
+        }
+        if (leftOrRightHit) {
+            return new Velocity(-currentVelocity.getDx(), currentVelocity.getDy());
+        }
+
         return currentVelocity;
-
     }
+
     /**
      * this method draws the block on given DrawSurface.
      * @param surface the DrawSurface to draw on.
      */
     public void drawOn(DrawSurface surface) {
-        surface.setColor(this.color);
+        surface.setColor(color);
         surface.fillRectangle(
-                (int) Math.round(this.rectangle.getUpperLeft().getX()),
-                (int) Math.round(this.rectangle.getUpperLeft().getY()),
-                (int) Math.round(this.rectangle.getWidth()),
-                (int) Math.round(this.rectangle.getHeight()));
+                (int) Math.round(rectangle.getUpperLeft().getX()),
+                (int) Math.round(rectangle.getUpperLeft().getY()),
+                (int) Math.round(rectangle.getWidth()),
+                (int) Math.round(rectangle.getHeight()));
         surface.setColor(Color.BLACK);
         surface.drawRectangle(
-                (int) Math.round(this.rectangle.getUpperLeft().getX()),
-                (int) Math.round(this.rectangle.getUpperLeft().getY()),
-                (int) Math.round(this.rectangle.getWidth()),
-                (int) Math.round(this.rectangle.getHeight()));
+                (int) Math.round(rectangle.getUpperLeft().getX()),
+                (int) Math.round(rectangle.getUpperLeft().getY()),
+                (int) Math.round(rectangle.getWidth()),
+                (int) Math.round(rectangle.getHeight()));
 
     }
 
@@ -172,7 +173,7 @@ public class Block implements Collidable, Sprite, HitNotifier {
      *
      * @param game the game.
      */
-    public void addToGame(Game game) {
+    public void addToGame(GameLevel game) {
         game.addCollidable(this);
         game.addSprite(this);
     }
@@ -182,7 +183,7 @@ public class Block implements Collidable, Sprite, HitNotifier {
      *
      * @param game the game
      */
-    public void removeFromGame(Game game) {
+    public void removeFromGame(GameLevel game) {
         game.removeCollidable(this);
         game.removeSprite(this);
 
@@ -193,25 +194,27 @@ public class Block implements Collidable, Sprite, HitNotifier {
      */
     private void notifyHit(Ball hitter) {
         // Make a copy of the hitListeners before iterating over them.
-        List<HitListener> listeners = new ArrayList<HitListener>(this.hitListeners);
+        List<HitListener> listeners = new ArrayList<HitListener>(hitListeners);
         // Notify all listeners about a hit event:
         for (HitListener hl : listeners) {
             hl.hitEvent(this, hitter);
         }
     }
+
     /**
      * this method adds a given hit listener to the block's hit listeners list.
      * @param hl the given hit listener.
      */
     public void addHitListener(HitListener hl) {
-        this.hitListeners.add(hl);
+        hitListeners.add(hl);
     }
+
     /**
      * this method removes a given hit listener
      * from the block's hit listeners list.
      * @param hl the given hit listener.
      */
     public void removeHitListener(HitListener hl) {
-        this.hitListeners.remove(hl);
+        hitListeners.remove(hl);
     }
 }

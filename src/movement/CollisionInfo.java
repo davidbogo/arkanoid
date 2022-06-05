@@ -13,14 +13,13 @@ public class CollisionInfo {
      * construct a collisionInfo object from
      * collision point and collision object.
      *
-     * @param collisionPoint  the collision point.
-     * @param collisionObject the collision object.
+     * @param colPoint      the collision point.
+     * @param colObj        the collision object.
      */
-    public CollisionInfo(Point collisionPoint, Collidable collisionObject) {
-        this.collisionPoint = collisionPoint;
-        this.collisionObject = collisionObject;
+    public CollisionInfo(Point colPoint, Collidable colObj) {
+        collisionPoint = colPoint;
+        collisionObject = colObj;
     }
-    // the point at which the collision occurs.
 
     /**
      * this method returns the collision point from this collisionInfo.
@@ -28,7 +27,7 @@ public class CollisionInfo {
      * @return the collision point from this collisionInfo.
      */
     public Point collisionPoint() {
-        return this.collisionPoint;
+        return collisionPoint;
     }
 
     /**
@@ -37,6 +36,6 @@ public class CollisionInfo {
      * @return the collision object from this collisionInfo.
      */
     public Collidable collisionObject() {
-        return this.collisionObject;
+        return collisionObject;
     }
 }

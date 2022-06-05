@@ -1,8 +1,8 @@
 package miscellaneous;
-
 import gameelements.Ball;
 import geometry.Line;
 import geometry.Point;
+import geometry.Rectangle;
 import movement.Collidable;
 import movement.CollisionInfo;
 
@@ -20,7 +20,7 @@ public class GameEnvironment {
      * construct a game environment from a list of collidables.
      */
     public GameEnvironment() {
-        this.collidableList = new ArrayList<Collidable>();
+        collidableList = new ArrayList<Collidable>();
     }
 
     /**
@@ -29,7 +29,7 @@ public class GameEnvironment {
      * @param c the given collidable object.
      */
     public void addCollidable(Collidable c) {
-        this.collidableList.add(c);
+        collidableList.add(c);
     }
 
     /**
@@ -42,33 +42,30 @@ public class GameEnvironment {
      * @return collision information, null if there isn't any.
      */
     public CollisionInfo getClosestCollision(Line trajectory) {
-        if (this.collidableList.isEmpty()) {
+        if (collidableList.isEmpty()) {
             return null;
         }
         int i = 0;
-        while (trajectory.closestIntersectionToStartOfLine(
-                this.collidableList.get(i).getCollisionRectangle()) == null
-                && i < this.collidableList.size() - 1) {
+        while ((trajectory.closestIntersectionToStartOfLine(collidableList.get(i).getCollisionRectangle()) == null)
+                && (i < collidableList.size() - 1)) {
             i++;
         }
-        Point closest = trajectory.closestIntersectionToStartOfLine(
-                this.collidableList.get(i).getCollisionRectangle());
+        Point closest = trajectory.closestIntersectionToStartOfLine(collidableList.get(i).getCollisionRectangle());
         int collisionIndex = i;
-        for (int j = i; j < this.collidableList.size(); ++j) {
+        for (int j = i; j < collidableList.size(); ++j) {
             if (trajectory.closestIntersectionToStartOfLine(
-                    this.collidableList.get(j).getCollisionRectangle()) != null) {
+                    collidableList.get(j).getCollisionRectangle()) != null) {
                 if (closest.distance(trajectory.start())
                         > trajectory.closestIntersectionToStartOfLine(
-                        this.collidableList.get(j).getCollisionRectangle()).
+                        collidableList.get(j).getCollisionRectangle()).
                         distance(trajectory.start())) {
                     closest = trajectory.closestIntersectionToStartOfLine(
-                            this.collidableList.get(j).getCollisionRectangle());
+                            collidableList.get(j).getCollisionRectangle());
                     collisionIndex = j;
                 }
             }
         }
-        return new CollisionInfo(closest,
-                this.collidableList.get(collisionIndex));
+        return new CollisionInfo(closest, collidableList.get(collisionIndex));
     }
 
     /**
@@ -78,14 +75,34 @@ public class GameEnvironment {
      *
      * @param ball the given ball.
      */
-    public void stuckHandel(Ball ball) {
+    public void checkForStuckBall(Ball ball) {
         Random random = new Random();
-        if (this.collidableList.isEmpty()) {
+        if (collidableList.isEmpty()) {
             return;
         }
-        for (int i = 0; i < this.collidableList.size(); i++) {
-            if (this.collidableList.get(i).getCollisionRectangle().isContainPoint(ball.getCenter())) {
-                ball.setCenter(350 + random.nextInt(100), 560);
+        for (int i = 0; i < collidableList.size(); i++) {
+            Rectangle collisionRec = collidableList.get(i).getCollisionRectangle();
+            if (collisionRec.containsPoint(ball.getCenter())) {
+                boolean needToRandomize = ball.registerStuckCondition();
+                if (needToRandomize) {
+                    ball.setCenter(350 + random.nextInt(100), 560);
+                    if (ball.getVelocity().getDy() > 0) {
+                        // We must make sure the ball is going up and not down after the
+                        // randomization
+                        ball.setVelocity(ball.getVelocity().getDx(), -ball.getVelocity().getDy());
+                    }
+                } else {
+                    // We will reverse the ball's direction and move it along the new trajectory
+                    // outside the collidable object it's stuck in
+                    ball.setVelocity(-ball.getVelocity().getDx(), -ball.getVelocity().getDy());
+                    Point newCenter = new Point(ball.getCenter().getX(), ball.getCenter().getY());
+                    do {
+                        newCenter = new Point(
+                                newCenter.getX() + ball.getVelocity().getDx(),
+                                newCenter.getY() + ball.getVelocity().getDy());
+                    } while (collisionRec.containsPoint(newCenter));
+                    ball.setCenter(newCenter.getX(), newCenter.getY());
+                }
             }
         }
     }
@@ -94,6 +111,6 @@ public class GameEnvironment {
      * @param c the given collidable object.
      */
     public void removeCollidable(Collidable c) {
-        this.collidableList.remove(c);
+        collidableList.remove(c);
     }
 }

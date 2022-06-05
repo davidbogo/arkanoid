@@ -2,7 +2,7 @@ package gameelements;
 
 import geometry.Line;
 import geometry.Point;
-import miscellaneous.Game;
+import levels.GameLevel;
 import miscellaneous.GameEnvironment;
 import miscellaneous.Sprite;
 import movement.CollisionInfo;
@@ -24,83 +24,32 @@ public class Ball implements Sprite {
     private int horizontalBound;
     private int verticalBound;
     private GameEnvironment gameEnvironment;
-
-    /**
-     * construct unbounded ball from point, radius and color.
-     *
-     * @param center the initial location of the ball's center.
-     * @param r      the ball's radius.
-     * @param color  the ball's color.
-     */
-    public Ball(Point center, int r, Color color) {
-        this.center = center;
-        this.radius = r;
-        this.color = color;
-        this.velocity = new Velocity(0, 0);
-        this.isBounded = false;
-        this.gameEnvironment = new GameEnvironment();
-    }
-
-    /**
-     * construct unbounded ball from two coordinates, radius and color.
-     *
-     * @param x     the x coordinate of the initial location of the ball's center.
-     * @param y     the y coordinate of the initial location of the ball's center.
-     * @param r     the ball's radius.
-     * @param color the ball's color.
-     */
-    public Ball(int x, int y, int r, Color color) {
-        this.center = new Point((double) x, (double) y);
-        this.radius = r;
-        this.color = color;
-        this.velocity = new Velocity(0, 0);
-        this.isBounded = false;
-        this.gameEnvironment = new GameEnvironment();
-    }
-
-    /**
-     * construct bounded ball from point, radius and color.
-     *
-     * @param center          the initial location of the ball's center.
-     * @param r               the ball's radius.
-     * @param color           the ball's color.
-     * @param horizontalBound the horizontal Bound of the ball.
-     * @param verticalBound   the vertical Bound of the ball.
-     * @param gameEnvironment the game environment
-     */
-    public Ball(Point center, int r, Color color,
-                int horizontalBound, int verticalBound, GameEnvironment gameEnvironment) {
-        this.center = center;
-        this.radius = r;
-        this.color = color;
-        this.velocity = new Velocity(0, 0);
-        this.isBounded = true;
-        this.verticalBound = verticalBound;
-        this.horizontalBound = horizontalBound;
-        this.gameEnvironment = gameEnvironment;
-    }
+    private long lastStuckTime;
+    private long beforeLastStuckTime;
 
     /**
      * construct bounded ball from two coordinates, radius and color.
      *
-     * @param x               the x coordinate of the initial location of the ball's center.
-     * @param y               the y coordinate of the initial location of the ball's center.
-     * @param r               the ball's radius.
-     * @param color           the ball's color.
-     * @param horizontalBound the horizontal Bound of the ball.
-     * @param verticalBound   the vertical Bound of the ball.
-     * @param gameEnvironment the game environment
+     * @param x         the x coordinate of the initial location of the ball's center.
+     * @param y         the y coordinate of the initial location of the ball's center.
+     * @param r         the ball's radius.
+     * @param col       the ball's color.
+     * @param hBound    horizontal Bound of the ball.
+     * @param vBound    vertical Bound of the ball.
+     * @param gameEnv   the game environment
      */
-    public Ball(int x, int y, int r, Color color,
-                int horizontalBound, int verticalBound, GameEnvironment gameEnvironment) {
-        this.center = new Point((double) x, (double) y);
-        this.radius = r;
-        this.color = color;
-        this.velocity = new Velocity(0, 0);
-        this.isBounded = true;
-        this.verticalBound = verticalBound;
-        this.horizontalBound = horizontalBound;
-        this.gameEnvironment = gameEnvironment;
+    public Ball(int x, int y, int r, Color col,
+                int hBound, int vBound, GameEnvironment gameEnv) {
+        center = new Point((double) x, (double) y);
+        radius = r;
+        color = col;
+        velocity = new Velocity(0, 0);
+        isBounded = true;
+        verticalBound = vBound;
+        horizontalBound = hBound;
+        gameEnvironment = gameEnv;
+        lastStuckTime = 0;
+        beforeLastStuckTime = 0;
     }
 
     /**
@@ -109,7 +58,7 @@ public class Ball implements Sprite {
      * @return the rounded x coordinate of the ball's center.
      */
     public int getX() {
-        return (int) Math.round(this.center.getX());
+        return (int) Math.round(center.getX());
     }
 
     /**
@@ -118,7 +67,7 @@ public class Ball implements Sprite {
      * @return the rounded y coordinate of the ball's center.
      */
     public int getY() {
-        return (int) Math.round(this.center.getY());
+        return (int) Math.round(center.getY());
     }
 
     /**
@@ -127,8 +76,9 @@ public class Ball implements Sprite {
      * @return the ball's radius.
      */
     public int getSize() {
-        return this.radius;
+        return radius;
     }
+
     /**
      * this method returns the ball's color.
      * @return the ball's color.
@@ -139,7 +89,7 @@ public class Ball implements Sprite {
      * @return the ball's center point.
      */
     public Point getCenter() {
-        return this.center;
+        return center;
     }
 
     /**
@@ -148,7 +98,7 @@ public class Ball implements Sprite {
      * @return the color
      */
     public Color getColor() {
-        return this.color;
+        return color;
     }
 
     /**
@@ -158,7 +108,9 @@ public class Ball implements Sprite {
      */
     public void drawOn(DrawSurface surface) {
         surface.setColor(color);
-        surface.fillCircle(this.getX(), this.getY(), this.radius);
+        surface.fillCircle(getX(), getY(), radius);
+        surface.setColor(Color.BLACK);
+        surface.drawCircle(getX(), getY(), radius);
     }
 
     /**
@@ -167,13 +119,9 @@ public class Ball implements Sprite {
      * @param v Movement.Velocity object to apply on the ball.
      */
     public void setVelocity(Velocity v) {
-        this.velocity = v;
+        velocity = v;
     }
-    /**
-     * this method sets the ball's velocity.
-     * @param dx the change in position on the x axis.
-     * @param dy the change in position on the y axis.
-     */
+
     /**
      * this method sets a new center for the ball.
      *
@@ -181,7 +129,7 @@ public class Ball implements Sprite {
      * @param y the y coordinate for the new center.
      */
     public void setCenter(double x, double y) {
-        this.center = new Point(x, y);
+        center = new Point(x, y);
     }
 
     /**
@@ -191,7 +139,7 @@ public class Ball implements Sprite {
      * @param dy the dy
      */
     public void setVelocity(double dx, double dy) {
-        this.velocity = new Velocity(dx, dy);
+        velocity = new Velocity(dx, dy);
     }
 
     /**
@@ -200,7 +148,7 @@ public class Ball implements Sprite {
      * @return the ball's velocity.
      */
     public Velocity getVelocity() {
-        return this.velocity;
+        return velocity;
     }
 
     /**
@@ -209,7 +157,7 @@ public class Ball implements Sprite {
      * @return the environment
      */
     public GameEnvironment getEnvironment() {
-        return this.gameEnvironment;
+        return gameEnvironment;
     }
 
     /**
@@ -219,10 +167,10 @@ public class Ball implements Sprite {
      */
     public Line trajectory() {
         Point startOfTrajectory = new Point(
-                Math.floor(this.center.getX()), Math.floor(this.center.getY()));
+                Math.floor(center.getX()), Math.floor(center.getY()));
         Point endOfTrajectory = new Point(
-                Math.floor(this.center.getX() + this.velocity.getDx()),
-                Math.floor(this.center.getY() + this.velocity.getDy()));
+                Math.floor(center.getX() + velocity.getDx()),
+                Math.floor(center.getY() + velocity.getDy()));
         return new Line(startOfTrajectory, endOfTrajectory);
     }
 
@@ -230,25 +178,25 @@ public class Ball implements Sprite {
      * this method moves the ball's center according to it's velocity.
      */
     public void moveOneStep() {
-        CollisionInfo closestCollision = this.gameEnvironment.getClosestCollision(this.trajectory());
+        CollisionInfo closestCollision = gameEnvironment.getClosestCollision(trajectory());
         if (closestCollision != null) {
             if (closestCollision.collisionObject() != null && closestCollision.collisionPoint() != null) {
                 Velocity newVelocity = closestCollision.collisionObject().hit(
                         this,
                         closestCollision.collisionPoint(),
-                        this.getVelocity());
-                this.setVelocity(newVelocity);
+                        velocity);
+                setVelocity(newVelocity);
             }
         }
-        this.center = this.getVelocity().applyToPoint(this.center);
+        center = velocity.applyToPoint(center);
     }
 
     /**
      * this method notifies the ball that a time unit has passed.
      */
     public void timePassed() {
-        this.moveOneStep();
-        this.gameEnvironment.stuckHandel(this);
+        moveOneStep();
+        gameEnvironment.checkForStuckBall(this);
     }
 
     /**
@@ -256,14 +204,50 @@ public class Ball implements Sprite {
      *
      * @param game the game that is currently played.
      */
-    public void addToGame(Game game) {
+    public void addToGame(GameLevel game) {
         game.addSprite(this);
     }
+
     /**
      * this method removes the ball from the game's sprite list.
      * @param game the game that is currently played.
      */
-    public void removeFromGame(Game game) {
+    public void removeFromGame(GameLevel game) {
         game.removeSprite(this);
+    }
+
+    /**
+     * This method registers the time the ball got stuck and decides whether we can try to unstuck it by sending it
+     * back from the current location to where it cam from or need to randomly move it to a new location.
+     *
+     * @return true if the ball needs to be moved to a new randomized location
+     */
+    public boolean registerStuckCondition() {
+        boolean needToRandomize = false;
+        long curTime = System.currentTimeMillis();
+        if (beforeLastStuckTime != 0) {
+            if (curTime - beforeLastStuckTime < 1000) {
+                // This is the third time in less than a second that the ball got stuck.
+                // We'll request the caller to move it to a new randomized location
+                beforeLastStuckTime = 0;
+                lastStuckTime = 0;
+                needToRandomize = true;
+            } else {
+                beforeLastStuckTime = lastStuckTime;
+                lastStuckTime = curTime;
+            }
+        } else if (lastStuckTime != 0) {
+            if (curTime - lastStuckTime < 1000) {
+                // This is the second time in less than a second that the ball got stuck.
+                // We still treat this situation as recoverable
+                beforeLastStuckTime = lastStuckTime;
+            } else {
+                beforeLastStuckTime = 0;
+            }
+            lastStuckTime = curTime;
+        } else {
+            lastStuckTime = curTime;
+        }
+        return needToRandomize;
     }
 }
