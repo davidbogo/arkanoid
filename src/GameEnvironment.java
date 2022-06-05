@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * The type Game environment.
@@ -67,4 +68,23 @@ public class GameEnvironment {
     public List<Collidable> getCollidables() {
         return collidables;
     }
+
+    /**
+     * Stuck handeler.
+     *
+     * @param ball the ball
+     */
+    public void stuckHandeler(Ball ball) {
+        Random random = new Random();
+        if (collidables.isEmpty()) {
+            return;
+        }
+        for (int i = 0; i < 4; i++) {
+            if (this.collidables.get(i).getCollisionRectangle().
+                    isContainingPoint(ball.getCenter())) {
+                ball.setCenter(350 + random.nextInt(100), 560);
+            }
+        }
+    }
+
 }

@@ -53,7 +53,8 @@ public class Game {
         int iVerticalBound = (int) verticalBound;
         Block topMargin = new Block(0, 0, horizontalBound, 20);
         Block bottomMargin = new Block(
-                20, verticalBound - 20, horizontalBound - 2 * 20, 20);
+                20, verticalBound - 20, horizontalBound - 2 * 20,
+                20);
         Block leftMargin = new Block(
                 0, 20, 20, verticalBound - 20);
         Block rightMargin = new Block(
@@ -66,8 +67,8 @@ public class Game {
                 Color.WHITE, iHorizontalBound, iVerticalBound, environment);
         Ball ball2 = new Ball(horizontalBound / 2, verticalBound - 26, 5,
                 Color.WHITE, iHorizontalBound, iVerticalBound, environment);
-        ball1.setVelocity(1, -1, 800, 600, 0, 0, environment);
-        ball2.setVelocity(-1, -1, 800, 600, 0, 0, environment);
+        ball1.setVelocity(3, -3, 800, 600, environment);
+        ball2.setVelocity(-3, -3, 800, 600, environment);
         ball1.addToGame(this);
         ball2.addToGame(this);
         Block[] row1 = new Block[12];
@@ -111,7 +112,7 @@ public class Game {
        Paddle paddle = new Paddle(horizontalBound / 2 - paddleWidth / 2,
                 verticalBound - margin - paddleHeight,
                 paddleWidth, paddleHeight,
-                Color.YELLOW, this.gui, margin);
+                Color.YELLOW, gui, margin);
         paddle.addToGame(this);
 
     }
@@ -127,9 +128,9 @@ public class Game {
             DrawSurface d = gui.getDrawSurface();
             d.setColor(Color.DARK_GRAY);
             d.fillRectangle(0, 0, 800, 600);
-            this.sprites.drawAllOn(d);
+            sprites.drawAllOn(d);
             gui.show(d);
-            this.sprites.notifyAllTimePassed();
+            sprites.notifyAllTimePassed();
             long usedTime = System.currentTimeMillis() - startTime;
             long milliSecondLeftToSleep = millisecondsPerFrame - usedTime;
             if (milliSecondLeftToSleep > 0) {

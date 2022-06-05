@@ -135,6 +135,15 @@ public class Ball implements Sprite {
      *
      * @return the size
      */
+    public Point getCenter() {
+        return center;
+    }
+
+    /**
+     * Gets size.
+     *
+     * @return the size
+     */
     public int getSize() {
         return radius;
     }
@@ -214,13 +223,21 @@ public class Ball implements Sprite {
      * @param dy          the dy
      * @param screenW     the screen w
      * @param screenH     the screen h
-     * @param xBoundary   the x boundary
-     * @param yBoundary   the y boundary
      * @param environment the environment
      */
-    public void setVelocity(double dx, double dy, int screenW, int screenH,
-                            double xBoundary, double yBoundary, GameEnvironment environment) {
-        ballVelocity = new Velocity(dx, dy, radius, screenW, screenH, xBoundary, yBoundary, gameEnvironment);
+    public void setVelocity(double dx, double dy, int screenW, int screenH, GameEnvironment environment) {
+        ballVelocity = new Velocity(dx, dy, radius, screenW, screenH, environment);
+    }
+
+    /**
+     * Gets velocity.
+     *
+     * @param xx the x
+     * @param yy the y
+     * sets velocity
+     */
+    public void setCenter(double xx, double yy) {
+        center = new Point(xx, yy);
     }
 
     /**
@@ -250,14 +267,18 @@ public class Ball implements Sprite {
      * Move one step.
      */
     public void moveOneStep() {
-        center = getVelocity().applyToPoint(currentBallLocation());
+        if (gameEnvironment.getClosestCollision(trajectory()) != null) {
+            setVelocity(gameEnvironment.getClosestCollision(trajectory()).collisionObject().hit(
+                    gameEnvironment.getClosestCollision(trajectory()).collisionPoint(), getVelocity()));
+        }
+        center = getVelocity().applyToPoint(center);
     }
-
     /**
      * timePassed.
      */
     public void timePassed() {
         moveOneStep();
+        gameEnvironment.stuckHandeler(this);
     }
 
     /**

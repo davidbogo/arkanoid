@@ -90,24 +90,32 @@ public class Block implements Collidable, Sprite {
      * @param currentVelocity for the speed
      * @return Velocity after hit.
      */
-    public Velocity hit(Point collisionPoint, Velocity currentVelocity) {
-        Line intersectionWithBlockLine = new Line(collisionPoint, collisionPoint);
-        if (intersectionWithBlockLine.isIntersecting(upLine) && intersectionWithBlockLine.isIntersecting(leftLine)
-         || intersectionWithBlockLine.isIntersecting(upLine) && intersectionWithBlockLine.isIntersecting(rightLine)
-         || intersectionWithBlockLine.isIntersecting(lowLine) && intersectionWithBlockLine.isIntersecting(leftLine)
-         || intersectionWithBlockLine.isIntersecting(lowLine) && intersectionWithBlockLine.isIntersecting(rightLine)) {
-           return new Velocity(-currentVelocity.getHorizontalSpeed(), -currentVelocity.getVerticalSpeed());
-        } else if (intersectionWithBlockLine.isIntersecting(upLine)) {
-           return new Velocity(currentVelocity.getHorizontalSpeed(), -currentVelocity.getVerticalSpeed());
-        } else if (intersectionWithBlockLine.isIntersecting(lowLine)) {
-           return new Velocity(currentVelocity.getHorizontalSpeed(), -currentVelocity.getVerticalSpeed());
-        } else if (intersectionWithBlockLine.isIntersecting(leftLine)) {
-           return new Velocity(-currentVelocity.getHorizontalSpeed(), currentVelocity.getVerticalSpeed());
-        } else {
-           return new Velocity(-currentVelocity.getHorizontalSpeed(), currentVelocity.getVerticalSpeed());
-        }
-    }
-
+   public Velocity hit(Point collisionPoint, Velocity currentVelocity) {
+       boolean flipHorizontalSpeed = false;
+       boolean flipVerticalSpeed = false;
+       if (upLine.isContainingPoint(collisionPoint)
+               || lowLine .isContainingPoint(collisionPoint)) {
+           flipVerticalSpeed = true;
+       }
+       if (leftLine.isContainingPoint(collisionPoint)
+               || rightLine.isContainingPoint(collisionPoint)) {
+           flipHorizontalSpeed = true;
+       }
+       if (flipHorizontalSpeed && flipVerticalSpeed) {
+           return new Velocity(-currentVelocity.getHorizontalSpeed(),
+                   -currentVelocity.getVerticalSpeed());
+       } else {
+           if (flipHorizontalSpeed) {
+               return new Velocity(-currentVelocity.getHorizontalSpeed(),
+                       currentVelocity.getVerticalSpeed());
+           }
+           if (flipVerticalSpeed) {
+               return new Velocity(currentVelocity.getHorizontalSpeed(),
+                       -currentVelocity.getVerticalSpeed());
+           }
+       }
+       return currentVelocity;
+   }
     /**
      *
      * @param d for drawSurface.

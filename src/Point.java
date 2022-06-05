@@ -63,7 +63,6 @@ public class Point {
      * @return the y
      */
     public double getY() {
-
         return y;
     }
 }

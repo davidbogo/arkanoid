@@ -117,62 +117,35 @@ public class Line {
     }
 
     /**
-     * Gets intersection point.
+     * this method calculating intersection point of two lines.
      *
-     * @param other the other
-     * @return the intersection point
+     * @param other the other line to check intersection with.
+     * @return the intersection point if the lines intersect, null otherwise.
      */
-    Point getIntersectionPoint(Line other) {
-        double otherXStart = other.start().getX();
-        double otherYStart = other.start().getY();
-        double otherXEnd = other.end().getX();
-        double otherYEnd = other.end().getY();
-        x1 = start().getX();
-        x2 = end().getX();
-        y1 = start().getY();
-        y2 = end().getY();
-
-        if (Math.min(otherXStart, otherXEnd) > Math.max(x1, x2)
-            || Math.max(otherXStart, otherXEnd) < Math.min(x1, x2)
-            || Math.min(otherYStart, otherYEnd) > Math.max(y1, y2)
-            || Math.max(otherYStart, otherYEnd) < Math.min(y1, y2)) {
+    public Point getIntersectionPoint(Line other) {
+        double aOther = other.end.getY() - other.start.getY();
+        double bOther = other.start.getX() - other.end.getX();
+        double cOther = aOther * other.start.getX()
+                + bOther * other.start.getY();
+        double aThis = end.getY() - start.getY();
+        double bThis = start.getX() - end.getX();
+        double cThis = aThis * start.getX() + bThis * start.getY();
+        double det = aThis * bOther - aOther * bThis;
+        if (det == 0) {
+            // Lines are parallel - no intersection
             return null;
-        }
-        double intersectX = 0.0;
-        double intersectY = 0.0;
-        double nLine1 = 0.0;
-        double nLine2 = 0;
-        double inclineLine1 = 0;
-        double inclineLine2 = 0;
-        if (x1 == x2) {
-            intersectX = x1;
-            inclineLine2 = ((otherYStart - otherYEnd) / (otherXStart - otherXEnd));
-            nLine2 = (otherYStart - ((inclineLine2) * otherXStart));
-            intersectY = ((intersectX * inclineLine2) + nLine2);
-        } else if (otherXEnd == otherXStart) {
-            inclineLine1 = ((y1 - y2) / (x1 - x2));
-            nLine1 = (y1 - ((inclineLine1) * x1));
-            intersectX = otherXEnd;
-            intersectY = ((intersectX * inclineLine1) + nLine1);
         } else {
-            inclineLine1 = ((y1 - y2) / (x1 - x2));
-            inclineLine2 = ((otherYStart - otherYEnd) / (otherXStart - otherXEnd));
-            nLine1 = (y1 - ((inclineLine1) * x1));
-            nLine2 = (otherYStart - ((inclineLine2) * otherXStart));
-            intersectX = ((nLine2 - nLine1) / (inclineLine1 - inclineLine2));
-            intersectY = ((intersectX * inclineLine1) + nLine1);
-            if (x1 > intersectX && x2 > intersectX
-                    || x1 < intersectX && x2 < intersectX
-                    || y1 > intersectY && y2 > intersectY
-                    || y1 < intersectY && y2 < intersectY
-                    || otherXStart > intersectX && otherXEnd > intersectX
-                    || otherXStart < intersectX && otherXEnd < intersectX
-                    || otherYStart > intersectY && otherYEnd > intersectY
-                    || otherYStart < intersectY && otherYEnd < intersectY) {
+            double intersectionX = (bOther * cThis - bThis * cOther) / det;
+            double intersectionY = (aThis * cOther - aOther * cThis) / det;
+            Point intersection =
+                    new Point(intersectionX, intersectionY);
+            if (isInBounds(intersection)
+                    && other.isInBounds(intersection)) {
+                return intersection;
+            } else {
                 return null;
             }
         }
-        return new Point(intersectX, intersectY);
     }
 
     /**
@@ -214,57 +187,47 @@ public class Line {
 // If this line does not intersect with the rectangle, return null.
     // Otherwise, return the closest intersection point to the
     // start of the line.
-    public Point closestIntersectionToStartOfLine(Rectangle rect) {
-        Line upLine = new Line(rect.getUpperLeft(), rect.getUpperRight());
-        Line downLine = new Line(rect.getLowerLeft(), rect.getLowerRight());
-        Line leftLine = new Line(rect.getUpperLeft(), rect.getLowerLeft());
-        Line rightLine = new Line(rect.getUpperRight(), rect.getLowerRight());
-        Point winnerUpOrDown;
-        Point winnerLeftOrRight;
-        if (intersectionWith(upLine).distance(start) < intersectionWith(downLine).distance(start)) {
-            winnerUpOrDown = intersectionWith(upLine);
-        } else if (intersectionWith(upLine).distance(start) > intersectionWith(downLine).distance(start)) {
-            winnerUpOrDown = intersectionWith(downLine);
+public Point closestIntersectionToStartOfLine(Rectangle rect) {
+    Point[] point = new Point[4];
+    Point closest;
+    point[0] = intersectionWith(rect.getUpLine());
+    point[1] = intersectionWith(rect.getDownLine());
+    point[2] = intersectionWith(rect.getLeftLine());
+    point[3] = intersectionWith(rect.getRightLine());
+    int intersectionCounter = 0;
+    for (int i = 0; i < 4; ++i) {
+        if (point[i] != null) {
+            intersectionCounter++;
+        }
+    }
+    if (intersectionCounter == 0) {
+        return null;
+    } else {
+        int i = 0;
+        while (point[i] == null) {
+            i++;
+        }
+        closest = point[i];
+        if (intersectionCounter == 1) {
+            return closest;
         } else {
-            if (isIntersecting(upLine)) {
-                winnerUpOrDown = intersectionWith(upLine);
-            } else {
-                winnerUpOrDown = null;
+            while (point[i] != null && i < 4) {
+                if (closest.distance(start)
+                        > point[i].distance(start)) {
+                    closest = point[i];
+                }
+                i++;
             }
         }
-            if (intersectionWith(leftLine).distance(start) < intersectionWith(rightLine).distance(start)) {
-                winnerLeftOrRight = intersectionWith(leftLine);
-            } else if (intersectionWith(leftLine).distance(start) > intersectionWith(rightLine).distance(start)) {
-                winnerLeftOrRight = intersectionWith(rightLine);
-            } else {
-                if (isIntersecting(leftLine)) {
-                    winnerLeftOrRight = intersectionWith(leftLine);
-                } else {
-                    winnerLeftOrRight = null;
-                }
-            }
-            if (winnerLeftOrRight != null && winnerUpOrDown != null) {
-                if (start.distance(winnerLeftOrRight) < start.distance(winnerUpOrDown)) {
-                    return winnerLeftOrRight;
-                } else if (start.distance(winnerLeftOrRight) > start.distance(winnerUpOrDown)) {
-                    return winnerUpOrDown;
-                } else {
-                    return winnerLeftOrRight;
-                }
-            } else if (winnerLeftOrRight == null && winnerUpOrDown != null) {
-                return winnerUpOrDown;
-            } else if (winnerLeftOrRight != null && winnerUpOrDown == null) {
-                return winnerLeftOrRight;
-            } else {
-                return null;
-            }
     }
+    return closest;
+}
 
     /**
      * Paddle is containing point boolean.
      *
      * @param point the point
-     * @return the boolean
+     * @return the boolean of whether the paddle is being hit
      */
     public boolean paddleIsContainingPoint(Point point) {
         if (point == null) {
@@ -281,6 +244,36 @@ public class Line {
             }
         }
         return false;
+    }
+
+    /**
+     * Is in bounds boolean.
+     *
+     * @param point the point
+     * @return the boolean
+     */
+    public boolean isInBounds(Point point) {
+        double thisMaxX = Math.max(start.getX(), end.getX());
+        double thisMinX = Math.min(start.getX(), end.getX());
+        double thisMaxY = Math.max(start.getY(), end.getY());
+        double thisMinY = Math.min(start.getY(), end.getY());
+        return point.getX() >= thisMinX && point.getX() <= thisMaxX
+                && point.getY() >= thisMinY && point.getY() <= thisMaxY;
+    }
+
+    /**
+     * Is containing point boolean.
+     *
+     * @param point the point
+     * @return the boolean
+     */
+    public boolean isContainingPoint(Point point) {
+        if (point == null) {
+            return false;
+        }
+        Line tmpLine = new Line(start, point);
+        Point tmpPoint = tmpLine.intersectionWith(this);
+        return tmpPoint == null && isInBounds(point);
     }
 
 }

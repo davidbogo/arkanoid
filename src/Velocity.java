@@ -71,6 +71,22 @@ public class Velocity {
     /**
      * Instantiates a new Velocity.
      *
+     * @param vel the velocity given to the constructor
+     */
+    public Velocity(Velocity vel) {
+        horizontalSpeed = vel.getHorizontalSpeed();
+        verticalSpeed = vel.getVerticalSpeed();
+        screenHeight = 0;
+        screenWidth = 0;
+        radius = 0;
+        xBound = 0;
+        yBound = 0;
+        stuffOfTheGame = null;
+    }
+
+    /**
+     * Instantiates a new Velocity.
+     *
      * @param dx        the dx speed
      * @param dy        the dy speed
      * @param r         the r radius
@@ -98,19 +114,16 @@ public class Velocity {
      * @param r           the r
      * @param width       the width
      * @param height      the height
-     * @param xBoundary   the x boundary
-     * @param yBoundary   the y boundary
      * @param environment the environment
      */
-    public Velocity(double dx, double dy, int r, int width, int height,
-                    double xBoundary, double yBoundary, GameEnvironment environment) {
+    public Velocity(double dx, double dy, int r, int width, int height, GameEnvironment environment) {
         horizontalSpeed = dx;
         verticalSpeed = dy;
         screenHeight = height;
         screenWidth = width;
         radius = r;
-        xBound = xBoundary;
-        yBound = yBoundary;
+        xBound = 0;
+        yBound = 0;
         stuffOfTheGame = environment;
     }
 
@@ -149,63 +162,10 @@ public class Velocity {
      */
 // Take a point with position (x,y) and return a new point
     // with position (x+dx, y+dy)
-    public Point applyToPoint(Point p) {
-        double currentBallLocationX;
-        double currentBallLocationY;
-        Point initialBallLocation = p;
-        double initialBallLocationX = initialBallLocation.getX();
-        double initialBallLocationY = initialBallLocation.getY();
-        double currentWouldBeBallLocationX = initialBallLocationX + getHorizontalSpeed();
-        double currentWouldBeBallLocationY = initialBallLocationY + getVerticalSpeed();
-        Point currentWouldBeBallLocation = new Point(currentWouldBeBallLocationX, currentWouldBeBallLocationY);
-        Line trajectory = new Line(initialBallLocation, currentWouldBeBallLocation);
-        CollisionInfo closestCollision = stuffOfTheGame.getClosestCollision(trajectory);
-        if (closestCollision != null) {
-            if ((closestCollision.collisionObject() != null) && (closestCollision.collisionPoint() != null)) {
-                Line lineOfClosestCollision = new Line(closestCollision.collisionPoint(),
-                        closestCollision.collisionPoint());
-                Collidable collisionObject = closestCollision.collisionObject();
-                horizontalSpeed = closestCollision.collisionObject().
-                        hit(closestCollision.collisionPoint(), getVelocity()).getHorizontalSpeed();
-                verticalSpeed = closestCollision.collisionObject().
-                        hit(closestCollision.collisionPoint(), getVelocity()).getVerticalSpeed();
-                if (lineOfClosestCollision.isIntersecting(collisionObject.getCollisionRectangle().getUpLine())) {
-                    currentBallLocationX = closestCollision.collisionPoint().getX();
-                    currentBallLocationY = closestCollision.collisionPoint().getY() - radius;
-                } else if (lineOfClosestCollision.isIntersecting(
-                        collisionObject.getCollisionRectangle().getDownLine())) {
-                    currentBallLocationX = closestCollision.collisionPoint().getX();
-                    currentBallLocationY = closestCollision.collisionPoint().getY() + radius;
-                } else if (lineOfClosestCollision.isIntersecting(
-                        collisionObject.getCollisionRectangle().getLeftLine())) {
-                        currentBallLocationX = closestCollision.collisionPoint().getX() - radius;
-                        currentBallLocationY = closestCollision.collisionPoint().getY();
-                } else {
-                       currentBallLocationX = closestCollision.collisionPoint().getX() + radius;
-                       currentBallLocationY = closestCollision.collisionPoint().getY();
-                }
-                return new Point(currentBallLocationX, currentBallLocationY);
-            }
-        }
-        if ((initialBallLocationX + getHorizontalSpeed()) >= (xBound + screenWidth - radius)) {
-            currentBallLocationX = (xBound + screenWidth - radius);
-            horizontalSpeed = -horizontalSpeed;
-        } else if (initialBallLocationX + getHorizontalSpeed() <= (xBound + radius)) {
-            currentBallLocationX = (xBound + radius);
-            horizontalSpeed = -horizontalSpeed;
-        } else {
-            currentBallLocationX = (initialBallLocationX + getHorizontalSpeed());
-        }
-        if ((initialBallLocationY + getVerticalSpeed()) >= (yBound + screenHeight - radius)) {
-            currentBallLocationY = (yBound + screenHeight - radius);
-            verticalSpeed = -verticalSpeed;
-        } else if (initialBallLocationY + getVerticalSpeed() <= (yBound + radius)) {
-            currentBallLocationY = (yBound + radius);
-            verticalSpeed = -verticalSpeed;
-        } else {
-           currentBallLocationY = (initialBallLocationY + getVerticalSpeed());
-        }
-        return new Point(currentBallLocationX, currentBallLocationY);
+   public Point applyToPoint(Point p) {
+        double newX = p.getX() + horizontalSpeed;
+        double newY = p.getY() + verticalSpeed;
+        return new Point(newX, newY);
     }
 
     /**

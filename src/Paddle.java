@@ -43,7 +43,7 @@ public class Paddle implements Sprite, Collidable {
      */
     public Paddle(double x, double y, double width,
                   double height, Color color, GUI gui, int margin) {
-        this.paddleBlock = new Rectangle((new Point(x, y)), width, height);
+        paddleBlock = new Rectangle((new Point(x, y)), width, height);
         this.color = color;
         this.gui = gui;
         this.margin = margin;
@@ -57,7 +57,7 @@ public class Paddle implements Sprite, Collidable {
         if (keyboard.isPressed(KeyboardSensor.LEFT_KEY)
                 &&  paddleBlock.getUpperLeft().getX() > margin + 1) {
                     paddleBlock = new Rectangle(new Point(
-                    paddleBlock.getUpperLeft().getX() - 1,
+                    paddleBlock.getUpperLeft().getX() - 4,
                     paddleBlock.getUpperLeft().getY()),
                     paddleBlock.getWidth(),
                     paddleBlock.getHeight());
@@ -73,7 +73,7 @@ public class Paddle implements Sprite, Collidable {
                 && paddleBlock.getUpperLeft().getX() + paddleBlock.getWidth()
                 < gui.getDrawSurface().getWidth() - margin) {
             paddleBlock = new Rectangle(new Point(
-                    paddleBlock.getUpperLeft().getX() + 1,
+                    paddleBlock.getUpperLeft().getX() + 4,
                     paddleBlock.getUpperLeft().getY()),
                     paddleBlock.getWidth(),
                     paddleBlock.getHeight());
@@ -125,31 +125,33 @@ public class Paddle implements Sprite, Collidable {
      */
     public Velocity hitByRegion(Point collisionPoint,
                                  Velocity currentVelocity) {
-        double regionLength = this.paddleBlock.getWidth() / 5;
-        Line leftRegion = new Line(this.paddleBlock.getUpperLeft().getX(),
-                this.paddleBlock.getUpperLeft().getY(),
-                this.paddleBlock.getUpperLeft().getX() + regionLength,
-                this.paddleBlock.getUpperLeft().getY());
+        double regionLength = paddleBlock.getWidth() / 5;
+        Line leftRegion = new Line(paddleBlock.getUpperLeft().getX(),
+                paddleBlock.getUpperLeft().getY(),
+                paddleBlock.getUpperLeft().getX() + regionLength,
+                paddleBlock.getUpperLeft().getY());
         Line middleLeftRegion = new Line(
-                this.paddleBlock.getUpperLeft().getX() + regionLength,
-                this.paddleBlock.getUpperLeft().getY(),
-                this.paddleBlock.getUpperLeft().getX() + 2 * regionLength,
-                this.paddleBlock.getUpperLeft().getY());
+                paddleBlock.getUpperLeft().getX() + regionLength,
+                paddleBlock.getUpperLeft().getY(),
+                paddleBlock.getUpperLeft().getX() + 2 * regionLength,
+                paddleBlock.getUpperLeft().getY());
         Line middleRegion = new Line(
-                this.paddleBlock.getUpperLeft().getX() + 2 * regionLength,
-                this.paddleBlock.getUpperLeft().getY(),
-                this.paddleBlock.getUpperLeft().getX() + 3 * regionLength,
-                this.paddleBlock.getUpperLeft().getY());
+                paddleBlock.getUpperLeft().getX() + 2 * regionLength,
+                paddleBlock.getUpperLeft().getY(),
+                paddleBlock.getUpperLeft().getX() + 3 * regionLength,
+                paddleBlock.getUpperLeft().getY());
         Line middleRightRegion = new Line(
-                this.paddleBlock.getUpperLeft().getX() + 3 * regionLength,
-                this.paddleBlock.getUpperLeft().getY(),
-                this.paddleBlock.getUpperLeft().getX() + 4 * regionLength,
-                this.paddleBlock.getUpperLeft().getY());
+                paddleBlock.getUpperLeft().getX() + 3 * regionLength,
+                paddleBlock.getUpperLeft().getY(),
+                paddleBlock.getUpperLeft().getX() + 4 * regionLength,
+                paddleBlock.getUpperLeft().getY());
         Line rightRegion = new Line(
-                this.paddleBlock.getUpperLeft().getX() + 4 * regionLength,
-                this.paddleBlock.getUpperLeft().getY(),
-                this.paddleBlock.getUpperLeft().getX() + 5 * regionLength,
-                this.paddleBlock.getUpperLeft().getY());
+                paddleBlock.getUpperLeft().getX() + 4 * regionLength,
+                paddleBlock.getUpperLeft().getY(),
+                paddleBlock.getUpperLeft().getX() + 5 * regionLength,
+                paddleBlock.getUpperLeft().getY());
+        //Line leftVertical = paddleBlock.getLeftLine();
+        //Line rightVertical = paddleBlock.getRightLine();
         if (leftRegion.paddleIsContainingPoint(collisionPoint)) {
             return Velocity.fromAngleAndSpeed(300, currentVelocity.getSpeed());
         }
@@ -166,6 +168,16 @@ public class Paddle implements Sprite, Collidable {
         if (rightRegion.paddleIsContainingPoint(collisionPoint)) {
             return Velocity.fromAngleAndSpeed(60, currentVelocity.getSpeed());
         }
+        /**if (leftVertical.paddleIsContainingPoint(collisionPoint)) {
+            //return Velocity.fromAngleAndSpeed(270, currentVelocity.getSpeed());
+            return new Velocity(-currentVelocity.getHorizontalSpeed(),
+                    currentVelocity.getVerticalSpeed());
+        }
+        if (rightVertical.paddleIsContainingPoint(collisionPoint)) {
+            //return Velocity.fromAngleAndSpeed(90, currentVelocity.getSpeed());
+            return new Velocity(-currentVelocity.getHorizontalSpeed(),
+                    currentVelocity.getVerticalSpeed());
+        }**/
         return currentVelocity;
     }
 

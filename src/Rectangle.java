@@ -152,4 +152,17 @@ public class Rectangle {
     public Line getRightLine() {
         return new Line(upperRight, lowerRight);
     }
+
+    /**
+     * Is containing point boolean.
+     *
+     * @param point the point
+     * @return the boolean answer to whether the point is within the rectangle's bounds
+     */
+    public boolean isContainingPoint(Point point) {
+        return point.getX() >= upperLeft.getX()
+                && point.getX() <= upperLeft.getX() + width
+                && point.getY() >= upperLeft.getY()
+                && point.getY() <= upperLeft.getY() + height;
+    }
 }
